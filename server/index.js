@@ -1,0 +1,39 @@
+import express from 'express'
+import 'colors'
+import dotenv from 'dotenv'
+import { db } from './utils/db.js'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+db.connect((err, res) => {
+    if (err) {
+        console.log((err.message).bgRed.white)
+    }
+    console.log(`Database connected successfully ${res.connectionId}`.bgYellow.white)
+})
+
+dotenv.config()
+
+const app = express()
+
+
+// here all middlewares which is required 
+app.use(cors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+}))
+app.use(bodyParser.json())
+app.use(express.json())
+app.use(cookieParser())
+
+
+// routers 
+app.get('/', (err, res) => {
+    res.send('Hello World !')
+})
+
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port : ${PORT}`.bgCyan.white)
+})
