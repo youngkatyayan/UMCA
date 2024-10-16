@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type="checkbox"]:checked + span {
+    background-color: #03296b; /* Customize the active background color */
+  }
