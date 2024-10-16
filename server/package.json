@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon index.js",
-    "start":"node index.js"
+    "client": "cd.. && npm run dev --prefix ./client",
+   "dev": "concurrently \"npm run client\" \"nodemon index.js\"",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,7 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "colors": "^1.4.0",
+    "concurrently": "^9.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
