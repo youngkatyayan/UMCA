@@ -5,12 +5,16 @@ import { db } from './utils/db.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import LoginRouter from './routes/SignInRoutes/LoginRoute.js'
+
+// database connection start from here
 db.connect((err, res) => {
     if (err) {
         console.log((err.message).bgRed.white)
     }
     console.log(`Database connected successfully ${res.connectionId}`.bgYellow.white)
 })
+// database connection end from here
 
 dotenv.config()
 
@@ -31,6 +35,9 @@ app.use(cookieParser())
 app.get('/', (err, res) => {
     res.send('Hello World !')
 })
+app.use('/api/v1', LoginRouter)
+
+
 
 const PORT = process.env.PORT || 3000
 

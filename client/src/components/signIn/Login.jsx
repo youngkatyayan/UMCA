@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import './index.css';
 import BackgroundImage from '../../assets/wallpaperflare.com_wallpaper4.jpg';
 import Logo from '../../assets/logo.png';
 
@@ -11,10 +9,10 @@ const Login = () => {
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
-    remember: false, // Set default to false
+    remember: false, 
   });
 
-  const [confirmPassword, setConfirmPassword] = useState(''); // Separate state for confirmation
+  const [confirmPassword, setConfirmPassword] = useState(''); 
   const [popUp, setPopup] = useState(true);
 
   const handleSubmit = (e) => {
@@ -22,12 +20,11 @@ const Login = () => {
     console.log(loginData);
 
     if (!popUp) {
-      // Handle signup here if popUp is false
+      
       if (loginData.password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
       }
-      // You may want to add more signup logic here
     }
   };
 
@@ -36,13 +33,12 @@ const Login = () => {
     setLoginData((prevData) => ({ ...prevData, [name]: name === 'remember' ? checked : value }));
 
     if (name === 'confirmPassword') {
-      setConfirmPassword(value); // Update confirmation password
+      setConfirmPassword(value); 
     }
   };
 
   return (
     <>
-     {/* <img src={Logo} alt="Logo" style={{ width: '100%', height: 'auto' }} /> */}
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
       style={{ backgroundImage: `url(${BackgroundImage})` }}
@@ -82,7 +78,7 @@ const Login = () => {
                   name="remember"
                   checked={loginData.remember}
                   onChange={handleChange}
-                  className="hidden" // Hide the default checkbox
+                  className="hidden" 
                 />
                 <span className="w-12 h-6 flex items-center bg-gray-400 rounded-full p-1 duration-300 ease-in-out">
                   <span
@@ -135,9 +131,9 @@ const Login = () => {
             <div className="relative border-b-2 border-gray-300 mb-6">
               <input
                 type="password"
-                name='confirmPassword' // Change this to confirmPassword
+                name='confirmPassword' 
                 required
-                value={confirmPassword} // Use confirmPassword state
+                value={confirmPassword} 
                 onChange={handleChange}
                 placeholder='confirm password'
                 className="w-full bg-transparent border-none outline-none text-white py-2 focus:outline-none placeholder-white"
