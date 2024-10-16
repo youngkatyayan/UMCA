@@ -27,7 +27,6 @@ const Login = () => {
         alert("Passwords do not match!");
         return;
       }
-      
     }
   };
 
@@ -146,9 +145,9 @@ const Login = () => {
             <div className="relative border-b-2 border-gray-300 mb-6">
               <input
                 type="password"
-                name="confirmPassword"
+                name='confirmPassword' 
                 required
-                value={confirmPassword}
+                value={confirmPassword} 
                 onChange={handleChange}
                 placeholder="confirm password"
                 className="w-full bg-transparent border-none outline-none text-white py-2 focus:outline-none placeholder-white"
