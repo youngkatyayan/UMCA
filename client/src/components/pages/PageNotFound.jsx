@@ -6,7 +6,7 @@ const PageNotFound = () => {
         <div className="flex items-center justify-center h-screen bg-gray-150">
             <div className="bg-black text-white p-8 rounded-lg shadow-xl shadow-gray-950 w-full max-w-[65vw] h-full flex text-center justify-center flex-col max-h-[52vh]">
                 <div className="flex items-center justify-center mb-6  ">
-                    <svg className="w-36 h-36 mr-4 animate-pulse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-36 h-44 mr-4 animate-pulse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="32" cy="32" r="30" fill="white" fillOpacity="0.2" filter="url(#glow)" />
                         <circle cx="24" cy="28" r="4" fill="white" />
                         <circle cx="40" cy="28" r="4" fill="white" />

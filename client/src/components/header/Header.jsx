@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <>
 
-      <div className="flex items-start justify-center  bg-fuchsia-50">
+      <div className="flex items-start justify-center header">
         <div className="bg-white text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
