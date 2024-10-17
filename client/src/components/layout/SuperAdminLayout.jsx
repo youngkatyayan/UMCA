@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../header/Header'
 import Menu from '../header/Menu'
-import Context from '../../content/index.js';
+import authContext from '../context/Index.jsx';
 
 const SuperAdminLayout = (prop) => {
    
@@ -34,7 +34,7 @@ const SuperAdminLayout = (prop) => {
     //   }, []);
   return (
     <>
-            <Context.Provider >
+            <authContext.Provider >
                 <Header className='h-14' />
                 <div className='flex'>
                     <div>
@@ -46,7 +46,7 @@ const SuperAdminLayout = (prop) => {
                     </main>
                 </div>
                 {/* <Footer /> */}
-            </Context.Provider>
+            </authContext.Provider>
         </>
   )
 }

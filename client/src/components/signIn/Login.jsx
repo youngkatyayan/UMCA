@@ -49,6 +49,7 @@ const Login = () => {
             if (data.success) {
                 toast.success(data.message);
                 let response = data.result[0]
+                let token = data.token;
 
                 let encryptedPASS = CryptoJS.AES.encrypt(response.password, "LOGIN PASSWORD").toString();;
                 let encryptedUID = CryptoJS.AES.encrypt(response.mobile, "LOGIN UID").toString();
@@ -59,7 +60,7 @@ const Login = () => {
                 localStorage.setItem('password', encryptedPASS)
                 localStorage.setItem('Status', Status)
                 sessionStorage.setItem('Status', Type)
-               
+
                 setTimeout(() => {
                     navigate('/admin');
                     window.location.reload()
