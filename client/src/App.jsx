@@ -1,31 +1,50 @@
+import { Route, Routes } from 'react-router-dom';
+import Login from './components/signIn/Login.jsx';
+import Admin from './components/admin/Admin.jsx';
+import PageNotFound from './components/pages/PageNotFound.jsx';
+import CryptoJS from 'crypto-js';
+import React from 'react';
 
-
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom'
-import Login from './components/signIn/Login.jsx'
-import Dashboard from './components/admin/Dashboard.jsx'
-import Admin from './components/admin/Admin.jsx'
-
-import CreateCollege from './components/admin/addMaster/CreateCollege.jsx'
-import Mode from './components/admin/addMaster/mode.jsx'
-import Category from './components/admin/addMaster/Category.jsx'
-import Session from './components/admin/addMaster/Session.jsx'
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-       <Route path='/' exact element={<Login/>}/>
-        {/* <Route path='/' exact element={<Dashboard/>}/> */}
-        {/* <Route path='/admin'  element={<Admin/>}/>  */}
-        <Route path='/admin'  element={<Admin/>}/>
-        <Route path='/dashboard'  element={<Dashboard/>}/>
-        <Route path='/add-college'  element={<CreateCollege/>}/>
-        <Route path='/create-mode'  element={<Mode/>}/>
-        <Route path='/add-category'  element={<Category/>}/>
-        <Route path='/add-session'  element={<Session/>}/>
-      </Routes>
-    </Router>
+  // Retrieve values from localStorage and sessionStorage
+  let mobile = localStorage.getItem('uid');
+  let Status = localStorage.getItem('Status');
+  let Type = sessionStorage.getItem('Status');
 
-  )
-}
+  // Decrypt the stored values
+  const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
+  const decryptedStatus = Status ? CryptoJS.AES.decrypt(Status, "Status").toString(CryptoJS.enc.Utf8) : null;
+  const decryptedType = Type ? CryptoJS.AES.decrypt(Type, "Type").toString(CryptoJS.enc.Utf8) : null;
 
-export default App
+  const userType = `${decryptedType}-${decryptedStatus}`;
+
+  switch (userType) {
+    case 'Admin-1':
+      return (
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/admin' element={<Admin />} />
+          <Route path='/*' element={<PageNotFound />} />
+        </Routes>
+      );
+
+    case 'user-0':
+      return (
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/admin' element={<Login />} />
+          <Route path='/*' element={<PageNotFound />} />
+        </Routes>
+      );
+
+    default:
+      return (
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/*' element={<PageNotFound />} />
+        </Routes>
+      );
+  }
+};
+
+export default App;
