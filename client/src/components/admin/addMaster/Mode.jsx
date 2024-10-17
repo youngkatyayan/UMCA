@@ -31,12 +31,12 @@ const Mode = () => {
     }
     return (
         <SuperAdminLayout>
-            <main className='min-h-screen bg-gray-200 p-2'>
+            <div className='h-screen bg-gray-200 p-2'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Course Mode</h1>
                 </div>
 
-                <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md  backdrop-blur border-2 bg-cover bg-center bg-no-repeat relative min-h-screen bg-opacity-5'>
+                <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md border-2  relative '>
 
                 <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
 
@@ -47,6 +47,7 @@ const Mode = () => {
                             name='mode'
                             value={data.mode}
                             onChange={handleChange}
+                            placeholder='Enter Course Mode'
                             className='w-2/4 p-2 rounded-md my-4 shadow-md'
                         />
                        
@@ -56,7 +57,8 @@ const Mode = () => {
 
                 </div>
                 </form>
-            </main>
+
+            </div>
 
         </SuperAdminLayout>
     )

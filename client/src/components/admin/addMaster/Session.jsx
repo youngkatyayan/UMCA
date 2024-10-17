@@ -42,7 +42,7 @@ const Session = () => {
                 <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
 
                     <div className='w-full flex flex-row gap-4 items-center justify-center '>
-                        <label htmlFor="startsession" className=' m-2 font-serif'> Starting Session</label>
+                        <label htmlFor="startsession" className=' m-2 font-serif'> Starting Session :</label>
                         <input
                             type="date"
                             name='startsession'
@@ -51,7 +51,7 @@ const Session = () => {
                             placeholder='Enter Session'
                             className='w-1/4 p-2 rounded-md my-4 shadow-md'
                         />
-                        <label htmlFor="endsession" className=' m-2 font-serif'> Ending Session</label>
+                        <label htmlFor="endsession" className=' m-2 font-serif'> Ending Session :</label>
                         <input
                             type="date"
                             name='endsession'

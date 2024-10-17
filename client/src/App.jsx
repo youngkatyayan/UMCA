@@ -1,7 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 import Login from './components/signIn/Login.jsx';
 import Admin from './components/admin/Admin.jsx';
+import Category from './components/admin/addMaster/Category.jsx';
+import Mode from './components/admin/addMaster/Mode.jsx';
+import Session from './components/admin/addMaster/Session.jsx';
 import PageNotFound from './components/pages/PageNotFound.jsx';
+import Dashboard from './components/admin/Dashboard.jsx';
 import CryptoJS from 'crypto-js';
 import React from 'react';
 
@@ -23,8 +27,12 @@ const App = () => {
       return (
         <Routes>
           <Route path='/' element={<Login />} />
-          <Route path='/admin' element={<Admin />} />
+          <Route path='/admin' element={<Dashboard />} />
           <Route path='/*' element={<PageNotFound />} />
+          {/* <Route path='/*' element={<PageNotFound />} /> */}
+          <Route path='/add-category' element={<Category />} />
+          <Route path='/create-mode' element={<Mode />} />
+          <Route path='/add-session' element={<Session />} />
         </Routes>
       );
 
