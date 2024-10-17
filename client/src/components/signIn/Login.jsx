@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';
 // import './index.css';
-import BackgroundImage from '../../assets/wallpaperflare.com_wallpaper.jpg';
+import BackgroundImage from '../../assets/wallpaperflare.com_wallpaper4.jpg';
 import Logo from '../../assets/logo1.png';
 
 
@@ -46,7 +46,7 @@ const Login = () => {
       style={{ backgroundImage: `url(${BackgroundImage})` }}
     >
       {/* Logo at the top */}
-      <div className="mb-6 backdrop-blur-lg backdrop-opacity-65 mx-16 ">
+      <div className="mb-6 mt-2 backdrop-blur-lg backdrop-opacity-65  ">
         <img src={Logo} alt="Logo" style={{ width: '75%', height: 'auto' }} />
       </div>
   

@@ -1,13 +1,8 @@
-import { db } from "../../utils/db.js";
+import express from 'express'
+import { loginController } from '../../controllers/signInControllers/LoginController.js'
+const router = express.Router()
 
-export const loginController = async (req, res) => {
-    try {
+router.post('/login', loginController)
 
-    } catch (error) {
-        console.log('Something wrong in loginController', error.message)
-        res.status(500).send({
-            success: false,
-            message: 'Something wrong in loginController'
-        })
-    }
-}
+
+export default router

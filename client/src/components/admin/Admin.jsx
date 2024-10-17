@@ -1,8 +1,11 @@
 import React from 'react'
+import SuperAdminLayout from '../layout/SuperAdminLayout'
 
 const Admin = () => {
   return (
-    <div>Admin</div>
+    <SuperAdminLayout>
+      <div>Dashboard</div>
+    </SuperAdminLayout>
   )
 }
 
