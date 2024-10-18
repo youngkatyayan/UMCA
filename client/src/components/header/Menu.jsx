@@ -24,7 +24,8 @@ const Menu = () => {
 
   }, [widthSize]);
   return (
-    <div className={`flex flex-col gap-2  ${widthSize ? 'w-[3rem]' : 'w-[15rem]'} pl-3 py-5  bg-white  lg:h-[91.5vh] h-[90.7vh] `}>
+    <div className={`flex flex-col gap-2 header ${widthSize ? 'w-[3rem]' : 'w-[15rem]'} pl-3 py-5  bg-white  lg:h-[91.5vh] h-[90.7vh] `}>
+
       {SuperAdminMenuList.map((items, index) =>
         <div key={index} className='relative'>
           <Link to={items.to}
@@ -34,6 +35,7 @@ const Menu = () => {
           </Link>
           {
             subMenu === items.name && items.children && items.children.length > 0 && (
+
               <div className={widthSize ? `absolute -top[0.1rem] z-50 w-[49vw] left-7 rounded-tr-2xl rounded-es-2xl shadow-lg  shadow-[#918f8f] bg-white p-2 ` : `absolute top-full z-50 w-full  rounded-tr-2xl rounded-es-2xl shadow-lg  shadow-[#918f8f] bg-white p-3 `}>
                 {
                   subMenu === items.name && (
@@ -51,11 +53,13 @@ const Menu = () => {
                   )
                 }
               </div>
+
             )
           }
 
         </div>
       )}
+
     </div>
   )
 }

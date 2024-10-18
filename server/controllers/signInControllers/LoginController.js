@@ -25,7 +25,7 @@ export const loginController = async (req, res) => {
             if (result.length > 0) {
                 const user = result[0]
                 const token = jwt.sign({ userId: user.Id, UID: user.mobile }, process.env.SECRET_KEY, { expiresIn: '7d' })
-                console.log("Token= ", token)
+                // console.log("Token= ", token)
                 res.cookie('token', token, {
                     httpOnly: true,
                     maxAge: 7*24*60*60*1000,

@@ -6,7 +6,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import LoginRouter from './routes/SignInRoutes/LoginRoute.js'
-
+import authRouter from './routes/authRoutes/AuthRoute.js'
 
 // database connection start from here
 db.connect((err, res) => {
@@ -37,6 +37,7 @@ app.get('/', (err, res) => {
     res.send('Hello World !')
 })
 app.use('/api/v1', LoginRouter)
+app.use('/api/v1', authRouter)
 
 
 
