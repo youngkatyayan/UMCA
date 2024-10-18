@@ -24,10 +24,12 @@ const Menu = () => {
 
   }, [widthSize]);
   return (
-    <div className={`flex flex-col gap-2 header ${widthSize ? 'w-[3rem]' : 'w-[15rem]'} pl-3 py-5  bg-white  lg:h-[91.5vh] h-[90.7vh] `}>
+    <div className={`flex flex-col  header ${widthSize ? 'w-[3rem]' : 'w-[15rem]'} pl-3 py-5  bg-white  lg:h-[91.5vh] h-[90.7vh] `}>
 
       {SuperAdminMenuList.map((items, index) =>
         <div key={index} className='relative'>
+          <hr class="border-t-2 border-white" />
+
           <Link to={items.to}
             onClick={() => handleSubMenu(items)}
             className='flex justify-between gap-2 xx whitespace-nowrap  hover:text-purple-600 font-serif hover:bg-purple-100 items-center px-2 py-1 '>

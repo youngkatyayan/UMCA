@@ -9,6 +9,7 @@ import Dashboard from './components/admin/Dashboard.jsx';
 import CryptoJS from 'crypto-js';
 import React from 'react';
 import Group from './components/admin/addMaster/Group.jsx';
+import Course from './components/admin/addMaster/Course.jsx';
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/create-mode' element={<Mode />} />
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
+          <Route path='/add-course' element={<Course />} />
         </Routes>
       );
 

@@ -6,18 +6,9 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import LoginRouter from './routes/SignInRoutes/LoginRoute.js'
-import MasterRoutes from './routes/AdminRoutes/MasterRoutes.js'
-
+import MasterRoutes from './routes/AdminRoutes/MastRoutes.js'
 import authRouter from './routes/authRoutes/AuthRoute.js'
 
-// database connection start from here
-db.connect((err, res) => {
-    if (err) {
-        console.log((err.message).bgRed.white)
-    }
-    console.log(`Database connected successfully ${res.connectionId}`.bgYellow.white)
-})
-// database connection end from here
 
 dotenv.config()
 

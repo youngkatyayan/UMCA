@@ -37,7 +37,7 @@ const Session = () => {
     }
     return (
         <SuperAdminLayout>
-            <div className='bg-gray-200 p-2'>
+            <div className='w-full bg-gray-200 p-2'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Session</h1>
                 </div>
@@ -117,7 +117,7 @@ const Session = () => {
                     </div>
                     <div className='flex flex-row justify-center'>
 
-                        <button type='submit' className='bg-gray-700 hover:bg-gray-700 border-2 hover:font-serif hover:text-lg hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD Session</button>
+                        <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD SESSION</button>
                     </div>
                 </form>
             </div>

@@ -16,16 +16,16 @@ const Group = () => {
 
     }
 
-    const handleSubmit=async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             console.log(formdata)
-            const {data}=await axios.post('/api/v1/add-group',formdata)
-            if(data.success){
+            const { data } = await axios.post('/api/v1/add-group', formdata)
+            if (data.success) {
                 toast.success(data.message)
-                setData({group:""})
+                setData({ group: "" })
             }
-            else{
+            else {
                 console.log('error')
             }
         } catch (error) {
@@ -34,32 +34,36 @@ const Group = () => {
     }
     return (
         <SuperAdminLayout>
-            <div className='h-screen bg-gray-200 p-2'>
+            <div className='w-full bg-gray-200 p-2'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Course Group</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md border-2  relative '>
 
-                <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
+                    <div className='border-2 rounded-sm grid grid-cols-1 items-center mt-4'>
 
-                    <div className='w-full flex flex-col items-center '>
-                        <label htmlFor="group" className=' mb-2 text-2xl font-serif'> Course Group</label>
-                        <input
-                        required
-                            type="text"
-                            name='group'
-                            value={formdata.group}
-                            onChange={handleChange}
-                            placeholder='Enter Course Group'
-                            className='w-2/4 p-2 rounded-md my-4 shadow-md'
-                        />
-                       
+                        <div className='w-full flex flex-col items-center '>
+                            <label htmlFor="group" className=' text-2xl font-serif'> Course Group</label>
+                            <input
+                                required
+                                type="text"
+                                name='group'
+                                value={formdata.group}
+                                onChange={handleChange}
+                                placeholder='Enter Course Group'
+                                className='w-1/2 p-2 rounded-md my-2 shadow-md'
+                            />
+
+                        </div>
+
+
                     </div>
 
-                    <button type='submit' className='bg-blue-500 hover:bg-blue-700 border-2 hover:font-bold text-white rounded-md px-4 py-2 m-4 items-center'>ADD Mode</button>
+                    <div className='flex flex-row justify-center'>
+                    <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD GROUP</button>
 
-                </div>
+                    </div>
                 </form>
 
             </div>
