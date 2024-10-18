@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
-import axios from 'axios'
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
-const Category = () => {
+
+const Group = () => {
     const [formdata, setData] = useState({
-        category: ''
+        group: ''
     })
 
     const handleChange = async (e) => {
@@ -19,50 +20,52 @@ const Category = () => {
         e.preventDefault()
         try {
             console.log(formdata)
-            const {data}=await axios.post('/api/v1/add-category',formdata)
+            const {data}=await axios.post('/api/v1/add-group',formdata)
             if(data.success){
-                console.log(data)
-                toast.success(data.message);
+                toast.success(data.message)
+                setData({group:""})
             }
             else{
                 console.log('error')
             }
         } catch (error) {
-            console.log("error catch")
+            console.log("error")
         }
     }
     return (
         <SuperAdminLayout>
-            <main className='h-screen bg-gray-200 p-2'>
+            <div className='h-screen bg-gray-200 p-2'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
-                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Category</h1>
+                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Course Group</h1>
                 </div>
 
-                <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md  backdrop-blur border-2 bg-cover bg-center bg-no-repeat relative '>
+                <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md border-2  relative '>
 
                 <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
 
                     <div className='w-full flex flex-col items-center '>
-                        <label htmlFor="category" className=' mb-2 text-2xl font-serif'> Course Category</label>
+                        <label htmlFor="group" className=' mb-2 text-2xl font-serif'> Course Group</label>
                         <input
+                        required
                             type="text"
-                            name='category'
-                            value={formdata.category}
+                            name='group'
+                            value={formdata.group}
                             onChange={handleChange}
-                            placeholder='Enter Category Name'
+                            placeholder='Enter Course Group'
                             className='w-2/4 p-2 rounded-md my-4 shadow-md'
                         />
                        
                     </div>
 
-                    <button type='submit' className='bg-blue-500 hover:bg-blue-700 border-2 hover:font-bold text-white rounded-md px-4 py-2 m-4 items-center`'>ADD Category</button>
+                    <button type='submit' className='bg-blue-500 hover:bg-blue-700 border-2 hover:font-bold text-white rounded-md px-4 py-2 m-4 items-center'>ADD Mode</button>
 
                 </div>
                 </form>
-            </main>
+
+            </div>
 
         </SuperAdminLayout>
     )
 }
 
-export default Category
+export default Group

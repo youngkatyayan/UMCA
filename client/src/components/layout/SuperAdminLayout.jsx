@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../header/Header'
 import Menu from '../header/Menu'
-import authContext from '../context/Index.jsx';
+import Context from '../../content/index.js';
 
 const SuperAdminLayout = (prop) => {
    
@@ -34,19 +34,19 @@ const SuperAdminLayout = (prop) => {
     //   }, []);
   return (
     <>
-            <authContext.Provider >
+            <Context.Provider >
                 <Header className='h-14' />
                 <div className='flex'>
                     <div>
                         
                         <Menu className="z-10"/>
                     </div>
-                    <main className='md:w-[calc(100%-42vh)]  w-[calc(100%-3rem)] px-3 py-3' style={{ Height: '91vh' }}>
+                    <main className='md:w-[calc(100%-42vh)]  w-[calc(100%-3rem)] ' style={{ Height: '91vh' }}>
                         {prop.children}
                     </main>
                 </div>
                 {/* <Footer /> */}
-            </authContext.Provider>
+            </Context.Provider>
         </>
   )
 }

@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 const Mode = () => {
-    const [data, setData] = useState({
-        mode: ''
+    const [formdata, setData] = useState({
+        coursemode: ''
     })
 
     const handleChange = async (e) => {
@@ -16,11 +18,12 @@ const Mode = () => {
 
     const handleSubmit=async(e)=>{
         e.preventDefault()
-        console.log(data)
         try {
-            const {data}=await axios.post('api/v1/add-mode')
+            console.log(formdata)
+            const {data}=await axios.post('/api/v1/add-mode',formdata)
             if(data.success){
-                
+                toast.success(data.message)
+                setData({coursemode:""})
             }
             else{
                 console.log('error')
@@ -41,11 +44,12 @@ const Mode = () => {
                 <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
 
                     <div className='w-full flex flex-col items-center '>
-                        <label htmlFor="mode" className=' mb-2 text-2xl font-serif'> Course Mode</label>
+                        <label htmlFor="coursemode" className=' mb-2 text-2xl font-serif'> Course Mode</label>
                         <input
+                        required
                             type="text"
-                            name='mode'
-                            value={data.mode}
+                            name='coursemode'
+                            value={formdata.coursemode}
                             onChange={handleChange}
                             placeholder='Enter Course Mode'
                             className='w-2/4 p-2 rounded-md my-4 shadow-md'
