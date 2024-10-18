@@ -3,7 +3,7 @@ import { loginController } from '../../controllers/signInControllers/LoginContro
 import { authToken } from '../../middlewares/AuthMiddleware.js'
 const router = express.Router()
 
-router.post('/login', loginController)
+router.post('/login',authToken, loginController)
 
 
 export default router
