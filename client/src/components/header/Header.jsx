@@ -4,7 +4,6 @@ import { FaRegMessage } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-// import Logo from ''
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -12,8 +11,8 @@ const Header = () => {
   return (
     <>
 
-      <div className="flex items-start justify-center header">
-        <div className="bg-white text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
+      <div className="flex items-start justify-center ">
+        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
           </span> */}
