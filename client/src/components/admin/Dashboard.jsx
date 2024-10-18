@@ -4,7 +4,7 @@ import AddCollege from '../../assets/addcollege.jpg';
 
 
 const Dashboard = () => {
-
+   
     return (
         <SuperAdminLayout>
 

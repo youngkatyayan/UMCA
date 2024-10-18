@@ -2,8 +2,38 @@ import { db } from "../../utils/db.js";
 
 export const authController = async (req, res) => {
     try {
-        console.log("UID",req.UID)    
- 
+        // Check if UID is present in the request
+        if (!req.UID) {
+            return res.status(400).send({
+                success: false,
+                message: 'UID is required',
+            });
+        }
+ // console.log("UID", req.UID);       
+
+        const sql = 'SELECT * FROM users WHERE mobile = ?';
+
+        db.query(sql, [req.UID], (err, result) => {
+            if (err) {
+                console.log('Database error:', err.message);
+                return res.status(500).send({
+                    success: false,
+                    message: 'Internal server error',
+                });
+            }
+            if (result.length === 0) {
+                return res.status(404).send({
+                    success: false,
+                    message: 'User not found',
+                });
+            }
+
+            return res.status(200).send({
+                success: true,
+                message: 'Access Token granted',
+                result,
+            });
+        });
     } catch (error) {
         console.log('Something went wrong in authController:', error.message);
         return res.status(500).send({
@@ -11,4 +41,4 @@ export const authController = async (req, res) => {
             message: 'Something went wrong in authController',
         });
     }
-}
+};

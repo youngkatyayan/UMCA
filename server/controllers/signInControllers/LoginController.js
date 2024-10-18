@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 export const loginController = async (req, res) => {
     try {
         const { username, password } = req.body;
-
+        // console.log("UID",req.UID) 
         // Check if username and password are provided
         if (!username) {
             return res.status(400).send({ success: false, error: 'Username is required' });
