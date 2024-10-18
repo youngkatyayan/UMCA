@@ -1,5 +1,5 @@
 import express from 'express'
-import { addCategory, addGroup, addMode } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addGroup, addMode, getGroup } from '../../controllers/adminControlllers/MastController.js'
 const router = express.Router()
 
 router.post('/add-category', addCategory)
@@ -9,7 +9,7 @@ router.post('/add-session', addGroup)
 router.post('/add-course', addGroup)
 
 
-// router.post('/get-group', getGroup)
+router.get('/get-group', getGroup)
 
 
 export default router

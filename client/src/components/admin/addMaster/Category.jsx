@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
@@ -14,13 +14,15 @@ const Category = () => {
             const {data}=await axios.get('/api/v1/get-group')
         if(data.success){
             if(data.result>0){
-                setGroup(data.result)
+                setGroup(data.result)   
             }
         }
         } catch (error) {
             toast.error(error.message)
         }
     }
+
+   useEffect(()=>{accessdata()},[])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
@@ -56,11 +58,11 @@ const Category = () => {
                     <div className='border-2 rounded-sm  grid grid-cols-2 gap-6 items-center'>
 
                         <div>
-                            <label htmlFor="category" className=' mb-2 text-lg font-serif'> Select Group : </label>
+                            <label htmlFor="group" className=' mb-2 text-lg font-serif'> Select Group : </label>
                             <select
                                 type="text"
-                                name='category'
-                                value={formdata.category}
+                                name='group'
+                                value={formdata.group}
                                 onChange={handleChange}
                                 placeholder='Enter Category Name'
                                 className='w-full p-2 rounded-md my-4 shadow-md'
