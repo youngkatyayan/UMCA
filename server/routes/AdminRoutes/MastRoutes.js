@@ -9,7 +9,7 @@ router.post('/add-session', addGroup)
 router.post('/add-course', addGroup)
 
 
-router.post('/get-group', getGroup)
+// router.post('/get-group', getGroup)
 
 
 export default router
