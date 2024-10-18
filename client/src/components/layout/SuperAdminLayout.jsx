@@ -4,7 +4,7 @@ import Menu from '../header/Menu';
 import authContext from '../context/Index.jsx';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { usrDetails } from '../store/CreateSlicer';  
+import { usrDetails } from '../store/CreateSlicer.js';
 
 const SuperAdminLayout = (props) => {
     const dispatch = useDispatch();
@@ -13,16 +13,16 @@ const SuperAdminLayout = (props) => {
         try {
             const response = await axios.get('/api/v1/access-token');
             if (response.data.result) {
-                dispatch(usrDetails(response.data.result)); 
+                dispatch(usrDetails(response.data.result));
             }
             // console.log(response.data.result);
         } catch (error) {
-            console.error('Error fetching access token:', error);
+            console.error('Error fetching access token:', error.message);
         }
     };
 
     useEffect(() => {
-        midFun(); 
+        midFun();
     }, []);
 
     return (

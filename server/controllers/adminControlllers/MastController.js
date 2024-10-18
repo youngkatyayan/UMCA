@@ -60,8 +60,8 @@ export const addCategory = async (req, res) => {
 }
 export const addMode = async (req, res) => {
     try {
-        console.log("first")
-        console.log(req.body)
+        // console.log("first")
+        // console.log(req.body)
         const { coursemode } = req.body;
 
         const sql = `insert into mode (coursemode) values(?)`

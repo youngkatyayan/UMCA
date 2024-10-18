@@ -9,36 +9,28 @@ export const authController = async (req, res) => {
                 message: 'UID is required',
             });
         }
- // console.log("UID", req.UID);       
+        // console.log("UID", req.UID);       
 
         const sql = 'SELECT * FROM users WHERE mobile = ?';
 
-        db.query(sql, [req.UID], (err, result) => {
-            if (err) {
-                console.log('Database error:', err.message);
-                return res.status(500).send({
-                    success: false,
-                    message: 'Internal server error',
-                });
-            }
-            if (result.length === 0) {
-                return res.status(404).send({
-                    success: false,
-                    message: 'User not found',
-                });
-            }
-
-            return res.status(200).send({
-                success: true,
-                message: 'Access Token granted',
-                result,
+        const [result] = await db.query(sql, [req.UID])
+        if (result.length === 0) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found',
             });
+        }
+
+        return res.status(200).send({
+            success: true,
+            message: 'Access Token granted',
+            result,
         });
-    } catch (error) {
-        console.log('Something went wrong in authController:', error.message);
-        return res.status(500).send({
-            success: false,
-            message: 'Something went wrong in authController',
-        });
-    }
+} catch (error) {
+    console.log('Something went wrong in authController:', error.message);
+    return res.status(500).send({
+        success: false,
+        message: 'Something went wrong in authController',
+    });
+}
 };
