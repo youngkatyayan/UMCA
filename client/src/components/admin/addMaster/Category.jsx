@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
-
+// import { useSelector } from 'react-redux';
 const Category = () => {
     const [formdata, setData] = useState({
         category: ''
     })
-
+    // const user = useSelector(state => state)
+    // console.log(user)
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))

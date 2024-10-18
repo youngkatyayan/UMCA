@@ -3,6 +3,6 @@ import { authController } from '../../controllers/authControllers/AuthController
 import { authToken } from '../../middlewares/AuthMiddleware.js';
 const router=express.Router()
 
-router.get('/get-token',authToken,authController)
+router.get('/access-token',authToken,authController)
 
-export default router; 
+export default router;  
