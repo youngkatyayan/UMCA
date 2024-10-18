@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import LoginRouter from './routes/SignInRoutes/LoginRoute.js'
 import MasterRoutes from './routes/AdminRoutes/MasterRoutes.js'
 
+import authRouter from './routes/authRoutes/AuthRoute.js'
 
 // database connection start from here
 db.connect((err, res) => {
@@ -39,6 +40,8 @@ app.get('/', (err, res) => {
 })
 app.use('/api/v1', LoginRouter)
 app.use('/api/v1',MasterRoutes)
+app.use('/api/v1', authRouter)
+
 
 
 

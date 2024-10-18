@@ -5,3 +5,7 @@
 input[type="checkbox"]:checked + span {
     background-color: #03296b; /* Customize the active background color */
   }
+  .header{
+    background-color: rgba(184, 216, 247, 0.788);
+    box-shadow: 2px 2px 3px 3px #ddd;
+}
