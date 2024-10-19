@@ -20,7 +20,7 @@ const App = () => {
   let Type = sessionStorage.getItem('Status');
 
   // Decrypt the stored values
-  const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
+  // const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   const decryptedStatus = Status ? CryptoJS.AES.decrypt(Status, "Status").toString(CryptoJS.enc.Utf8) : null;
   const decryptedType = Type ? CryptoJS.AES.decrypt(Type, "Type").toString(CryptoJS.enc.Utf8) : null;
 
@@ -30,6 +30,7 @@ const App = () => {
     case 'Admin-1':
       return (
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Dashboard />} />
           <Route path='/add-category' element={<Category />} />
@@ -47,7 +48,8 @@ const App = () => {
     case 'user-0':
       return (
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
