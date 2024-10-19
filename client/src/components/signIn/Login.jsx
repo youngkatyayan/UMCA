@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BackgroundImage from '../../assets/wallpaperflare.com_wallpaper4.jpg';
 // import Logo from '../../assets/logo.png';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,7 +8,22 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    // prevent to go back 
+    useEffect(() => {
+        window.history.pushState(null, null, window.location.href);
+
+        const preventBack = () => {
+            window.history.pushState(null, null, window.location.href);
+        };
+        window.addEventListener('popstate', preventBack);
+        return () => {
+            window.removeEventListener('popstate', preventBack);
+        };
+    }, []);
+
+    // const navigate = useNavigate()
     const [loginData, setLoginData] = useState({
         username: '',
         password: '',
@@ -50,7 +65,7 @@ const Login = () => {
                 toast.success(data.message);
                 let response = data.result[0]
                 let token = data.token;
-                
+
                 //   Encrypted orignal data 
                 let encryptedPASS = CryptoJS.AES.encrypt(response.password, "LOGIN PASSWORD").toString();;
                 let encryptedUID = CryptoJS.AES.encrypt(response.mobile, "LOGIN UID").toString();

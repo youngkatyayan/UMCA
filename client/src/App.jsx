@@ -10,6 +10,7 @@ import CryptoJS from 'crypto-js';
 import React from 'react';
 import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
+import Home from './components/user/Home.jsx';
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -28,15 +29,14 @@ const App = () => {
     case 'Admin-1':
       return (
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Dashboard />} />
-          <Route path='/*' element={<PageNotFound />} />
-          {/* <Route path='/*' element={<PageNotFound />} /> */}
           <Route path='/add-category' element={<Category />} />
           <Route path='/create-mode' element={<Mode />} />
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
           <Route path='/add-course' element={<Course />} />
+          <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
 
@@ -52,7 +52,8 @@ const App = () => {
     default:
       return (
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );

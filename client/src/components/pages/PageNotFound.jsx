@@ -1,7 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 
 const PageNotFound = () => {
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        // Navigate to the previous page
+        navigate(-1);
+    };
     return (
         <div className="flex items-center justify-center h-screen bg-gray-150">
             <div className="bg-black text-white p-8 rounded-lg shadow-xl shadow-gray-950 w-full max-w-[65vw] h-full flex text-center justify-center flex-col max-h-[52vh]">
@@ -32,7 +38,7 @@ const PageNotFound = () => {
                 <h1 className="md:text-6xl text-4xl font-bold mb-4 text-center">Oops!</h1>
                 <p className="text-center mb-6 text-gray-400">We couldn't find the page you were looking for</p>
                 <div className="flex justify-center">
-                    <Link to={'/'} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition-colors">
+                    <Link onClick={handleGoBack} className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition-colors">
                         Go back
                     </Link>
                 </div>

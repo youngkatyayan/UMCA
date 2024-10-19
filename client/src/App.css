@@ -1,0 +1,12 @@
+.clip{
+    clip-path: polygon(100% 0%, 76% 50%, 100% 100%, 16% 99%, 0% 50%, 15% 0);
+    width:23rem;
+    height:100%;
+    background-color: black;
+  }
+.clip1{
+    clip-path: polygon(84% 1%, 100% 50%, 82% 100%, 0% 100%, 21% 50%, 0% 0%);
+    width:23rem;
+    height:100%;
+    background-color: black;
+  }
