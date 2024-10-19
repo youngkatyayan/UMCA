@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../header/Header';
 import Menu from '../header/Menu';
-import authContext from '../context/Index.jsx';
+import Context from '../context/Index.jsx';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { usrDetails } from '../store/CreateSlicer.js';
@@ -26,7 +26,7 @@ const SuperAdminLayout = (props) => {
     }, []);
 
     return (
-        <authContext.Provider value={{ midFun }}>
+        <Context.Provider value={{ midFun }}>
             <Header className='h-14' />
             <div className='flex gap-2'>
                 <div className='max-w-[15rem]'>
@@ -36,7 +36,7 @@ const SuperAdminLayout = (props) => {
                     {props.children}
                 </main>
             </div>
-        </authContext.Provider>
+        </Context.Provider>
     );
 }
 
