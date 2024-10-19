@@ -18,47 +18,38 @@ const Session = () => {
     const [mode, setMode] = useState([])
 
     const accesscategory = async () => {
-        try {
             const { data } = await axios.get('/api/v1/get-category')
-            
             if (data.success) {
                 if (data.result) {
-
                     setCategory(data.result)
                 }
             }
-        } catch (error) {
-
-        }
+        
     }
     const accessmode = async () => {
-        try {
-            const { data } = await axios.get('/api/v1/get-mode')
-           
-            if (data.success) {
-                if (data.result) {
+        const { data } = await axios.get('/api/v1/get-mode')
 
-                    setMode(data.result)
-                }
+        if (data.success) {
+            if (data.result) {
+                setMode(data.result)
             }
-        } catch (error) {
-
         }
+
     }
 
-    useEffect(() => {  accesscategory(); accessmode(); }, [])
+    useEffect(() => { accesscategory(); accessmode(); }, [])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))
-        
-        if(name==="categoryname"){
-            const catgroup=category.find(user=>user.categoryname=name)
-            const setgrp=catgroup.groupname
+
+        if (name === "categoryname") {
+            const catgroup = category.find(user => user.categoryname = name)
+            const setgrp = catgroup.groupname
             console.log(setgrp)
-                // console.log(catgroup)
-                setData(prevData => ({ ...prevData, [name]: value,groupname:setgrp }))
-            
+            // console.log(catgroup)
+            setData(prevData => ({ ...prevData, [name]: value, groupname: setgrp }))
+
 
         }
     }
@@ -67,7 +58,7 @@ const Session = () => {
         e.preventDefault()
         console.log(formdata)
         try {
-            const { data } = await axios.post('api/v1/add-session',formdata)
+            const { data } = await axios.post('api/v1/add-session', formdata)
             console.log(data)
             if (data.success) {
                 toast(data.message)
@@ -90,7 +81,7 @@ const Session = () => {
                 <form onSubmit={handleSubmit} className='  p-4 m-4 '>
 
                     <div className='border-2 rounded-sm grid grid-cols-3 gap-4 items-center'>
-                       
+
 
                         <div>
                             <label htmlFor="categoryname" className=' m-2 font-serif text-lg'> Select Category :</label>
@@ -146,7 +137,7 @@ const Session = () => {
                             />
                         </div>
 
-                        
+
                         <div >
                             <label htmlFor="additionalfee" className=' m-2 font-serif text-lg'>  Additional Fee :</label>
                             <input
@@ -170,7 +161,7 @@ const Session = () => {
                     </div>
                 </form>
             </div>
-                                <ToastContainer/>
+            <ToastContainer />
         </SuperAdminLayout>
     )
 }

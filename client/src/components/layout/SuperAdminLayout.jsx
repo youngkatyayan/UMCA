@@ -32,7 +32,7 @@ const SuperAdminLayout = (props) => {
                 <div className='max-w-[15rem]'>
                     <Menu className="z-10" />
                 </div>
-                <main className='flex justify-center py-3 px-3 w-full' style={{ height: '91vh' }}>
+                <main className='flex justify-center py-3 px-3 w-full overflow-y-auto' style={{ height: '91vh' }}>
                     {props.children}
                 </main>
             </div>

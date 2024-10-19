@@ -11,6 +11,7 @@ import React from 'react';
 import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
 import Home from './components/user/Home.jsx';
+import UpdateCourse from './components/admin/edirMaster/UpdateCourse.jsx';
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -36,6 +37,9 @@ const App = () => {
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
           <Route path='/add-course' element={<Course />} />
+
+          <Route path='/update-course' element={<UpdateCourse />} />
+
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
