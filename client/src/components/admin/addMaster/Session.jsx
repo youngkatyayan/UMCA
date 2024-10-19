@@ -1,37 +1,82 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
-
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Session = () => {
-    const [data, setData] = useState({
-        startsession: '',
-        endsession: ''
+    const [formdata, setData] = useState({
+        session: '',
+        groupname: '',
+        categoryname: '',
+        mode: '',
+        session: '',
+        additionalfee: ""
     })
 
-    const accessdata=async()=>{
-        const {data}=await axios.get('/api/v1/get-course')
-        
+    const [category, setCategory] = useState([])
+    const [mode, setMode] = useState([])
+
+    const accesscategory = async () => {
+        try {
+            const { data } = await axios.get('/api/v1/get-category')
+            
+            if (data.success) {
+                if (data.result) {
+
+                    setCategory(data.result)
+                }
+            }
+        } catch (error) {
+
+        }
     }
+    const accessmode = async () => {
+        try {
+            const { data } = await axios.get('/api/v1/get-mode')
+           
+            if (data.success) {
+                if (data.result) {
+
+                    setMode(data.result)
+                }
+            }
+        } catch (error) {
+
+        }
+    }
+
+    useEffect(() => {  accesscategory(); accessmode(); }, [])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))
+        
+        if(name==="categoryname"){
+            const catgroup=category.find(user=>user.categoryname=name)
+            const setgrp=catgroup.groupname
+            console.log(setgrp)
+                // console.log(catgroup)
+                setData(prevData => ({ ...prevData, [name]: value,groupname:setgrp }))
+            
 
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(data)
+        console.log(formdata)
         try {
-            const { data } = await axios.post('api/v1/add-mode')
+            const { data } = await axios.post('api/v1/add-session',formdata)
+            console.log(data)
             if (data.success) {
-
+                toast(data.message)
             }
             else {
-                console.log('error')
+                toast.error(data.error)
             }
         } catch (error) {
+            toast.error("An error occurred while adding the session. Please try again.");
             console.log("error")
         }
     }
@@ -45,73 +90,77 @@ const Session = () => {
                 <form onSubmit={handleSubmit} className='  p-4 m-4 '>
 
                     <div className='border-2 rounded-sm grid grid-cols-3 gap-4 items-center'>
+                       
+
                         <div>
-                            <label htmlFor="name" className=' m-2 font-serif text-lg'> Select Category :</label>
+                            <label htmlFor="categoryname" className=' m-2 font-serif text-lg'> Select Category :</label>
                             <select
                                 type="text"
-                                name='name'
-                            
-                                onChange={handleChange}
-                               
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            >
-                                <option className='' >Select Category</option>
-                            </select>
-                            </div>
-                        <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Select University :</label>
-                            <select
-                                type="text"
-                                name='startsession'
-                                value={data.startsession}
+                                name='categoryname'
+                                value={formdata.categoryname}
                                 onChange={handleChange}
                                 placeholder=' Select University'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             >
 
-                            <option value="" >Select University</option>
+                                <option value="" >Select Category</option>
+                                {category.map((item, index) => (
+
+                                    <option key={index} value={item.categoryname}>{item.categoryname}</option>
+
+                                )
+                                )}
                             </select>
-                            </div>
+                        </div>
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Select Mode :</label>
+                            <label htmlFor="mode" className=' m-2 font-serif text-lg'> Select Mode :</label>
                             <select
                                 type="text"
-                                name='startsession'
-                                value={data.startsession}
+                                name='mode'
+                                value={formdata.mode}
                                 onChange={handleChange}
                                 placeholder=' Select Mode'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             >
 
-                            <option value="" >Select Mode</option>
-                            </select>
-                            </div>
+                                <option value="" >Select Mode</option>
+                                {mode.map((item, index) => (
 
-                        <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Starting Session :</label>
+                                    <option key={index} value={item.coursemode}>{item.coursemode}</option>
+
+                                )
+                                )}
+                            </select>
+                        </div>
+
+
+                        <div >
+                            <label htmlFor="session" className=' m-2 font-serif text-lg'>  Session :</label>
                             <input
-                                type="date"
-                                name='startsession'
-                                value={data.startsession}
+                                type="text"
+                                name='session'
+                                value={formdata.session}
+                                onChange={handleChange}
+                                placeholder='month YYYY-YY'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            />
+                        </div>
+
+                        
+                        <div >
+                            <label htmlFor="additionalfee" className=' m-2 font-serif text-lg'>  Additional Fee :</label>
+                            <input
+                                type="text"
+                                name='additionalfee'
+                                value={formdata.additionalfee}
                                 onChange={handleChange}
                                 placeholder='Enter Session'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             />
                         </div>
-                        <div className='w-full  items-center justify-center '>
-                        <label htmlFor="endsession" className=' m-2 font-serif text-lg'> Ending Session :</label>
-                        <input
-                            type="date"
-                            name='endsession'
-                            value={data.endsession}
-                            onChange={handleChange}
-                            placeholder='Enter Session'
-                            className=' p-2 rounded-md my-4 shadow-md w-full'
-                        />
-                        </div>
-                        <div />
 
 
+                        <div></div>
 
 
                     </div>
@@ -121,7 +170,7 @@ const Session = () => {
                     </div>
                 </form>
             </div>
-
+                                <ToastContainer/>
         </SuperAdminLayout>
     )
 }
