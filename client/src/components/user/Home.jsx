@@ -6,11 +6,12 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoLogoYoutube } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import UserHeader from '../header/UserHeader';
 const Home = () => {
     return (
-        <div className=''>
+        <div className='w-full'>
 
-            <div className='bg-[hsl(189,54%,97%)] px-5 border w-full shadow-md flex items-center gap-2 sm:gap-5 justify-center flex-wrap md:flex-nowrap'>
+            <div className='bg-[hsl(189,54%,97%)] px-5  w-full shadow-md hidden sm:flex items-center gap-2 sm:gap-5 justify-center flex-wrap sm:flex-nowrap'>
 
                 <div className='flex gap-2 me-2'>
                     <img src={dove} alt="" height={24} width={24} className='mix-blend-multiply' />
@@ -33,6 +34,10 @@ const Home = () => {
                     <Link className='h-full' to={''}><FaFacebook className='h-6 rounded-full text-[#1877F2]' /></Link>
                 </div>
 
+            </div>
+
+            <div className=''>
+                <UserHeader/>
             </div>
 
         </div>
