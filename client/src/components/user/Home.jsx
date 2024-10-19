@@ -17,14 +17,14 @@ const Home = () => {
                     <span className='text-[.9rem]'>useradmin@gmail.com</span>
                 </div>
 
-                <div className='clip hidden sm:flex'>clip first </div>
+                <div className='clip hidden sm:flex'>. </div>
 
                 <div className='flex gap-2 whitespace-nowrap'>
                     <img src={phone} alt="" height={24} width={24} className='mix-blend-multiply' />
                     <span className='text-[.9rem]'>+91 9876543212</span>
                 </div>
 
-                <div className='clip1 hidden sm:flex'>clip first </div>
+                <div className='clip1 hidden sm:flex'>. </div>
 
                 <div className='flex gap-4'>
                     <Link className='h-full' to={''}><FaInstagramSquare className='h-6 rounded-full text-[#C13584]' /></Link>

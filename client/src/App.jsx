@@ -29,6 +29,7 @@ const App = () => {
     case 'Admin-1':
       return (
         <Routes>
+           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Dashboard />} />
           <Route path='/add-category' element={<Category />} />
@@ -43,7 +44,8 @@ const App = () => {
     case 'user-0':
       return (
         <Routes>
-          <Route path='/' element={<Login />} />
+           <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
