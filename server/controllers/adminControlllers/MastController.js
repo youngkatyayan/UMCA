@@ -27,7 +27,7 @@ export const addGroup = async (req, res) => {
 
         await connection.commit();
 
-        return res.status(201).send({ success: true, message: "Category Inserted Successfully", GId: newGId });
+        return res.status(201).send({ success: true, message: "Group Inserted Successfully", GId: newGId });
     } catch (error) {
         await connection.rollback(); 
         console.log(error);
@@ -41,27 +41,27 @@ export const addCategory = async (req, res) => {
     try {
         console.log("first")
         console.log(req.body)
-        const { category } = req.body;
+        const { category,groupname } = req.body;
 
-        const sql = `insert into category (name) values(?)`
-        const values = [category]
-        db.query(sql, values, (error, result) => {
-            if (error) {
-                return res.status(500).send({ success: false, message: "Internal server error", error: error.message });
-            }
-            if (result) {
-                return res.status(201).send({ success: true, message: "Category Inserted Successfully", result })
-            }
-        })
+        const sql = `insert into category (categoryname,groupname) values(?,?)`
+        const values = [category,groupname]
+        const [result]=await db.query(sql, values)
+
+        if(result){
+
+
+            return res.status(201).send({ success: true, message: "Category Inserted Successfully" });
+        }
+
     } catch (error) {
         return res.status(500).send({ success: false, message: "Error in addCategoryController", error: error.message });
 
     }
 }
+
+
 export const addMode = async (req, res) => {
     try {
-        // console.log("first")
-        // console.log(req.body)
         const { coursemode } = req.body;
 
         const sql = `insert into mode (coursemode) values(?)`
@@ -75,10 +75,35 @@ export const addMode = async (req, res) => {
             }
         })
     } catch (error) {
-        return res.status(500).send({ success: false, message: "Error in addCategoryController", error: error.message });
+        return res.status(500).send({ success: false, message: "Error in addModeyController", error: error.message });
 
     }
 }
+
+export const addSession = async (req, res) => {
+    try {
+        console.log(req.body)
+        const {additionalfee, categoryname, groupname, mode, session } = req.body;
+        const requiredFields={additionalfee, categoryname, groupname, mode, session }
+        for(const[field,value] of Object.entries(requiredFields)){
+            if(!value){
+                return res.status(400).send({success: false,error: `${field} is required`})
+            }
+        }
+
+        const sql = `insert into session (additionalfee, categoryname, groupname, mode, session) values(?,?,?,?,?)`
+        const values = [additionalfee, categoryname, groupname, mode, session]
+        const [result] =await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, message: "Category Inserted Successfully", result })
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in addSession", error: error.message });
+
+    }
+}
+
 
 export const getGroup =async (req,res)=>{
     
@@ -90,6 +115,38 @@ export const getGroup =async (req,res)=>{
         return res.status(201).send({ success: true, message: "Category Inserted Successfully",result });
     } catch (error) {
         return res.status(500).send({ success: false, message: "Error in getGroup controller" });
+       
+    }
+}
+
+export const getMode =async (req,res)=>{
+    
+    try {
+        
+        const sql=`select * from mode `
+        const [result]=await db.query(sql)
+
+      if(result){
+        return res.status(201).send({ success: true, message: "Category Inserted Successfully",result });
+      }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getMode controller" });
+       
+    }
+}
+
+export const getCategory =async (req,res)=>{
+    
+    try {
+        
+        const sql=`select * from category `
+        const [result]=await db.query(sql)
+
+      if(result){
+        return res.status(201).send({ success: true, message: "Category Inserted Successfully",result });
+      }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getCategory controller" });
        
     }
 }

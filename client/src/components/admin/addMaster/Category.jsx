@@ -6,15 +6,19 @@ import { toast } from 'react-toastify';
 
 const Category = () => {
     const [formdata, setData] = useState({
-        category: ''
+        category: '',
+        groupname:''
     })
-
+    const [group,setGroup]=useState([])
     const accessdata=async()=>{
         try {
             const {data}=await axios.get('/api/v1/get-group')
+            console.log(data)
         if(data.success){
-            if(data.result>0){
-                setGroup(data.result)   
+            if(data.result){
+                
+                setGroup(data.result)  
+                toast.success(data.message);
             }
         }
         } catch (error) {
@@ -55,39 +59,60 @@ const Category = () => {
 
                 <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md  backdrop-blur border-2 bg-cover bg-center bg-no-repeat relative '>
 
-                    <div className='border-2 rounded-sm  grid grid-cols-2 gap-6 items-center'>
-
-                        <div>
-                            <label htmlFor="group" className=' mb-2 text-lg font-serif'> Select Group : </label>
-                            <select
-                                type="text"
-                                name='group'
-                                value={formdata.group}
-                                onChange={handleChange}
-                                placeholder='Enter Category Name'
-                                className='w-full p-2 rounded-md my-4 shadow-md'
-                            >
-                                <option value="">Select Group</option>
-                            </select>
-
-                        </div>
-                        <div>
-                            <label htmlFor="category" className=' mb-2 text-lg font-serif'> Course Category :  </label>
+                    <div className='border-2 rounded-sm  grid grid-cols-3 gap-6 items-center'>
+                    <div>
+                            <label htmlFor="category" className=' mb-2 text-lg font-serif'> Course Category <sup className='text-red-600'>*</sup> :  </label>
                             <input
                                 type="text"
                                 name='category'
                                 value={formdata.category}
                                 onChange={handleChange}
+                                required
                                 placeholder='Enter Category Name'
                                 className='w-full p-2 rounded-md my-4 shadow-md'
                             />
 
                         </div>
+                        <div >
+                            <label htmlFor="description" className=' m-2 font-serif text-lg'>  Description :</label>
+                            <input
+                                type="text"
+                                name='description'
+                                value={formdata.description}
+                                onChange={handleChange}
+                                placeholder=' Description'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="groupname" className=' mb-2 text-lg font-serif'> Select Group : </label>
+                            <select
+                              
+                                name='groupname'
+                                value={formdata.groupname}
+                                onChange={handleChange}
+                               
+                                className='w-full p-2 rounded-md my-4 shadow-md'
+                            >
+                                <option  value="">Select Group</option>
+                                {group.map((item,index)=>(
+                                    
+                                    <option key={index} value={item.groupname}>{item.groupname}</option>
+                                    
+                                )
+                                )}
+                            </select>
 
+                        </div>
+                       
 
                     </div>
-                    <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD SESSION</button>
+                    <div className='flex flex-row-1 justify-center'>
+
+                    <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD CATEGORY</button>
+                    </div>
                     </form>
+                   
             </div>
 
         </SuperAdminLayout>

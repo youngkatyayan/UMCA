@@ -16,16 +16,16 @@ const Mode = () => {
 
     }
 
-    const handleSubmit=async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             console.log(formdata)
-            const {data}=await axios.post('/api/v1/add-mode',formdata)
-            if(data.success){
+            const { data } = await axios.post('/api/v1/add-mode', formdata)
+            if (data.success) {
                 toast.success(data.message)
-                setData({coursemode:""})
+                setData({ coursemode: "" })
             }
-            else{
+            else {
                 console.log('error')
             }
         } catch (error) {
@@ -41,25 +41,27 @@ const Mode = () => {
 
                 <form onSubmit={handleSubmit} className='  p-4 m-4 rounded-md border-2  relative '>
 
-                <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
+                    <div className='border-2 rounded-sm flex flex-col items-center mt-4'>
 
-                    <div className='w-full flex flex-col items-center '>
-                        <label htmlFor="coursemode" className=' mb-2 text-2xl font-serif'> Course Mode</label>
-                        <input
-                        required
-                            type="text"
-                            name='coursemode'
-                            value={formdata.coursemode}
-                            onChange={handleChange}
-                            placeholder='Enter Course Mode'
-                            className='w-2/4 p-2 rounded-md my-4 shadow-md'
-                        />
-                       
+                        <div className='w-full flex flex-col items-center '>
+                            <label htmlFor="coursemode" className=' text-2xl font-serif'> Course Mode</label>
+                            <input
+                                required
+                                type="text"
+                                name='coursemode'
+                                value={formdata.coursemode}
+                                onChange={handleChange}
+                                placeholder='Enter Course Mode'
+                                className='w-2/4 p-2 rounded-md my-4 shadow-md'
+                            />
+
+                        </div>
+
+                        <div className='flex flex-row-1 justify-center'>
+
+                            <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD MODE</button>
+                        </div>
                     </div>
-
-                    <button type='submit' className='bg-blue-500 hover:bg-blue-700 border-2 hover:font-bold text-white rounded-md px-4 py-2 m-4 items-center'>ADD Mode</button>
-
-                </div>
                 </form>
 
             </div>

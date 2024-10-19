@@ -7,9 +7,9 @@ export const SuperAdminMenuList = [
     { name: 'Dashboard', icon: <IoMdHome />, value: 'Dashboard', to: '/admin' },
     {
         name: 'Course Master', icon: <FaPlus />, value: 'Data', to: '', children: [
-            { id: 1, name: 'Group', value: 'Group', to: '/add-group' },
-            { id: 2, name: 'Category', value: 'Category', to: '/add-category' },
-            { id: 3, name: 'Mode', value: 'Mode', to: '/create-mode' },
+            { id: 1, name: 'Mode', value: 'Mode', to: '/create-mode' },
+            { id: 2, name: 'Group', value: 'Group', to: '/add-group' },
+            { id: 3, name: 'Category', value: 'Category', to: '/add-category' },
             { id: 4, name: 'Session', value: 'Session', to: '/add-session' },
             { id: 5, name: 'Course', value: 'Course', to: '/add-course' },
             // { id: 4, name: 'College', value: 'College', to: '/add-college' },
