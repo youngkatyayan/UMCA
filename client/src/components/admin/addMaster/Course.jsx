@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios';
+import { toast,ToastContainer } from 'react-toastify';
 
 
 const Course = () => {
@@ -11,28 +12,26 @@ const Course = () => {
     const [formdata, setData] = useState({
         session: '',
         coursemode:'',
+        eligibility:'',
         categoryname:'',
-        eligibilty:'',
         duration:"",
         description:'',
         yearlyfee:'',
         applicationfee:'',
         examfee:'',
-        broacher:''
+        brochure:''
     })
 
     const accessmode = async () => {
         const { data } = await axios.get('/api/v1/get-mode')
         if(data.success){
             setMode(data.result)
-            console.log(mode)
         }
     }
     const accesscategory = async () => {
         const { data } = await axios.get('/api/v1/get-category')
         if(data.success){
             setCategory(data.result)
-            console.log(category)
         }
     }
     useEffect(()=>{accessmode();accesscategory();},[])
@@ -55,11 +54,12 @@ const Course = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(data)
+        
         try {
-            const { data } = await axios.post('api/v1/add-mode')
+            console.log(formdata)
+            const { data } = await axios.post('api/v1/add-course',formdata)
             if (data.success) {
-
+                    toast.success(data.message)
             }
             else {
                 console.log('error')
@@ -78,25 +78,13 @@ const Course = () => {
                 <form onSubmit={handleSubmit} className='  p-4  '>
 
                     <div className='border-2 rounded-sm  grid grid-cols-4 gap-3 items-center'>
-                        {/* <div>
-                            <label htmlFor="name" className=' m-2 font-serif text-lg'> Course Code :</label>
-                            <select
-                                type="text"
-                                name='name'
-
-                                onChange={handleChange}
-
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            >
-                                <option className='' >Select Category</option>
-                            </select>
-                        </div> */}
+                       
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Course Name :</label>
+                            <label htmlFor="coursename" className=' m-2 font-serif text-lg'> Course Name :</label>
                             <input
                                 type="text"
-                                name='startsession'
-                                value={formdata.startsession}
+                                name='coursename'
+                                value={formdata.coursename}
                                 onChange={handleChange}
                                 placeholder=' Enter Course Name'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
@@ -104,10 +92,10 @@ const Course = () => {
                             </input>
                         </div>
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Select Mode :</label>
+                            <label htmlFor="coursemode" className=' m-2 font-serif text-lg'> Select Mode :</label>
                             <select
                                 type="text"
-                                name='startsession'
+                                name='coursemode'
                                 value={formdata.coursemode}
                                 onChange={handleChange}
                                 placeholder=' Select Mode'
@@ -140,11 +128,11 @@ const Course = () => {
                         </div>
                        
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Eligibility :</label>
+                            <label htmlFor="eligibility" className=' m-2 font-serif text-lg'> Eligibility :</label>
                             <input
                                 type="text"
-                                name='startsession'
-                                value={formdata.startsession}
+                                name='eligibility'
+                                value={formdata.eligibility}
                                 onChange={handleChange}
                                 placeholder=' Enter Eligibility'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
@@ -155,44 +143,34 @@ const Course = () => {
                        
                        
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Duration :</label>
+                            <label htmlFor="duration" className=' m-2 font-serif text-lg'> Duration :</label>
                             <input
                                 type="text"
-                                name='startsession'
-                                value={formdata.startsession}
+                                name='duration'
+                                value={formdata.duration}
                                 onChange={handleChange}
-                                placeholder='Enter Session'
+                                placeholder='Enter Duration'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            />
+                        </div>
+                        
+                        <div>
+                            <label htmlFor="description" className=' m-2 font-serif text-lg'> Description :</label>
+                            <input
+                                type="text"
+                                name='description'
+                                value={formdata.description}
+                                onChange={handleChange}
+                                placeholder='Enter Description'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             />
                         </div>
                         <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Description :</label>
-                            <input
-                                type="text"
-                                name='startsession'
-                                value={formdata.startsession}
-                                onChange={handleChange}
-                                placeholder='Enter Session'
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Yearly fees :</label>
-                            <input
-                                type="text"
-                                name='startsession'
-                                value={formdata.startsession}
-                                onChange={handleChange}
-                                placeholder='Enter Session'
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="startsession" className=' m-2 font-serif text-lg'> Broucher :</label>
+                            <label htmlFor="brochure" className=' m-2 font-serif text-lg'> Brouchure :</label>
                             <input
                                 type="file"
-                                name='startsession'
-                                value={formdata.startsession}
+                                name='brochure'
+                                value={formdata.brochure}
                                 onChange={handleChange}
                                 placeholder=' Select Mode'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
@@ -201,6 +179,42 @@ const Course = () => {
                                 
                             </input>
                         </div>
+                        <div>
+                            <label htmlFor="yearlyfee" className=' m-2 font-serif text-lg'> Yearly Fee :</label>
+                            <input
+                                type="text"
+                                name='yearlyfee'
+                                value={formdata.yearlyfee}
+                                onChange={handleChange}
+                                placeholder='Enter Yearly Fee'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            />
+                        </div>
+
+                          <div>
+                            <label htmlFor="applicationfee" className=' m-2 font-serif text-lg'>Application Fee :</label>
+                            <input
+                                type="text"
+                                name='applicationfee'
+                                value={formdata.applicationfee}
+                                onChange={handleChange}
+                                placeholder='Enter Application Fee'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            ></input>
+                        </div> 
+
+                          <div>
+                            <label htmlFor="examfee" className=' m-2 font-serif text-lg'> Exam Fee :</label>
+                            <input
+                                type="text"
+                                name='examfee'
+                                value={formdata.examfee}
+                                onChange={handleChange}
+                                placeholder='Enter Exam Fee'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            ></input>
+                        </div> 
+                        
 
                        
 
@@ -212,7 +226,7 @@ const Course = () => {
                     </div>
                 </form>
             </div>
-
+              <ToastContainer/>                      
         </SuperAdminLayout>
     )
 }

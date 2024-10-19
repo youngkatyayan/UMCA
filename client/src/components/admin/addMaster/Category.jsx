@@ -13,12 +13,10 @@ const Category = () => {
     const accessdata=async()=>{
         try {
             const {data}=await axios.get('/api/v1/get-group')
-            console.log(data)
+          
         if(data.success){
             if(data.result){
-                
                 setGroup(data.result)  
-                toast.success(data.message);
             }
         }
         } catch (error) {
@@ -61,7 +59,7 @@ const Category = () => {
 
                     <div className='border-2 rounded-sm  grid grid-cols-3 gap-6 items-center'>
                     <div>
-                            <label htmlFor="category" className=' mb-2 text-lg font-serif'> Course Category <sup className='text-red-600'>*</sup> :  </label>
+                            <label htmlFor="category" className=' mb-2 text-lg font-serif'> Category <sup className='text-red-600'>*</sup> :  </label>
                             <input
                                 type="text"
                                 name='category'
@@ -112,7 +110,8 @@ const Category = () => {
                     <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD CATEGORY</button>
                     </div>
                     </form>
-                   
+
+                
             </div>
 
         </SuperAdminLayout>

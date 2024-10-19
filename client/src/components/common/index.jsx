@@ -1,6 +1,7 @@
 import { AiFillDashboard } from "react-icons/ai";
 import { IoMdHome } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
+import { FiEdit } from "react-icons/fi";
 
 
 export const SuperAdminMenuList = [
@@ -18,6 +19,9 @@ export const SuperAdminMenuList = [
             // { id: 4, name: 'Add Expense', value: 'Add Expense', src: rank, to: '/create-page/rank' },
         ]
     },
+    { name: 'Manage Course', icon: <FiEdit />, value: 'manage', to: '',children:[
+        {id:1,name:'View Course',value:"View Course", to:'/update-course'}
+    ] },
     { name: 'User', icon: <FaPlus />, value: 'User', to: '/usr-page' },
    
 ]
