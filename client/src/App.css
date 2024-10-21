@@ -15,5 +15,20 @@
 .clip3 {
     clip-path: polygon(0 0, 100% 0, 18% 100%, 0 100%);
     background: #f3f1f1;
-    width:120px;
+    width: 120px;
 }
+
+/* .menu div {
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+    z-index: -1;
+} */
+
+/* .menu:focus-within div {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+} */
+
