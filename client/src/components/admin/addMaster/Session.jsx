@@ -44,11 +44,12 @@ const Session = () => {
         setData(prevData => ({ ...prevData, [name]: value }))
 
         if (name === "categoryname") {
-            const catgroup = category.find(user => user.categoryname = name)
+            const catgroup = category.find(user => user.categoryname ===value)
             const setgrp = catgroup.groupname
             console.log(setgrp)
-            // console.log(catgroup)
+            console.log(catgroup)
             setData(prevData => ({ ...prevData, [name]: value, groupname: setgrp }))
+            console.log(formdata)
 
 
         }

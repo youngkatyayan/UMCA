@@ -26,7 +26,7 @@ const Header = () => {
               <IoIosNotificationsOutline />
             </span>
             <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings />
+              <CiSettings  className='me-6' />
             </span>
           </div>
         </div>

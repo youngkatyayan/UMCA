@@ -39,7 +39,8 @@ const App = () => {
           <Route path='/add-group' element={<Group />} />
           <Route path='/add-course' element={<Course />} />
 
-          <Route path='/update-course' element={<UpdateCourse />} />
+          <Route path='/course-details' element={<UpdateCourse />} />
+          <Route path='/course-details/update-course/:CoId' element={<Course />} />
 
           <Route path='/*' element={<PageNotFound />} />
         </Routes>

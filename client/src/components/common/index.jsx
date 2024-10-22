@@ -20,7 +20,7 @@ export const SuperAdminMenuList = [
         ]
     },
     { name: 'Manage Course', icon: <FiEdit />, value: 'manage', to: '',children:[
-        {id:1,name:'View Course',value:"View Course", to:'/update-course'}
+        {id:1,name:'View Course',value:"View Course", to:'/course-details'}
     ] },
     { name: 'User', icon: <FaPlus />, value: 'User', to: '/usr-page' },
    
