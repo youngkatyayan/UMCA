@@ -12,6 +12,8 @@ import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
 import Home from './components/user/Home.jsx';
 import UpdateCourse from './components/admin/edirMaster/UpdateCourse.jsx';
+import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
+import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -41,6 +43,9 @@ const App = () => {
 
           <Route path='/course-details' element={<UpdateCourse />} />
           <Route path='/course-details/update-course/:CoId' element={<Course />} />
+
+          <Route path='/received-applicant' element={<NewApplicant />} />
+          <Route path='/franchise' element={<FranchiseList />} />
 
           <Route path='/*' element={<PageNotFound />} />
         </Routes>

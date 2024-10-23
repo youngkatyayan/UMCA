@@ -361,7 +361,7 @@ const Course = () => {
                     </div>
                     <div className='flex flex-row justify-center'>
 
-                        <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 mb-4'>{updateC ?"Update Course":"ADD COURSE"}</button>
+                        <button type='submit' className='transition-shadow w-40 bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 mb-4'>{updateC ?"Update Course":"ADD COURSE"}</button>
                     </div>
                 </form>
             </div>
