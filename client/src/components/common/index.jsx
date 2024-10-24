@@ -2,6 +2,7 @@ import { AiFillDashboard } from "react-icons/ai";
 import { IoMdHome } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
+import { FaStoreAlt } from "react-icons/fa";
 
 
 export const SuperAdminMenuList = [
@@ -20,8 +21,11 @@ export const SuperAdminMenuList = [
         ]
     },
     { name: 'Manage Course', icon: <FiEdit />, value: 'manage', to: '',children:[
-        {id:1,name:'View Course',value:"View Course", to:'/update-course'}
+        {id:1,name:'View Course',value:"View Course", to:'/course-details'}
     ] },
-    { name: 'User', icon: <FaPlus />, value: 'User', to: '/usr-page' },
+    { name: 'Franchise', icon: <FaStoreAlt />, value: 'Franchise', to: '',children:[
+        {id:1,name:'New ' ,value:'New',to:'/received-applicant'},
+        {id:2,name:'List',value:'List',to:'/franchise'}
+    ] },
    
 ]
