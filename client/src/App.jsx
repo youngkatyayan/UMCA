@@ -12,8 +12,10 @@ import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
 import Home from './components/user/Home.jsx';
 import UpdateCourse from './components/admin/edirMaster/UpdateCourse.jsx';
+import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
+
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -66,6 +68,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
