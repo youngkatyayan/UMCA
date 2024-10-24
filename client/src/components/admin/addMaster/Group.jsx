@@ -7,14 +7,15 @@ import axios from 'axios';
 
 const Group = () => {
 
-    const [group,setGroup]=useState([])
+    const [group, setGroup] = useState([])
     const [formdata, setData] = useState({
-        group: ''
+        group: '',
+        gdescription:''
     })
 
     const accessgroup = async () => {
         const { data } = await axios.get('/api/v1/get-group')
-        if(data.success){
+        if (data.success) {
             setGroup(data.result)
         }
     }
@@ -36,9 +37,10 @@ const Group = () => {
             const { data } = await axios.post('/api/v1/add-group', formdata)
             if (data.success) {
                 toast.success(data.message)
-                setData({ group: "" })
+                setData({ group: "",gdescription:'' })
             }
             else {
+                toast.error(data.message)
                 console.log('error')
             }
         } catch (error) {
@@ -48,7 +50,7 @@ const Group = () => {
 
     const handleStatus = async (item, stat) => {
         const UpdateStatus = { ...item, gstatus: stat };
-        
+
         try {
             const { data } = await axios.post('api/v1/updategrpstatus', UpdateStatus)
             if (data.success) {
@@ -67,18 +69,16 @@ const Group = () => {
 
     return (
         <SuperAdminLayout>
-            <ToastContainer/>
+            <ToastContainer />
             <div className='w-full bg-gray-200 p-2'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Add New Course Group</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className='  px-4  rounded-md border-2  relative '>
-
-                    <div className='border-2 rounded-sm grid grid-cols-1 items-center mt-4'>
-
-                        <div className='w-full flex flex-col items-center '>
-                            <label htmlFor="group" className=' text-2xl font-serif'> Course Group</label>
+                    <div className='border-2 rounded-sm grid grid-cols-2 items-center gap-4 mt-4'>
+                        <div >
+                            <label htmlFor="group" className='flex  m-1 font-serif text-lg w-full'> Course Group</label>
                             <input
                                 required
                                 type="text"
@@ -86,16 +86,25 @@ const Group = () => {
                                 value={formdata.group}
                                 onChange={handleChange}
                                 placeholder='Enter Course Group'
-                                className='w-1/2 p-2 rounded-md my-2 shadow-md'
+                                className=' p-2 rounded-md my-2 shadow-md w-full'
                             />
-
                         </div>
 
-
+                        <div >
+                            <label htmlFor="gdescription" className=' flex m-1 font-serif text-lg w-full'>  Description :</label>
+                            <textarea
+                                // type="text"
+                                name='gdescription'
+                                value={formdata.gdescription}
+                                onChange={handleChange}
+                                placeholder=' Description'
+                                className=' p-2 rounded-md my-2 shadow-md w-full'
+                            />
+                        </div>
                     </div>
 
                     <div className='flex flex-row justify-center'>
-                    <button type='submit' className='transition-shadow w-40 bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD GROUP</button>
+                        <button type='submit' className='transition-shadow w-40 bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950'>ADD GROUP</button>
 
                     </div>
                 </form>
@@ -105,6 +114,7 @@ const Group = () => {
                             <tr className='font-serif whitespace-nowrap'>
                                 <th className='p-2 border-2'>Group Id </th>
                                 <th className='p-2 border-2'>Group </th>
+                                <th className='p-2 border-2'>Description </th>
                                 <th className='p-2 border-2'>Status </th>
                             </tr>
                         </thead>
@@ -114,6 +124,7 @@ const Group = () => {
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{item.GId}</td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.groupname}</td>
+                                    <td className='px-3 border-2 border-gray-400  '>{item.gdescription}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>
 
                                         {item.gstatus && item.gstatus == '1' ? (
@@ -146,7 +157,7 @@ const Group = () => {
 
 
                                     </td>
-                                
+
 
                                 </tr>
                             ))}

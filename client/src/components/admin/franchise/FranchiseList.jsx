@@ -14,7 +14,7 @@ const FranchiseList = () => {
 
 
     const accessfranchise = async () => {
-        const { data } = await axios.get('/api/v1/get-franchise')
+        const { data } = await axios.get('/api/v1/get-franchiseactive')
         if (data.success) {
             SetFranchise(data.result)
         }

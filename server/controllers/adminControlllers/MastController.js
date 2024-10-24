@@ -7,7 +7,7 @@ export const addGroup = async (req, res) => {
 
     try {
 
-        const { group } = req.body;
+        const { group,gdescription } = req.body;
 
         await connection.beginTransaction();
 
@@ -23,8 +23,8 @@ export const addGroup = async (req, res) => {
         }
 
 
-        const sql = `INSERT INTO groups (GId, groupname) VALUES (?, ?)`;
-        const values = [newGId, group];
+        const sql = `INSERT INTO groups (GId, groupname, gdescription) VALUES (?, ?, ?)`;
+        const values = [newGId, group,gdescription];
         await connection.query(sql, values);
 
         await connection.commit();
@@ -132,7 +132,7 @@ export const addSession = async (req, res) => {
         }
 
 
-       
+
 
         const sql = `insert into session (SeId,additionalfee, categoryname, groupname, mode, session) values(?,?,?,?,?,?)`
         const values = [newSeId, additionalfee, categoryname, groupname, mode, session]
@@ -277,7 +277,7 @@ export const getFranchise = async (req, res) => {
 
     try {
 
-        const sql = `select * from franchiseactive `
+        const sql = `select * from franchiseactive where status=1`
         const [result] = await db.query(sql)
 
         if (result) {
@@ -292,7 +292,7 @@ export const getFranchise = async (req, res) => {
 export const getIncomFranchise = async (req, res) => {
 
     try {
-     
+
         const sql = `select * from franchiseactive where status=0`
         const [result] = await db.query(sql)
 
@@ -433,9 +433,9 @@ export const updateCategory = async (req, res) => {
 
 export const updateSesson = async (req, res) => {
     try {
-        const { additionalfee,category, SeId, groupname, mode,session } = req.body
+        const { additionalfee, category, SeId, groupname, mode, session } = req.body
         const sql = `update session set  additionalfee=?, groupname=?,mode=?, session=?, categoryname=? where  SeId=? `
-        const values = [additionalfee, groupname,mode,session, category, SeId]
+        const values = [additionalfee, groupname, mode, session, category, SeId]
         const [result] = await db.query(sql, values)
         console.log(result)
         if (result) {
@@ -466,50 +466,55 @@ export const updateFranchiseStatus = async (req, res) => {
 }
 
 export const updateIncomFranchiseStatus = async (req, res) => {
-    const{cmemail,cmmob,FId,owname,ownmob,ownemail,cenname}=req.body
+    const { cmemail, cmmob, FId, status,cmname } = req.body;
+    
+    let connection;
+    
     try {
-        const { FId, status } = req.body;
+        connection = await db.getConnection();
+        await connection.beginTransaction();
 
-        // First, update the franchise status in the database
-        const sql = `UPDATE franchiseactive SET status=? WHERE FId=?`;
-        const values = [status, FId];
-        const [result] = await db.query(sql, values);
+        const updateFranchiseSql = `UPDATE franchiseactive SET status=? WHERE FId=?`;
+        const updateFranchiseValues = [status, FId];
+        const [franchiseResult] = await connection.query(updateFranchiseSql, updateFranchiseValues);
 
-        // If the update was successful, send the email notification
-        if (result.affectedRows > 0) {
-           
+        // If franchise status is updated
+        if (franchiseResult.affectedRows > 0) {
+
+            const generateRandomCredentials = () => {
+                const password = crypto.randomBytes(6).toString('hex');
+                return { password };
+            };
+
+            const { password } = generateRandomCredentials();
+
+            const userType = "franchise";
+            const insertUserSql = `INSERT INTO users (mobile, password,name, email, status, Type) VALUES (?, ?, ?, ?, ?, ?)`;
+            const insertUserValues = [cmmob, password,cmname, cmemail, status, userType];
+            await connection.query(insertUserSql, insertUserValues);
+
+            await connection.commit();
+
             const transporter = nodemailer.createTransport({
-                host: "smtp.ethereal.email",
-                port: 587,
-                secure: false, // true for port 465, false for 587
+                service:'gmail',
                 auth: {
-                    user: "mallie48@ethereal.email",
-                    pass: "AfFrcX92FGbPmSQDaD",
+                    user: "kumarsinghdeepak659@gmail.com",
+                    pass: "rtmd rzyj aerv ipds",
                 },
             });
 
-
-            const generateRandomCredentials = () => {
-                const userId = crypto.randomBytes(4).toString('hex'); // 8-character random ID
-                const password = crypto.randomBytes(6).toString('hex'); // 12-character random password
-                return { userId, password };
-              };
-
-              const {userId,password}=generateRandomCredentials()
-            // Define email options
             const info = await transporter.sendMail({
-                from: '"Maddison Foo Koch 👻" <lonewolfrule01@gmail.com>', // sender address
-                to: cmemail, // recipient
-                subject: "Franchise Status Updated", // subject
-                text: `Hello,\n\nThe request for the UMCA  franchise has been approved .`, // plain text body
-                html: `<p>Hello,</p><p>Please Login to UMCA  the credentials are <strong>User ID ${userId}</strong>Password <strong>${password}</strong>.</p>`, 
+                from: 'kumarsinghdeepak659@gmail.com', 
+                to: cmemail, 
+                subject: "Franchise Status Updated", 
+                text: `Hello,\n\nYour UMCA franchise request has been approved. Your login credentials are as follows:\nUser ID: ${cmmob}\nPassword: ${password}`, 
+                html: `<p>Hello,</p><p>Your UMCA franchise request has been approved. Please log in using the following credentials:<br/></p><p><strong>User ID:</strong> ${cmmob}</p><p><strong>Password:</strong> ${password}</p>`, // html body
             });
 
             console.log('Email sent:', info.messageId);
 
             return res.status(200).send({
                 success: true,
-                result,
                 message: 'Franchise status updated and notification sent successfully',
             });
         } else {
@@ -520,11 +525,17 @@ export const updateIncomFranchiseStatus = async (req, res) => {
             });
         }
     } catch (error) {
+       
+        if (connection) await connection.rollback();
         console.error('Error:', error);
         return res.status(500).send({
             success: false,
             message: 'Error updating franchise status or sending email',
         });
+    } finally {
+      
+        if (connection) connection.release();
     }
-}
+};
+
 
