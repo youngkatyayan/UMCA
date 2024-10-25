@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from "framer-motion";
+import axios from 'axios';
+import is from '../../assets/is.jpg'
+import ccc from '../../assets/ccc.jfif'
+import o from '../../assets/level.webp'
 const GroupCategory = () => {
+    const [allResult, setAllResult] = useState([])
 
     const container = {
         hidden: { opacity: 1, scale: 0 },
@@ -21,6 +26,36 @@ const GroupCategory = () => {
             opacity: 1
         }
     };
+
+    const images = [
+        `url(${is})`,
+        `url(${is})`,
+        `url(${''})`,
+        `url(${is})`
+    ];
+    const school = [
+        `url(${ccc})`,
+        `url(${o})`,
+        `url(${''})`,
+        `url(${''})`
+    ];
+
+
+    // display course data
+    const fetchCourse = async () => {
+        try {
+            const { data } = await axios.get('/api/v1/display-popular-course')
+            if (data.success) {
+                setAllResult(data.result)
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    useEffect(() => {
+        fetchCourse()
+    }, []);
     return (
 
         <div className=' py-2 md:mt-1 flex flex-col items-center justify-center' >
@@ -64,13 +99,34 @@ const GroupCategory = () => {
                 </h1>
 
                 <div className="w-full grid gap-5 sm:gap-10 p-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 1</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 2</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 3</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 4</div>
+                    {allResult && allResult.slice(0, 4).map((item, index) => (
+
+                        <div
+                            key={index + item}
+                            className={`group border-2 border-black h-48 w-56 rounded-lg flex items-center justify-center text-white text-xl font-semibold transition-all duration-300 overflow-hidden`}
+                            style={{
+                                backgroundImage: images[index % images.length],
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                            }}
+                        >
+                            <div
+                                className="h-full w-full bg-center bg-cover transition-transform duration-300 group-hover:scale-110"
+                                style={{
+                                    backgroundImage: images[index % images.length],
+                                }}
+                            >
+                                {item.groupname === 'University' && (
+                                    <p className="">{item.coursename}</p>
+                                )}
+                            </div>
+                        </div>
+
+                    ))}
+
                 </div>
-                
-                <div className="w-full grid gap-5 sm:gap-10 p-4 sm:grid-cols-2 lg:grid-cols-4">
+
+                {/* <div className="w-full grid gap-5 sm:gap-10 p-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 1</div>
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 2</div>
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 3</div>
@@ -82,15 +138,27 @@ const GroupCategory = () => {
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 2</div>
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 3</div>
                     <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 4</div>
-                </div>
+                </div> */}
+
 
                 <div className="w-full grid gap-5 sm:gap-10 p-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 1</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 2</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 3</div>
-                    <div className=" border-2 border-black h-40 w-44 rounded-lg flex items-center justify-center text-white text-xl font-semibold">Div 4</div>
+                    {allResult && allResult.slice(0, 4).map((item, index) => (
+                        <div
+                            key={index + item.coursename}
+                            className="group border-2 border-black h-48 w-56 rounded-lg flex items-center justify-center text-white text-xl font-semibold overflow-hidden transition-transform duration-300"
+                        >
+                            <div
+                                className="h-full w-full bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
+                                style={{
+                                    backgroundImage: school[index % school.length]
+                                }}
+                            >
+                                <p className=' text-center'>{item.coursename}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-               
+
 
 
             </div>
