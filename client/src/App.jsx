@@ -43,14 +43,11 @@ const App = () => {
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
           <Route path='/add-course' element={<Course />} />
-
           <Route path='/course-details' element={<UpdateCourse />} />
           <Route path='/course-details/update-course/:CoId' element={<Course />} />
-
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
