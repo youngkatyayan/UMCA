@@ -6,6 +6,8 @@ import { IoMdHome } from "react-icons/io";
 import { FaBars } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from 'react-router-dom';
+
+
 const UserHeader = () => {
   const [course, setCourse] = useState(false)
   const [changeBar, setChangeBar] = useState(false)
@@ -99,7 +101,7 @@ const UserHeader = () => {
               </div>
 
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Centers</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
+              <Link to={'/franch-request' } className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link>
@@ -164,7 +166,7 @@ const UserHeader = () => {
           </Link>
 
           <Link className=' text-zinc-50 '>Centers</Link>
-          <Link className=' text-zinc-50 '>Franchise</Link>
+          <Link to={'/franch-request' } className=' text-zinc-50 '>Franchise</Link>
           <Link className=' text-zinc-50 '>Gallery</Link>
           <Link className=' text-zinc-50 '>Placement</Link>
           <Link className=' text-zinc-50 '>PMKVY</Link>

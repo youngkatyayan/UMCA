@@ -42,7 +42,8 @@ const Course = () => {
             applicationfee: '',
             examfee: '',
             brochure: '',
-            coursename: ''
+            coursename: '',
+            popular:''
         });
     };
 
@@ -78,7 +79,8 @@ const Course = () => {
                     examfee: courseDetails[0].examfee || '',
                     brochure: courseDetails[0].brochure || '',
                     coursename: courseDetails[0].coursename || '',
-                    CoId:courseDetails[0].CoId ||''
+                    CoId:courseDetails[0].CoId ||'',
+                    popular:courseDetails[0].popular ||'',
                 });
                
                 console.log(formdata)
@@ -229,6 +231,23 @@ const Course = () => {
                                     <option key={index} value={item.coursemode}>{item.coursemode}</option>
                                 )
                                 )}
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="popular" className=' m-2 font-serif text-lg'>Popular :</label>
+                            <select
+                                type="text"
+                                name='popular'
+                                value={formdata.popular}
+                                onChange={handleChange}
+
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            >
+
+                                <option value="" >Select Popular</option>
+                                <option value="0" >0</option>
+                                <option value="1" >1</option>
+                               
                             </select>
                         </div>
                         <div>
