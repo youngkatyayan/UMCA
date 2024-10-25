@@ -53,7 +53,7 @@ const Footer = () => {
 
 
                 <div className='md:w-1/5'>
-                    <p className='text-3xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>UMCA Education</p>
+                    <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>UMCA Education</p>
                     <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0 '>
                         <div className='font-semibold text-[.9rem]'>
                             <p className='flex gap-2 items-center'>

@@ -12,6 +12,11 @@ import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
 import Home from './components/user/Home.jsx';
 import UpdateCourse from './components/admin/edirMaster/UpdateCourse.jsx';
+import Courses from './components/user/Courses.jsx';
+import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
+import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
+import FranchiseRequest from './components/user/FranchiseRequest.jsx';
+
 
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
@@ -38,9 +43,11 @@ const App = () => {
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
           <Route path='/add-course' element={<Course />} />
-
-          <Route path='/update-course' element={<UpdateCourse />} />
-
+          <Route path='/course-details' element={<UpdateCourse />} />
+          <Route path='/course-details/update-course/:CoId' element={<Course />} />
+          <Route path='/received-applicant' element={<NewApplicant />} />
+          <Route path='/franchise' element={<FranchiseList />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -52,6 +59,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );
 
@@ -60,7 +68,10 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
+
         </Routes>
       );
   }

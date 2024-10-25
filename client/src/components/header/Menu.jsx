@@ -27,7 +27,7 @@ const Menu = () => {
     <div className={`flex flex-col  header ${widthSize ? 'w-[3rem]' : 'w-[15rem]'} pl-3 py-5  bg-white  lg:h-[91.5vh] h-[90.7vh] `}>
 
       {SuperAdminMenuList.map((items, index) =>
-        <div key={index} className='relative'>
+        <div key={index} className='relative '>
           <hr class="border-t-2 border-white" />
 
           <Link to={items.to}

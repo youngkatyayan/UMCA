@@ -6,6 +6,8 @@ import { IoMdHome } from "react-icons/io";
 import { FaBars } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from 'react-router-dom';
+
+
 const UserHeader = () => {
   const [course, setCourse] = useState(false)
   const [changeBar, setChangeBar] = useState(false)
@@ -41,7 +43,7 @@ const UserHeader = () => {
 
         <div className='visible md:hidden flex items-center justify-between w-full relative ' >
 
-          <Link to='/login' className='text-orange-600 font-semibold flex ms-5' >
+          <Link to='/' className='text-orange-600 font-semibold flex ms-5' >
             <p style={clipStyle} className='h-full flex items-center ps-2 font-semibold gap-1'>
               <IoMdHome className='text-xl' />
               UMCA
@@ -98,9 +100,9 @@ const UserHeader = () => {
                 )}
               </div>
 
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Our Centers</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise Request</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Photo Gallery</Link>
+              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Centers</Link>
+              <Link to={'/franch-request' } className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
+              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Workshop</Link>
@@ -116,7 +118,7 @@ const UserHeader = () => {
 
         <div className='hidden  md:flex md:gap-[.8vw] lg:gap-[1.5vw]'>
 
-          <Link to='/login' className=' text-orange-600 font-semibold flex'>
+          <Link to='/' className=' text-orange-600 font-semibold flex'>
             <span style={clipStyle} className='h-full flex items-center ps-2 font-semibold gap-1'><IoMdHome className='text-xl' />
               UMCA
             </span>
@@ -128,7 +130,7 @@ const UserHeader = () => {
             <p onClick={(e) => toggleMenu(e, 1)} className='group-focus:text-sky-500 flex items-center justify-center'>Courses <RiArrowDropDownFill /></p>
 
             <div
-              className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-11 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-20 ${course === 1 ? 'translate-y-[0] visible' : '-translate-y-[100%]'
+              className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-10 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-20 ${course === 1 ? 'translate-y-[0] visible' : '-translate-y-[100%]'
                 }`}
             >
               <Link className='whitespace-nowrap'>O Level</Link>
@@ -154,7 +156,7 @@ const UserHeader = () => {
             <p onClick={(e) => toggleMenu(e, 2)} className='group-focus:text-sky-500 flex items-center justify-center whitespace-nowrap'>Student Zone <RiArrowDropDownFill /></p>
 
             <div
-              className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-11 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-10 ${course === 2 ? 'translate-y-[0] visible' : '-translate-y-[100%] '
+              className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-10 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-10 ${course === 2 ? 'translate-y-[0] visible' : '-translate-y-[100%] '
                 }`}
             >
               <Link className='whitespace-nowrap'>Enquiry</Link>
@@ -164,7 +166,7 @@ const UserHeader = () => {
           </Link>
 
           <Link className=' text-zinc-50 '>Centers</Link>
-          <Link className=' text-zinc-50 '>Franchise</Link>
+          <Link to={'/franch-request' } className=' text-zinc-50 '>Franchise</Link>
           <Link className=' text-zinc-50 '>Gallery</Link>
           <Link className=' text-zinc-50 '>Placement</Link>
           <Link className=' text-zinc-50 '>PMKVY</Link>

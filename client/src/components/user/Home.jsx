@@ -8,6 +8,10 @@ import { FaFacebook } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import UserHeader from '../header/UserHeader';
 import Footer from '../header/Footer';
+import Slider from './Slider';
+import Courses from '../pages/Courses';
+import GroupCategory from '../pages/GroupCategory';
+
 const Home = () => {
     return (
         <div className='w-full '>
@@ -40,6 +44,19 @@ const Home = () => {
             <div className='z-30 relative'>
                 <UserHeader />
             </div>
+            {/* header */}
+            <div className='z-20 '>
+                <Slider />
+            </div>
+
+
+            {/* <div className='z-20 '>
+                <Courses/>
+            </div> */}
+            <div className='z-20 '>
+                <GroupCategory/>
+            </div>
+
 
             {/* Footer */}
             <div className='z-20'>
