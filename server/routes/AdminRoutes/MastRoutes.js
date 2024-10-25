@@ -1,5 +1,5 @@
 import express from 'express'
-import { addCategory, addCourse, addGroup, addMode, addSession, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getSession, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addCourse, addGroup, addMode, addSession, franchiseRequest, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getSession, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 const router = express.Router()
 
 router.post('/add-group', addGroup)
@@ -29,6 +29,7 @@ router.post('/update-sesson', updateSesson)
 router.post('/get-coursedetails/:CoId', getCourseDetails) 
 
 
+router.post('/franchise-request', franchiseRequest) 
 router.post('/updatefrstatus', updateFranchiseStatus) 
 router.post('/updateincfrstatus', updateIncomFranchiseStatus) 
 

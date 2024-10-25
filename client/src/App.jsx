@@ -15,6 +15,7 @@ import UpdateCourse from './components/admin/edirMaster/UpdateCourse.jsx';
 import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
+import FranchiseRequest from './components/user/FranchiseRequest.jsx';
 
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
           <Route path='/course-details/update-course/:CoId' element={<Course />} />
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -57,6 +59,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/admin' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );
 
@@ -67,6 +70,8 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
+
         </Routes>
       );
   }

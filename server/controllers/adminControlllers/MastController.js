@@ -7,7 +7,7 @@ export const addGroup = async (req, res) => {
 
     try {
 
-        const { group,gdescription } = req.body;
+        const { group, gdescription } = req.body;
 
         await connection.beginTransaction();
 
@@ -24,7 +24,7 @@ export const addGroup = async (req, res) => {
 
 
         const sql = `INSERT INTO groups (GId, groupname, gdescription) VALUES (?, ?, ?)`;
-        const values = [newGId, group,gdescription];
+        const values = [newGId, group, gdescription];
         await connection.query(sql, values);
 
         await connection.commit();
@@ -198,6 +198,66 @@ export const addCourse = async (req, res) => {
         if (connection) connection.release();
     }
 }
+
+export const franchiseRequest = async (req, res) => {
+    console.log(req.body);
+    const connection = await db.getConnection();
+
+    try {
+        const {
+            cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
+            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff
+        } = req.body;
+
+        // Define required fields
+        const requiredFields = {
+            cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
+            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor,student,staff
+        };
+        
+        // Check for missing fields
+        for (const [field, value] of Object.entries(requiredFields)) {
+            if (!value) {
+                return res.status(400).send({ success: false, error: `${field} is required` });
+            }
+        }
+
+        await connection.beginTransaction();
+
+        // Retrieve the latest FId
+        const ssql = `SELECT FId FROM franchiseactive ORDER BY FId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newFId = 7001; // Default starting point for FId
+        if (result.length > 0) {
+            const lastFId = parseInt(result[0].FId, 10);
+            newFId = lastFId + 1; // Increment FId
+        }
+
+       
+        const sql = `INSERT INTO franchiseactive (FId, cmname, cmmob, cmemail, owname, ownmob, ownemail, cenname, address,
+            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)`;
+
+        const values = [
+            newFId, cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
+            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff
+        ];
+
+        await connection.query(sql, values);
+
+        await connection.commit();
+
+        return res.status(201).send({ success: true, message: "Franchise Request Submitted Successfully", FId: newFId });
+
+    } catch (error) {
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Error in franchiseRequest", error: error.message });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
 
 
 
@@ -466,10 +526,10 @@ export const updateFranchiseStatus = async (req, res) => {
 }
 
 export const updateIncomFranchiseStatus = async (req, res) => {
-    const { cmemail, cmmob, FId, status,cmname } = req.body;
-    
+    const { cmemail, cmmob, FId, status, cmname } = req.body;
+
     let connection;
-    
+
     try {
         connection = await db.getConnection();
         await connection.beginTransaction();
@@ -490,13 +550,13 @@ export const updateIncomFranchiseStatus = async (req, res) => {
 
             const userType = "franchise";
             const insertUserSql = `INSERT INTO users (mobile, password,name, email, status, Type) VALUES (?, ?, ?, ?, ?, ?)`;
-            const insertUserValues = [cmmob, password,cmname, cmemail, status, userType];
+            const insertUserValues = [cmmob, password, cmname, cmemail, status, userType];
             await connection.query(insertUserSql, insertUserValues);
 
             await connection.commit();
 
             const transporter = nodemailer.createTransport({
-                service:'gmail',
+                service: 'gmail',
                 auth: {
                     user: "kumarsinghdeepak659@gmail.com",
                     pass: "rtmd rzyj aerv ipds",
@@ -504,10 +564,10 @@ export const updateIncomFranchiseStatus = async (req, res) => {
             });
 
             const info = await transporter.sendMail({
-                from: 'kumarsinghdeepak659@gmail.com', 
-                to: cmemail, 
-                subject: "Franchise Status Updated", 
-                text: `Hello,\n\nYour UMCA franchise request has been approved. Your login credentials are as follows:\nUser ID: ${cmmob}\nPassword: ${password}`, 
+                from: 'kumarsinghdeepak659@gmail.com',
+                to: cmemail,
+                subject: "Franchise Status Updated",
+                text: `Hello,\n\nYour UMCA franchise request has been approved. Your login credentials are as follows:\nUser ID: ${cmmob}\nPassword: ${password}`,
                 html: `<p>Hello,</p><p>Your UMCA franchise request has been approved. Please log in using the following credentials:<br/></p><p><strong>User ID:</strong> ${cmmob}</p><p><strong>Password:</strong> ${password}</p>`, // html body
             });
 
@@ -518,14 +578,14 @@ export const updateIncomFranchiseStatus = async (req, res) => {
                 message: 'Franchise status updated and notification sent successfully',
             });
         } else {
-           
+
             return res.status(400).send({
                 success: false,
                 message: 'Franchise ID not found or no change in status',
             });
         }
     } catch (error) {
-       
+
         if (connection) await connection.rollback();
         console.error('Error:', error);
         return res.status(500).send({
@@ -533,7 +593,7 @@ export const updateIncomFranchiseStatus = async (req, res) => {
             message: 'Error updating franchise status or sending email',
         });
     } finally {
-      
+
         if (connection) connection.release();
     }
 };
