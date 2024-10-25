@@ -84,7 +84,6 @@ const NewApplicant = () => {
                                 <th className='p-2 border-2'>Signature</th>
                                 <th className='p-2 border-2'>Phote</th>
                                 <th className='p-2 border-2'>Remark</th>
-                                <th className='p-2 border-2'>Status</th>
                                 <th className='p-2 border-2'>Action</th>
                             </tr>
                         </thead>
@@ -113,31 +112,20 @@ const NewApplicant = () => {
                                     <td className='px-3 border-2 border-gray-400  '>{item.remark}</td>
                                     <td className='px-3 border-2 border-gray-400 '>
 
-                                        {item.status && item.status == '1' ? (
+                                        {item.status && item.status == '0' && (
                                             <div className='flex  space-x-2 justify-center items-center'>
-                                                <button type='submit' className='transition-shadow  cursor-default     bg-green-700 border-1 text-white rounded-2xl px-4 py-2 items-center  w-24 flex justify-center '
-
-                                                >Active
-                                                </button>
+                                               <button type='submit' className='transition-shadow hover:border-1 border border-green-700  border-1 hover:font-serif hover:text-md hover:text-green-600 text-green-700 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
+                                                        onClick={() => handleStatus(item, 1)}
+                                                    >Approve
+                                                    </button>
                                                 <button type='submit' className='transition-shadow hover:border-1     border border-red-500 hover:font-serif hover:text-md hover:text-red-500      text-red-500 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
                                                     onClick={() => handleStatus(item, 0)}
-                                                >Deactiuve
+                                                >Reject
                                                 </button>
                                             </div>
 
                                         )
-                                            : (
-                                                <div className='flex  space-x-2 justify-center items-center'>
-                                                    <button type='submit' className='transition-shadow hover:border-1 border border-green-700  border-1 hover:font-serif hover:text-md hover:text-green-600 text-green-700 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
-                                                        onClick={() => handleStatus(item, 1)}
-                                                    >Active
-                                                    </button>
-                                                    <button type='submit' className='transition-shadow   hover:bg-red-800 border bg-red-800 text-white border-red-500  cursor-default  rounded-2xl px-4 py-2 items-center hover:shadow-md w-24 flex justify-center '
-                                                    >Deactiuve
-                                                    </button>
-                                                </div>
-
-                                            )
+                                            
 
                                         }
 

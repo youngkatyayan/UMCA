@@ -14,7 +14,7 @@ router.get('/get-mode', getMode)
 router.get('/get-group', getGroup)
 router.get('/get-course', getCourse)
 router.get('/get-session', getSession)
-router.get('/get-franchise', getFranchise)
+router.get('/get-franchiseactive', getFranchise)
 router.get('/get-incomfranchise', getIncomFranchise)
 
 router.post('/updatecostatus', updateCourseStatus) 
