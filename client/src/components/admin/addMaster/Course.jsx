@@ -11,10 +11,11 @@ const Course = () => {
     const [mode, setMode] = useState([])
     const [category, setCategory] = useState([])
     const [session, setSession] = useState([])
+    const [img, setImg] = useState([])
     const [courseDetails, setCourseDetails] = useState({})
-    const [updateC,setUpdateC]=useState(false)
+    const [updateC, setUpdateC] = useState(false)
     const [formdata, setData] = useState({
-        session: '' ,
+        session: '',
         coursemode: '',
         eligibility: '',
         categoryname: '',
@@ -24,11 +25,11 @@ const Course = () => {
         applicationfee: '',
         examfee: '',
         brochure: '',
-        coursename:''
+        coursename: '',
+        courseimage:""
     })
 
     const { CoId } = useParams()
-    console.log(CoId)
 
     const resetForm = () => {
         setData({
@@ -43,55 +44,58 @@ const Course = () => {
             examfee: '',
             brochure: '',
             coursename: '',
-            popular:''
+            popular: '',
+            courseimage:''
         });
     };
 
-    useEffect(()=>{
-        if(CoId && CoId.length>0){
+    useEffect(() => {
+        if (CoId && CoId.length > 0) {
             setUpdateC(true);
             accessCourseDetails()
-        }else {
+        } else {
             setUpdateC(false);
-            resetForm(); 
+            resetForm();
 
         }
-    },[CoId])
+    }, [CoId])
+
     const accessCourseDetails = async () => {
         try {
-            
+
             const { data } = await axios.post(`/api/v1/get-coursedetails/${CoId}`)
             if (data.success) {
-                if(data.result){
-                   
+                if (data.result) {
+
                     const courseDetails = data.result;
-                setCourseDetails(courseDetails); 
-        
-                setData({
-                    session: courseDetails[0].session || '',
-                    coursemode: courseDetails[0].coursemode || '',
-                    eligibility: courseDetails[0].eligibility || '',
-                    categoryname: courseDetails[0].categoryname || '',
-                    duration: courseDetails[0].duration || '',
-                    description: courseDetails[0].description || '',
-                    yearlyfee: courseDetails[0].yearlyfee || '',
-                    applicationfee: courseDetails[0].applicationfee || '',
-                    examfee: courseDetails[0].examfee || '',
-                    brochure: courseDetails[0].brochure || '',
-                    coursename: courseDetails[0].coursename || '',
-                    CoId:courseDetails[0].CoId ||'',
-                    popular:courseDetails[0].popular ||'',
-                });
-               
-                console.log(formdata)
+                    setCourseDetails(courseDetails);
+
+                    setData({
+                        session: courseDetails[0].session || '',
+                        coursemode: courseDetails[0].coursemode || '',
+                        eligibility: courseDetails[0].eligibility || '',
+                        categoryname: courseDetails[0].categoryname || '',
+                        duration: courseDetails[0].duration || '',
+                        description: courseDetails[0].description || '',
+                        yearlyfee: courseDetails[0].yearlyfee || '',
+                        applicationfee: courseDetails[0].applicationfee || '',
+                        examfee: courseDetails[0].examfee || '',
+                        brochure: courseDetails[0].brochure || '',
+                        coursename: courseDetails[0].coursename || '',
+                        CoId: courseDetails[0].CoId || '',
+                        popular: courseDetails[0].popular || '',
+                        courseimage: courseDetails[0].courseimage || '',
+                    });
+
+                    console.log(formdata)
                 }
             }
 
         } catch (error) {
-            toast.error("Error Fetching Course Details",error)
+            toast.error("Error Fetching Course Details", error)
         }
-        
-        
+
+
     }
     const accessmode = async () => {
         const { data } = await axios.get('/api/v1/get-mode')
@@ -111,7 +115,7 @@ const Course = () => {
             setSession(data.result)
         }
     }
-    useEffect(() => { accessmode(); accesscategory(); accesssession();}, [])
+    useEffect(() => { accessmode(); accesscategory(); accesssession(); }, [])
 
     // useEffect(() => {
     //     if (Object.keys(courseDetails).length > 0) {
@@ -132,7 +136,7 @@ const Course = () => {
     //         console.log(formdata)
     //     }
     // }, [courseDetails]);
-    
+
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))
@@ -157,12 +161,52 @@ const Course = () => {
 
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const handleImage = (e, index) => {
+        const file = e.target.files[0];
 
+        if (file) {
+
+            if (file.type.startsWith('image/')) {
+                console.log(file.type)
+                const imageURL = URL.createObjectURL(file); // Create a URL from the file
+                setImg((prev) => {
+                    const Images = [...prev];
+                    Images[index] = {file,url:imageURL} // Store the URL in the img state instead of the file
+                    return Images;
+                });
+
+      
+            } else if (file.type === 'application/pdf') {
+                console.log(file.type)
+                const pdfURL = URL.createObjectURL(file);
+                setImg(prev => {
+                    const Files = [...prev];
+                    Files[index] = { file,type: 'pdf', url: pdfURL };
+                    console.log('Updated Files:', Files);
+                    return Files;
+                })
+                
+            }
+        }
+       
+    };
+
+    const handleSubmit = async (e) => {
+        console.log(img)
+        e.preventDefault()
+        const formdataToSend=new FormData();
+        for (const [key,value] of Object.entries(formdata)){
+            formdataToSend.append(key,value)
+
+        }
+        img.forEach((fileObj,index)=>{
+            if(fileObj){
+                formdataToSend.append(`image${index}`,fileObj.file);
+            }
+        })
         try {
             console.log(formdata)
-            const { data } = await axios.post('api/v1/add-course', formdata)
+            const { data } = await axios.post('api/v1/add-course', formdataToSend)
             if (data.success) {
                 toast.success(data.message)
             }
@@ -182,7 +226,7 @@ const Course = () => {
             const { data } = await axios.post('/api/v1/update-course', formdata)
             if (data.success) {
                 toast.success(data.message)
-               window.location.href='/course-details'
+                window.location.href = '/course-details'
             }
             else {
                 console.log('error')
@@ -196,10 +240,10 @@ const Course = () => {
         <SuperAdminLayout>
             <div className='w-full bg-gray-200 p-2 min-h-screen h-auto'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
-                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC? 'Update Course':'Add New Course'}</h1>
+                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Course' : 'Add New Course'}</h1>
                 </div>
 
-                <form onSubmit={updateC ? handleUpdate :handleSubmit} className='  p-4  '>
+                <form onSubmit={updateC ? handleUpdate : handleSubmit} className='  p-4  '>
 
                     <div className='border-2 rounded-sm grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center'>
 
@@ -247,7 +291,7 @@ const Course = () => {
                                 <option value="" >Select Popular</option>
                                 <option value="0" >0</option>
                                 <option value="1" >1</option>
-                               
+
                             </select>
                         </div>
                         <div>
@@ -328,13 +372,10 @@ const Course = () => {
                             <input
                                 type="file"
                                 name='brochure'
-                                value={formdata.brochure}
-                                onChange={handleChange}
                                 placeholder=' Select Mode'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
+                                onChange={(e) => handleImage(e, 1)}
                             >
-
-
                             </input>
                         </div>
                         <div>
@@ -373,14 +414,26 @@ const Course = () => {
                             ></input>
                         </div>
 
+                        <div>
+                            <label htmlFor="courseimage" className=' m-2 font-serif text-lg'> Upload Course Image :</label>
+                            <input
+                                type="file"
+                                name='courseimage'
+                                onChange={(e) => handleImage(e, 2)}
+                                placeholder=' Select Mode'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            >
 
+
+                            </input>
+                        </div>
 
 
 
                     </div>
                     <div className='flex flex-row justify-center'>
 
-                        <button type='submit' className='transition-shadow w-40 bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 mb-4'>{updateC ?"Update Course":"ADD COURSE"}</button>
+                        <button type='submit' className='transition-shadow w-40 bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 mb-4'>{updateC ? "Update Course" : "ADD COURSE"}</button>
                     </div>
                 </form>
             </div>
