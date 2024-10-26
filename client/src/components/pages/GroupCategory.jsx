@@ -102,7 +102,7 @@ const GroupCategory = () => {
                             <div
                                 className="absolute inset-0 bg-center bg-cover transition-transform duration-300 group-hover:scale-110"
                                 style={{
-                                    backgroundImage: `url(${is})`,
+                                    backgroundImage: `url(${`/api/v1/display-popular-course/${item.courseimage}`})`,
                                 }}
                             ></div>
 
@@ -112,6 +112,7 @@ const GroupCategory = () => {
                                     <p className="absolute z-10 -right-1 bg-[#3333df] text-white shadow-md -top-1 text-base rounded-md p-2">{item.coursemode}</p>
                                     <p className="absolute z-10 top-4 text-xl font-semibold left-2 text-white">{item.coursename}</p>
                                     <p className="absolute z-10 top-24 font-semibold left-1 text-md flex items-center gap-2 text-white"><MdOutlineWatchLater />{item.duration}</p>
+                                    {/* <p className="absolute z-10 top-24 font-semibold left-1 text-md flex items-center gap-2 text-white"><MdOutlineWatchLater />{item.duration}</p> */}
                                 </div>
                             )}
                         </div>
