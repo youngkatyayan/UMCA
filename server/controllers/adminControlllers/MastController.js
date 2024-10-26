@@ -152,6 +152,15 @@ export const addSession = async (req, res) => {
 }
 
 export const addCourse = async (req, res) => {
+
+
+    const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA';
+    const image2 = req.files['image2'] ? req.files['image2'][0].filename : 'NA';
+    const image3 = req.files['image3'] ? req.files['image3'][0].filename : 'NA';
+
+    console.log(`image1: ${image1}`);
+    console.log(`image2: ${image2}`);
+
     const connection = await db.getConnection()
 
     try {
@@ -180,8 +189,8 @@ export const addCourse = async (req, res) => {
 
 
 
-        const sql = `insert into course (CoId,applicationfee, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [newCoId, applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
+        const sql = `insert into course (CoId,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [newCoId, applicationfee,image1,image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
         await connection.query(sql, values)
 
 
@@ -206,7 +215,7 @@ export const franchiseRequest = async (req, res) => {
     try {
         const {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff
+            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff,courseimage
         } = req.body;
 
         // Define required fields
@@ -221,7 +230,7 @@ export const franchiseRequest = async (req, res) => {
                 return res.status(400).send({ success: false, error: `${field} is required` });
             }
         }
-
+        
         await connection.beginTransaction();
 
         // Retrieve the latest FId
@@ -236,12 +245,12 @@ export const franchiseRequest = async (req, res) => {
 
        
         const sql = `INSERT INTO franchiseactive (FId, cmname, cmmob, cmemail, owname, ownmob, ownemail, cenname, address,
-            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff) 
+            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff,courseimage) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)`;
 
         const values = [
             newFId, cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff
+            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff,courseimage
         ];
 
         await connection.query(sql, values);
