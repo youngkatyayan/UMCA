@@ -46,10 +46,10 @@ const FranchiseRequest = () => {
 
       if (file.type.startsWith('image/')) {
         console.log(file.type)
-        const imageURL = URL.createObjectURL(file); // Create a URL from the file
+        const imageURL = URL.createObjectURL(file); 
         setImg((prev) => {
           const Images = [...prev];
-          Images[index] = { file, url: imageURL } // Store the URL in the img state instead of the file
+          Images[index] = { file, url: imageURL } 
           return Images;
         });
 
@@ -80,13 +80,20 @@ const FranchiseRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const formDataToSend = new FormData();
-    // for (const key in formData) {
-    //   formDataToSend.append(key, formData[key]);
-    // }
+    const formdataToSend=new FormData();
+        for (const [key,value] of Object.entries(formData)){
+            formdataToSend.append(key,value)
 
+        }
+        img.forEach((fileObj,index)=>{
+            if(fileObj){
+                formdataToSend.append(`image${index}`,fileObj.file);
+            }
+        })
+        console.log(formData)
+        console.log(formdataToSend)
     try {
-      const response = await axios.post('/api/v1/franchise-request', formData);
+      const response = await axios.post('/api/v1/franchise-request',formdataToSend );
 
       if (response.ok) {
         // Handle success (e.g., show a success message)
@@ -193,7 +200,7 @@ const FranchiseRequest = () => {
                 </div>
                 <div className="p-2 pt-8">
                   <label className="text-right">Upload Address Proof</label>
-                  <input type="file" id="addproof" name="addproof" onChange={handleChange} className="w-full p-1 mt-1 rounded-md border border-blue-300 " />
+                  <input type="file" id="addproof" name="addproof" onChange={(e) => handleImage(e, 1)} className="w-full p-1 mt-1 rounded-md border border-blue-300 " />
                   <span className="text-red-800">(Incorporation/Registration Certificate, Telephone Bill, Rent Agreement)</span>
                 </div>
               </div>
@@ -259,22 +266,14 @@ const FranchiseRequest = () => {
                   <label>Upload Signature</label>
                   <input type="file" id="signature" name="signature" onChange={(e) => handleImage(e, 2)} className="w-full p-1 mt-1 rounded-md border border-blue-300 " />
                 </div>
-                <div className="justify-center my-4">
-                  {img[1] && (
-                    <img src={img[1].url} alt="Selected Preview" className="h-40 m-auto object-cover rounded-md shadow-md justify-center " style={{ width: 120, height: 120, objectFit: 'contain' }} />
-                  )}
-                </div>
+
               </div>
               <div className="w-full lg:w-1/2 p-2">
                 <div className="p-2">
                   <label>Upload Photo</label>
                   <input type="file" id="photo" name="photo" onChange={(e) => handleImage(e, 3)} className="w-full p-1 mt-1 rounded-md border border-blue-300 " />
                 </div>
-                <div className="justify-center my-4">
-                  {img[1] && (
-                    <img src={img[1].url} alt="Selected Preview" className="h-40 m-auto object-cover rounded-md shadow-md justify-center " style={{ width: 120, height: 120, objectFit: 'contain' }} />
-                  )}
-                </div>
+               
               </div>
             </div>
           </div>

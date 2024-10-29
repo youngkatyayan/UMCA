@@ -9,10 +9,17 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
 const uploadDir = path.join(__dirname,"..","..", 'courseimage', 'uploads');
+const franchreqUploadDir = path.join(__dirname, '..', '..', 'franchreqfront', 'uploads');
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+if (!fs.existsSync(franchreqUploadDir)) {
+  fs.mkdirSync(franchreqUploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -24,8 +31,18 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const franchreqStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, franchreqUploadDir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
 
+
+const upload = multer({ storage: storage });
+const franchreqUpload = multer({ storage: franchreqStorage });
 
 
 router.post('/add-course', upload.fields([
@@ -44,7 +61,7 @@ router.get('/get-group', getGroup)
 router.get('/get-course', getCourse)
 router.get('/get-session', getSession)
 router.get('/get-franchiseactive', getFranchise)
-router.get('/get-incomfranchise', getIncomFranchise)
+router.get('/get-incomfranchise',express.static(path.join("franchreqfront","uploads")) ,getIncomFranchise)
 
 router.post('/updatecostatus', updateCourseStatus) 
 router.post('/updatecmstatus', updateModeStatus) 
@@ -57,10 +74,14 @@ router.post('/update-category', updateCategory)
 router.post('/update-sesson', updateSesson) 
 router.post('/get-coursedetails/:CoId', getCourseDetails) 
 
-
-router.post('/franchise-request', franchiseRequest) 
 router.post('/updatefrstatus', updateFranchiseStatus) 
 router.post('/updateincfrstatus', updateIncomFranchiseStatus) 
 
 
+// franchiseRequest from frontend
+router.post('/franchise-request', franchreqUpload.fields([
+  { name: 'image1', maxCount: 1 },
+  { name: 'image2', maxCount: 1 },
+  { name: 'image3', maxCount: 1 },
+]), franchiseRequest) 
 export default router

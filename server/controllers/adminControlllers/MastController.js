@@ -210,18 +210,27 @@ export const addCourse = async (req, res) => {
 
 export const franchiseRequest = async (req, res) => {
     console.log(req.body);
+    
+    const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA';
+    const image2 = req.files['image2'] ? req.files['image2'][0].filename : 'NA';
+    const image3 = req.files['image3'] ? req.files['image3'][0].filename : 'NA';
+
+    console.log(`image1: ${image1}`);
+    console.log(`image2: ${image2}`);
+    console.log(`image3: ${image3}`);
+
     const connection = await db.getConnection();
 
     try {
         const {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff,courseimage
+            city, state, pin, crrbusiness, setupar, nocomp, remark,appfor,student,staff
         } = req.body;
 
         // Define required fields
         const requiredFields = {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor,student,staff
+            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor,student,staff,
         };
         
         // Check for missing fields
@@ -245,12 +254,12 @@ export const franchiseRequest = async (req, res) => {
 
        
         const sql = `INSERT INTO franchiseactive (FId, cmname, cmmob, cmemail, owname, ownmob, ownemail, cenname, address,
-            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff,courseimage) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)`;
+            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo,addproff, applicantfor,noofstudent,noofstaff) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)`;
 
         const values = [
             newFId, cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, signature, photo, appfor,student,staff,courseimage
+            city, state, pin, crrbusiness, setupar, nocomp, remark, image2, image3,image1, appfor,student,staff
         ];
 
         await connection.query(sql, values);

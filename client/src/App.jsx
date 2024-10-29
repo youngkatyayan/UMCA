@@ -16,6 +16,9 @@ import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 import FranchiseRequest from './components/user/FranchiseRequest.jsx';
+import Fdashboard from './components/franchise/Fdashboard.jsx';
+import Admission from './components/franchise/Admission.jsx';
+
 
 
 const App = () => {
@@ -30,7 +33,7 @@ const App = () => {
   const decryptedType = Type ? CryptoJS.AES.decrypt(Type, "Type").toString(CryptoJS.enc.Utf8) : null;
 
   const userType = `${decryptedType}-${decryptedStatus}`;
-
+  console.log(userType)
   switch (userType) {
     case 'Admin-1':
       return (
@@ -62,6 +65,16 @@ const App = () => {
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );
+    
+      case'franchise-1':
+      return (
+        <Routes>
+           <Route path='/login' element={<Login />} />
+           <Route path='/dashboard' element={<Fdashboard />} />
+           <Route path='/admission-form' element={<Admission />} />
+        </Routes>
+      )
+
 
     default:
       return (
