@@ -3,10 +3,6 @@ import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
-import { MdEdit } from 'react-icons/md';
-import { FaSearch } from 'react-icons/fa';
-
 
 const NewApplicant = () => {
 
@@ -19,21 +15,12 @@ const NewApplicant = () => {
         const { data } = await axios.get('/api/v1/get-incomfranchise')
         if (data.success) {
             setIncomfranchise(data.result)
+            console.log(data.result)
         }
     }
     useEffect(() => {
         accessincomfranchise();
     }, [])
-    const handleChange = async (e) => {
-        const { name, value } = e.target;
-        setData(prevData => ({ ...prevData, [name]: value }))
-
-    }
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-    }
 
 
     const handleStatus = async (item, stat) => {
@@ -81,6 +68,7 @@ const NewApplicant = () => {
                                 <th className='p-2 border-2'>No of Computer</th>
                                 <th className='p-2 border-2'>No of Student </th>
                                 <th className='p-2 border-2'>No of Staff</th>
+                                <th className='p-2 border-2'>Address Proof</th>
                                 <th className='p-2 border-2'>Signature</th>
                                 <th className='p-2 border-2'>Phote</th>
                                 <th className='p-2 border-2'>Remark</th>
@@ -107,17 +95,25 @@ const NewApplicant = () => {
                                     <td className='px-3 border-2 border-gray-400  '>{item.noofcomp}</td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.noofstudent}</td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.noofstaff}</td>
-                                    <td className='px-3 border-2 border-gray-400  '>{item.signature}</td>
-                                    <td className='px-3 border-2 border-gray-400  '>{item.photo}</td>
+                                    <td className='px-3 border-2 border-gray-400  '>
+                                    <img src={`/api/v1/get-incomfranchise/${item.addproff}`} alt="Address Proff" />
+                                        </td>
+                                    <td className='px-3 border-2 border-gray-400  '>
+                                        <img src={`/api/v1/get-incomfranchise/${item.signature}`} alt="Signature" />
+                                    </td>
+                                    <td className='px-3 border-2 border-gray-400  '>
+                                    <img src={`/api/v1/get-incomfranchise/${item.photo}`} alt="Photo" />
+
+                                        </td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.remark}</td>
                                     <td className='px-3 border-2 border-gray-400 '>
 
                                         {item.status && item.status == '0' && (
                                             <div className='flex  space-x-2 justify-center items-center'>
-                                               <button type='submit' className='transition-shadow hover:border-1 border border-green-700  border-1 hover:font-serif hover:text-md hover:text-green-600 text-green-700 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
-                                                        onClick={() => handleStatus(item, 1)}
-                                                    >Approve
-                                                    </button>
+                                                <button type='submit' className='transition-shadow hover:border-1 border border-green-700  border-1 hover:font-serif hover:text-md hover:text-green-600 text-green-700 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
+                                                    onClick={() => handleStatus(item, 1)}
+                                                >Approve
+                                                </button>
                                                 <button type='submit' className='transition-shadow hover:border-1     border border-red-500 hover:font-serif hover:text-md hover:text-red-500      text-red-500 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
                                                     onClick={() => handleStatus(item, 0)}
                                                 >Reject
@@ -125,27 +121,13 @@ const NewApplicant = () => {
                                             </div>
 
                                         )
-                                            
+
 
                                         }
 
 
                                     </td>
-                                    {/* <td className=''>
 
-                                <div className="px-3  flex space-x-2 m-2 justify-center items-center">
-                                    <Link to={{
-                                        pathname: `/course-details/update-course/${item.CoId}`,
-                                        state: { coursedetails: item },
-                                    }}
-                                        className='p-2 shadow-md rounded-full text-lg text-green-500 hover:bg-green-500 hover:border hover:shadow-md hover:shadow-green-400 hover:text-white bg-white '
-                                        onClick={() => handleEdit(item)}
-                                    >
-                                        <MdEdit />
-                                    </Link>
-
-                                </div>
-                            </td> */}
 
                                 </tr>
                             ))}

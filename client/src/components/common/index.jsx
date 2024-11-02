@@ -3,7 +3,7 @@ import { IoMdHome } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { FaStoreAlt } from "react-icons/fa";
-
+import { PiStudentDuotone } from "react-icons/pi";
 
 export const SuperAdminMenuList = [
     { name: 'Dashboard', icon: <IoMdHome />, value: 'Dashboard', to: '/admin' },
@@ -28,4 +28,10 @@ export const SuperAdminMenuList = [
         {id:2,name:'List',value:'List',to:'/franchise'}
     ] },
    
+]
+
+export const FranchiseMenuList=[
+    {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
+    {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
+
 ]
