@@ -16,6 +16,7 @@ import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 import FranchiseRequest from './components/user/FranchiseRequest.jsx';
+import Entroll from './components/pages/Entroll.jsx';
 
 
 const App = () => {
@@ -68,9 +69,12 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/entroll-course/:id' element={<Entroll/>} />
+        
 
         </Routes>
       );

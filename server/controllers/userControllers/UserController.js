@@ -7,7 +7,7 @@ export const getCourseController = async (req, res) => {
             return res.status(400).send({ error: 'ID is required' });
         }
 
-        const sql = `SELECT * FROM course WHERE CoId = ?`;
+        const sql = `select * from course cross join category on course.categoryname=category.categoryname WHERE course.Id = ?`;
         const [result] = await db.query(sql, [id]);
 
         if (result.length > 0) {
@@ -36,7 +36,7 @@ export const getCourseController = async (req, res) => {
 // most popular course 
 export const displayCourseController = async (req, res) => {
     try {
-        const sql = 'select * from course inner join category on course.categoryname=category.categoryname'
+        const sql = 'select * from course cross join category on course.categoryname=category.categoryname'
         const [result] = await db.query(sql)
         if (result) {
             return res.status(200).json({

@@ -35,13 +35,13 @@ const Slider = () => {
                 onAutoplayTimeLeft={onAutoplayTimeLeft}
                 className="mySwiper"
             >
-                <SwiperSlide><img src={img1} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img2} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img3} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img4} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img5} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img6} alt="" className='min-h-[56vh]'/></SwiperSlide>
-                <SwiperSlide><img src={img7} alt="" className='min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img1} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img2} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img3} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img4} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img5} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img6} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
+                <SwiperSlide><img src={img7} alt="" className='md:min-h-[56vh]'/></SwiperSlide>
                 
                 <div className="autoplay-progress" slot="container-end">
                     <svg viewBox="0 0 48 48" ref={progressCircle}>

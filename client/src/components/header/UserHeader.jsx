@@ -126,10 +126,10 @@ const UserHeader = () => {
           </Link>
           <Link className=' text-zinc-50 '>About</Link>
 
-          <Link className=' text-zinc-50  relative  menu group'>
-            <p onClick={(e) => toggleMenu(e, 1)} className='group-focus:text-sky-500 flex items-center justify-center'>Courses <RiArrowDropDownFill /></p>
+          <Link   to={'/courses'} className=' text-zinc-50  relative  menu group'>Courses
+            {/* <p onClick={(e) => toggleMenu(e, 1)} className='group-focus:text-sky-500 flex items-center justify-center'>Courses <RiArrowDropDownFill /></p> */}
 
-            <div
+            {/* <div
               className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-10 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-20 ${course === 1 ? 'translate-y-[0] visible' : '-translate-y-[100%]'
                 }`}
             >
@@ -148,12 +148,12 @@ const UserHeader = () => {
               <Link className='whitespace-nowrap'>English Computer Typing (ADCA)</Link>
               <Link className='whitespace-nowrap'>DCHM</Link>
               <Link className='whitespace-nowrap'>MDCA</Link>
-            </div>
+            </div> */}
 
           </Link>
 
-          <Link className=' text-zinc-50  relative  menu group'>
-            <p onClick={(e) => toggleMenu(e, 2)} className='group-focus:text-sky-500 flex items-center justify-center whitespace-nowrap'>Student Zone <RiArrowDropDownFill /></p>
+          <Link className=' text-zinc-50  relative  menu group'>Student Zone
+            {/* <p onClick={(e) => toggleMenu(e, 2)} className='group-focus:text-sky-500 flex items-center justify-center whitespace-nowrap'>Student Zone <RiArrowDropDownFill /></p>
 
             <div
               className={`flex flex-col absolute text-[.9rem] bg-[#020202] px-4 py-2 top-10 space-y-1 border-2 border-white courses transition-transform duration-300 ease-in rounded-md -z-10 ${course === 2 ? 'translate-y-[0] visible' : '-translate-y-[100%] '
@@ -162,7 +162,7 @@ const UserHeader = () => {
               <Link className='whitespace-nowrap'>Enquiry</Link>
               <Link className='whitespace-nowrap'>Certificate Verification</Link>
 
-            </div>
+            </div> */}
           </Link>
 
           <Link className=' text-zinc-50 '>Centers</Link>

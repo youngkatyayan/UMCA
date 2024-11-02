@@ -6,7 +6,7 @@ const Userlayout = (props) => {
     return (
         <div className=''>
             <UserHeader />
-            <main className='flex justify-center py-3 px-3 w-full overflow-y-auto'>
+            <main className='flex justify-center flex-col py-3 px-3 w-full overflow-y-auto'>
                 {props.children}
             </main>
             <Footer />
