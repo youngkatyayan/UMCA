@@ -1,26 +1,49 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Userlayout from '../layout/Userlayout';
+import axios from 'axios'
 const Entroll = () => {
     const navigate = useNavigate()
-    const location = useLocation();
-    const { course } = location.state || {};
+    // const location = useLocation();
+    // const { course } = location.state || {};
+    const { id } = useParams();
+    const [course, setCourse] = useState(null);
+    const [promo, setPromo] = useState('')
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
         email: '',
         state: '',
         promoCode: '',
-        district:''
+        district: ''
     });
 
-    const programDetails = {
-        name: 'Data Analyst',
-        duration: '11 months',
-        accessValidity: '335 days',
-        basePrice: 52999,
-        gstRate: 0.18
+
+    const fetchCourse = async () => {
+        try {
+            if (id) {
+                const response = await axios.post(`/api/v1/get-course-according-data/${id}`);
+                if (response.data.success) {
+                    setCourse(response.data.result[0]);
+                }
+            }
+        } catch (error) {
+            console.error('Course not fetched:', error.message);
+        }
     };
+    useEffect(() => {
+        fetchCourse();
+    }, [id]);
+
+    // handle handleProceed
+    const handleProceed = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.post('/api/v1/promocode',formData)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -30,24 +53,32 @@ const Entroll = () => {
         }));
     };
 
-    const calculatePrices = () => {
-        const gstAmount = course?.yearlyfee * programDetails.gstRate;
-        const total = course?.yearlyfee + gstAmount;
-        return {
-            basePrice: course?.yearlyfee,
-            gstAmount: gstAmount,
-            total: total
-        };
-    };
+    // handleSubmit
+    const date = new Date().toISOString().split('T')[0]
 
-    const prices = calculatePrices();
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            if (formData.promoCode && date) {
+                let promoCode = formData.promoCode
+                const { data } = await axios.post('/api/v1/promocode', { promoCode, date })
+                if (data.success) {
+                    let percentage = data.result[0].discount ? parseFloat(data.result[0].discount) : 0
+                    let total = (parseInt(course.yearlyfee, 10) * percentage) / 100
+                    setPromo(parseInt(course.yearlyfee, 10) - total)
+                }
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+
+    }
 
     return (
         <Userlayout>
-            <div className="max-h-screen bg-blue-50 p-6">
+            <div className=" bg-blue-50 sm:p-6 ">
                 <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-6">
 
-                    {/* Left Section - Form */}
                     <div className="lg:w-2/3">
                         <div className="bg-gradient-to-r from-blue-500 to-blue-400 p-4 rounded-t-lg">
                             <h2 className="text-white text-lg font-semibold">1. Basic Details</h2>
@@ -127,20 +158,7 @@ const Entroll = () => {
                                 />
                             </div>
 
-                            {/* <div className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    name="hasGST"
-                                    checked={formData.hasGST}
-                                    onChange={handleInputChange}
-                                    className="rounded text-blue-500 focus:ring-blue-500"
-                                />
-                                <label className="text-sm text-gray-600">
-                                    I have a GST Number (Optional)
-                                </label>
-                            </div> */}
-
-                            <button className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition-colors">
+                            <button className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition-colors" onClick={handleProceed}>
                                 Proceed
                             </button>
                         </div>
@@ -152,8 +170,7 @@ const Entroll = () => {
                         </div>
                     </div>
 
-                    {/* Right Section - Order Summary */}
-                    <div className="lg:w-1/3">
+                    <div className="lg:w-1/3 ">
                         <div className="bg-white p-6 rounded-lg shadow-sm">
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="text-gray-600">
@@ -179,7 +196,7 @@ const Entroll = () => {
                                     <span>₹ {course?.yearlyfee}</span>
                                 </div>
 
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center sm:gap-2 gap-1 mb-2">
                                     <input
                                         type="text"
                                         name="promoCode"
@@ -188,7 +205,7 @@ const Entroll = () => {
                                         placeholder="Enter code here"
                                         className="flex-1 p-2 border rounded"
                                     />
-                                    <button className="px-4 py-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200">
+                                    <button className="px-4 py-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200" onClick={handleSubmit}>
                                         APPLY
                                     </button>
                                 </div>
@@ -199,16 +216,9 @@ const Entroll = () => {
                                 <div className="space-y-2 text-sm">
                                     <div className="flex justify-between">
                                         <span>Total Price</span>
-                                        <span>₹ {course?.yearlyfee}</span>
+                                        <span>₹ {(promo) ? promo : course?.yearlyfee}</span>
                                     </div>
-                                    {/* <div className="flex justify-between text-gray-600">
-                                        <span>GST (18.00%)</span>
-                                        <span>₹ {prices.gstAmount}</span>
-                                    </div> */}
-                                    <div className="flex justify-between font-semibold">
-                                        <span>Grand Total</span>
-                                        <span>₹ {prices.total}</span>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

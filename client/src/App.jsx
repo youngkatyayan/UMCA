@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
+
 import Login from './components/signIn/Login.jsx';
 // import Admin from './components/admin/Admin.jsx';
 import Category from './components/admin/addMaster/Category.jsx';
@@ -7,7 +8,7 @@ import Session from './components/admin/addMaster/Session.jsx';
 import PageNotFound from './components/pages/PageNotFound.jsx';
 import Dashboard from './components/admin/Dashboard.jsx';
 import CryptoJS from 'crypto-js';
-// import React from 'react';
+import React from 'react';
 import Group from './components/admin/addMaster/Group.jsx';
 import Course from './components/admin/addMaster/Course.jsx';
 import Home from './components/user/Home.jsx';
@@ -36,7 +37,7 @@ const App = () => {
   const decryptedType = Type ? CryptoJS.AES.decrypt(Type, "Type").toString(CryptoJS.enc.Utf8) : null;
 
   const userType = `${decryptedType}-${decryptedStatus}`;
-  console.log(userType)
+  // console.log(userType)
   switch (userType) {
     case 'Admin-1':
       return (

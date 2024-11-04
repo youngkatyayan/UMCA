@@ -86,7 +86,7 @@ const Courses = () => {
     useEffect(() => {
         fetchCourse();
     }, [id]);
-    console.log(allResult)
+    // console.log(allResult)
 
     const handleNavigate = (value) => {
         navigate(`/entroll-course/${value}`)
@@ -375,7 +375,6 @@ const Courses = () => {
 
                             {/* Course Content */}
                             <div className="p-6">
-                                {/* Category & Rating */}
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="text-sm font-medium text-blue-600">{url?.groupname}</span>
                                     <div className="flex items-center">
@@ -384,17 +383,15 @@ const Courses = () => {
                                     </div>
                                 </div>
 
-                                {/* Title */}
                                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                                     {url?.coursename}
                                 </h3>
 
-                                {/* Description */}
+
                                 <p className="text-gray-600 text-[.9rem] mb-2 text-ellipsis line-clamp-2">
                                     {url?.description}
                                 </p>
-
-                                {/* Course Meta Info */}
+                                
                                 <div className="grid grid-cols-2 gap-2 mb-2">
                                     <div className="flex items-center text-sm text-gray-500">
                                         <ClockIcon />
