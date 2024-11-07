@@ -4,9 +4,10 @@ import { FaPlus } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { FaStoreAlt } from "react-icons/fa";
 import { PiStudentDuotone } from "react-icons/pi";
+import { BiSolidOffer } from "react-icons/bi";
 
 export const SuperAdminMenuList = [
-    { name: 'Dashboard', icon: <IoMdHome />, value: 'Dashboard', to: '/admin' },
+    { name: 'Dashboard', icon: <IoMdHome />, value: 'Dashboard', to: '/dashboard' },
     {
         name: 'Course Master', icon: <FaPlus />, value: 'Data', to: '', children: [
             { id: 1, name: 'Mode', value: 'Mode', to: '/create-mode' },
@@ -27,7 +28,7 @@ export const SuperAdminMenuList = [
         {id:1,name:'New ' ,value:'New',to:'/received-applicant'},
         {id:2,name:'List',value:'List',to:'/franchise'}
     ] },
-   
+    { name: 'Offer Zone', icon: <BiSolidOffer />, value: 'offer', to: '/offer' },
 ]
 
 export const FranchiseMenuList=[

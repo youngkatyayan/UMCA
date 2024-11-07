@@ -18,6 +18,7 @@ import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 import FranchiseRequest from './components/user/FranchiseRequest.jsx';
 import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
+import OfferZone from './components/admin/offer/OfferZone.jsx';
 
 
 
@@ -40,7 +41,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/admin' element={<Dashboard />} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/add-category' element={<Category />} />
           <Route path='/create-mode' element={<Mode />} />
           <Route path='/add-session' element={<Session />} />
@@ -51,6 +52,9 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/offer' element={<OfferZone />} />
+
+
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -60,7 +64,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/admin' element={<Login />} />
+          <Route path='/dashboard' element={<Login />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
