@@ -23,6 +23,7 @@ import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
 import OfferZone from './components/admin/offer/OfferZone.jsx';
 import StudentDashboard from './components/student/StudentDashboard.jsx';
+import EnrolledCourses from './components/student/EnrolledCourses.jsx';
 
 
 
@@ -72,6 +73,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<StudentDashboard/>} />
+          <Route path='/courses' element={<EnrolledCourses/>} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>

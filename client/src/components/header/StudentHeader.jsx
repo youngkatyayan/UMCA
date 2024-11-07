@@ -20,7 +20,7 @@ const StudentHeader = () => {
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
           </span> */}
-          <span className="absolute left-1/2 transform -translate-x-1/2">Branch:{decryptedType}</span>
+          <span className="absolute left-1/2 transform -translate-x-1/2">UserId:{decryptedType}</span>
 
           <div className="flex items-center ml-auto">
             <span className='px-4'>
@@ -54,7 +54,7 @@ const StudentHeader = () => {
           </div>
         )
       }
-
+        
     </>
   )
 }
