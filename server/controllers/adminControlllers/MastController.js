@@ -400,6 +400,21 @@ export const getCourseDetails = async (req, res) => {
     }
 }
 
+export const getOffer = async (req, res) => {
+    try {
+        const sql = `select * from offer `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getoffer controller" });
+
+    }
+}
+
 
 
 
@@ -455,7 +470,6 @@ export const updateSessionStatus = async (req, res) => {
 
 export const updateGroupStatus = async (req, res) => {
 
-
     try {
         const { GId, gstatus } = req.body
         const sql = `update groups set  gstatus=? where GId=? `
@@ -470,7 +484,6 @@ export const updateGroupStatus = async (req, res) => {
 
     }
 }
-
 
 
 
@@ -616,4 +629,54 @@ export const updateIncomFranchiseStatus = async (req, res) => {
     }
 };
 
+export const updateOffer = async (req, res) => {
+    try {
+        const { discount, description, courseCode, endDate, startDate, offercode, coursename } = req.body;
+        const sql = `UPDATE offer SET discount=?, description=?, endDate=?, startDate=?, offercode=?, coursename=? WHERE courseCode=?`;
+        const values = [discount, description, endDate, startDate, offercode, coursename, courseCode];
+        
+        const [result] = await db.query(sql, values)
 
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Offer ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateOffer controller" });
+
+    }
+}
+
+
+{/* Course Offer*/}
+
+export const addOffer = async (req, res) => {
+    const connection = await db.getConnection();
+    try {
+        const { categoryname, discount, description,courseCode, endDate,startDate,offercode,coursename } = req.body;
+
+
+        await connection.beginTransaction();
+        const ssql = `SELECT OfferId FROM offer ORDER BY OfferId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newOfferId = 1222;
+        if (result.length > 0) {
+            const Cmid = result[0].OfferId;
+            const lastCmid = parseInt(Cmid, 10);
+             newOfferId = lastCmid + 1; // Increment OfferId
+        }
+
+        const sql = `insert into offer (OfferId, offerCode, StartDate, EndDate, courseCode, description,coursename, discount) values(?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [newOfferId, offercode, startDate, endDate, courseCode, description,coursename, discount];
+        
+        await connection.query(sql, values)
+
+        await connection.commit();
+
+        return res.status(201).send({ success: true, message: "Offer Inserted Successfully" });
+
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in addOfferyController", error: error.message });
+
+    }
+}
