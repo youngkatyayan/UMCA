@@ -5,7 +5,7 @@ const ScrollProgressBar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY; // Get the vertical scroll position
+      const scrollPosition = window.scrollY; 
       const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrollPercentage = (scrollPosition / windowHeight) * 100;
       setScrollWidth(scrollPercentage);

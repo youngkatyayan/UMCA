@@ -7,7 +7,7 @@ export const getCourseController = async (req, res) => {
             return res.status(400).send({ error: 'ID is required' });
         }
 
-        const sql = `SELECT * FROM course WHERE CoId = ?`;
+        const sql = `select * from course cross join category on course.categoryname=category.categoryname WHERE course.Id = ?`;
         const [result] = await db.query(sql, [id]);
 
         if (result.length > 0) {
@@ -36,7 +36,7 @@ export const getCourseController = async (req, res) => {
 // most popular course 
 export const displayCourseController = async (req, res) => {
     try {
-        const sql = 'select * from course inner join category on course.categoryname=category.categoryname'
+        const sql = 'select * from course cross join category on course.categoryname=category.categoryname'
         const [result] = await db.query(sql)
         if (result) {
             return res.status(200).json({
@@ -60,3 +60,91 @@ export const displayCourseController = async (req, res) => {
         });
     }
 }
+
+// promocode promoCodeController
+// promocode promoCodeController
+export const promoCodeController = async (req, res) => {
+    try {
+        const { date, promoCode } = req.body;
+
+        if (!promoCode) {
+            return res.status(400).send({ error: 'promoCode field is required.' });
+        }
+        if (!date) {
+            return res.status(400).send({ error: 'date field is required.' });
+        }
+
+        const sql = `SELECT * FROM offer WHERE offerCode = ? AND StartDate <= ? AND EndDate >= ?`;
+        const [result] = await db.query(sql, [promoCode, date, date]);
+
+        if (result.length > 0) {
+            return res.status(200).send({
+                success: true,
+                message: 'Data accessed',
+                result,
+            });
+        } else {
+            return res.status(400).send({
+                success: false,
+                message: 'Invalid promo code.',
+            });
+        }
+    } catch (error) {
+        console.error('Something went wrong in promoCodeController:', error.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong in promoCodeController',
+            error: error.message,
+        });
+    }
+};
+ 
+
+
+// orderCourseController
+export const orderCourseController = async (req, res) => {
+    try {
+        const { name, phone, email, state, promoCode, district, course } = req.body;
+        // console.log(req.body)
+        const fields = { name, phone, email, state, promoCode, district, course };
+        for (let [key, value] of Object.entries(fields)) {
+            if (!value) {
+                return res.status(400).json({ error: `${key} is required` });
+            }
+        }
+
+        const checkSql = `SELECT * FROM ordertable WHERE email = ? AND phone = ?`;
+        const [existingRecords] = await db.query(checkSql, [email, phone]);
+
+        if (existingRecords.length > 0) {
+            return res.status(200).json({
+                success: true,
+                message: 'Data already exists in the database',
+                result: existingRecords,
+            });
+        } else {
+            const insertSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district,course) VALUES (?, ?, ?, ?, ?, ?,?)`;
+            const [insertResult] = await db.query(insertSql, [name, phone, email, state, promoCode, district, course]);
+
+            if (insertResult.affectedRows > 0) {
+                return res.status(201).json({
+                    success: true,
+                    message: 'Record successfully inserted',
+                    result: insertResult,
+                });
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Failed to insert the record',
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Something went wrong in orderCourseController:', error.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong in orderCourseController',
+            error: error.message,
+        });
+    }
+};

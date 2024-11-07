@@ -1,6 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
+
 import Login from './components/signIn/Login.jsx';
-import Admin from './components/admin/Admin.jsx';
+// import Admin from './components/admin/Admin.jsx';
 import Category from './components/admin/addMaster/Category.jsx';
 import Mode from './components/admin/addMaster/Mode.jsx';
 import Session from './components/admin/addMaster/Session.jsx';
@@ -16,15 +17,18 @@ import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 import FranchiseRequest from './components/user/FranchiseRequest.jsx';
+
+import Entroll from './components/pages/Entroll.jsx';
 import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
 import OfferZone from './components/admin/offer/OfferZone.jsx';
 
 
 
+
 const App = () => {
   // Retrieve values from localStorage and sessionStorage
-  let mobile = localStorage.getItem('uid');
+  // let mobile = localStorage.getItem('uid');
   let Status = localStorage.getItem('Status');
   let Type = sessionStorage.getItem('Status');
 
@@ -34,7 +38,7 @@ const App = () => {
   const decryptedType = Type ? CryptoJS.AES.decrypt(Type, "Type").toString(CryptoJS.enc.Utf8) : null;
 
   const userType = `${decryptedType}-${decryptedStatus}`;
-  console.log(userType)
+  // console.log(userType)
   switch (userType) {
     case 'Admin-1':
       return (
@@ -52,9 +56,13 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+
           <Route path='/offer' element={<OfferZone />} />
 
 
+
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/entroll-course/:id' element={<Entroll/>} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -70,12 +78,14 @@ const App = () => {
         </Routes>
       );
     
-      case'franchise-1':
+      case 'franchise-1':
       return (
         <Routes>
            <Route path='/login' element={<Login />} />
            <Route path='/dashboard' element={<Fdashboard />} />
            <Route path='/admission-form' element={<Admission />} />
+           <Route path='/courses' element={<Courses />} />
+           <Route path='/entroll-course/:id' element={<Entroll/>} />
         </Routes>
       )
 
@@ -85,9 +95,12 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/entroll-course/:id' element={<Entroll/>} />
+        
 
         </Routes>
       );
