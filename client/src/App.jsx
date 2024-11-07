@@ -61,17 +61,16 @@ const App = () => {
         </Routes>
       );
 
-    case 'user-0':
-      return (
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/admin' element={<Login />} />
-          <Route path='/*' element={<PageNotFound />} />
-          <Route path='/franch-request' element={<FranchiseRequest />} />
-        </Routes>
-      );
-    
+    // case 'user-0':
+    //   return (
+    //     <Routes>
+    //       <Route path='/' element={<Home />} />
+    //       <Route path='/login' element={<Login />} />
+    //       <Route path='/admin' element={<Login />} />
+    //       <Route path='/*' element={<PageNotFound />} />
+    //       <Route path='/franch-request' element={<FranchiseRequest />} />
+    //     </Routes>
+    //   );
       case 'franchise-1':
       return (
         <Routes>
@@ -82,8 +81,6 @@ const App = () => {
            <Route path='/entroll-course/:id' element={<Entroll/>} />
         </Routes>
       )
-
-
     default:
       return (
         <Routes>
@@ -94,7 +91,6 @@ const App = () => {
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/entroll-course/:id' element={<Entroll/>} />
-        
 
         </Routes>
       );
