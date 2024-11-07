@@ -79,7 +79,7 @@ const Login = () => {
                 sessionStorage.setItem('token', token)
 
                 setTimeout(() => {
-                    navigate('/admin');
+                    navigate('/dashboard');
                     window.location.reload()
                 }, 1000);
             }

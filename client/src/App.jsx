@@ -44,7 +44,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/admin' element={<Dashboard />} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/add-category' element={<Category />} />
           <Route path='/create-mode' element={<Mode />} />
           <Route path='/add-session' element={<Session />} />
@@ -55,6 +55,8 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/entroll-course/:id' element={<Entroll/>} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -70,12 +72,14 @@ const App = () => {
         </Routes>
       );
     
-      case'franchise-1':
+      case 'franchise-1':
       return (
         <Routes>
            <Route path='/login' element={<Login />} />
            <Route path='/dashboard' element={<Fdashboard />} />
            <Route path='/admission-form' element={<Admission />} />
+           <Route path='/courses' element={<Courses />} />
+           <Route path='/entroll-course/:id' element={<Entroll/>} />
         </Routes>
       )
 

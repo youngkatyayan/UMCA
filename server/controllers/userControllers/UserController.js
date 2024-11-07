@@ -62,31 +62,32 @@ export const displayCourseController = async (req, res) => {
 }
 
 // promocode promoCodeController
+// promocode promoCodeController
 export const promoCodeController = async (req, res) => {
     try {
-        const { date, promoCode } = req.body
+        const { date, promoCode } = req.body;
 
         if (!promoCode) {
-            return res.status(404).send({ error: 'promoCode fields are required.' })
+            return res.status(400).send({ error: 'promoCode field is required.' });
         }
         if (!date) {
-            return res.status(404).send({ error: 'date fields are required.' })
+            return res.status(400).send({ error: 'date field is required.' });
         }
 
-        const sql = `select * from offer where offerCode=?  AND StartDate <= ? AND EndDate >= ?`
-        const [result] = await db.query(sql, [promoCode, date, date])
-        if (result) {
+        const sql = `SELECT * FROM offer WHERE offerCode = ? AND StartDate <= ? AND EndDate >= ?`;
+        const [result] = await db.query(sql, [promoCode, date, date]);
+
+        if (result.length > 0) {
             return res.status(200).send({
                 success: true,
                 message: 'Data accessed',
-                result
-            })
-        }
-        else {
+                result,
+            });
+        } else {
             return res.status(400).send({
                 success: false,
-                message: 'Data not found',
-            })
+                message: 'Invalid promo code.',
+            });
         }
     } catch (error) {
         console.error('Something went wrong in promoCodeController:', error.message);
@@ -96,45 +97,48 @@ export const promoCodeController = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
+ 
+
 
 // orderCourseController
 export const orderCourseController = async (req, res) => {
     try {
-        const { name, phone, email, state, promoCode, district } = req.body
-        const fields = { name, phone, email, state, promoCode, district }
+        const { name, phone, email, state, promoCode, district, course } = req.body;
+        // console.log(req.body)
+        const fields = { name, phone, email, state, promoCode, district, course };
         for (let [key, value] of Object.entries(fields)) {
             if (!value) {
-                return res.status(404).send({ error: `${key} is required` })
+                return res.status(400).json({ error: `${key} is required` });
             }
         }
-        const sql = `select * from ordertable where email=? and phone=?`
-        const [result] = db.query(sql, [email, phone])
-        if (result) {
-            return res.status(200).send({
+
+        const checkSql = `SELECT * FROM ordertable WHERE email = ? AND phone = ?`;
+        const [existingRecords] = await db.query(checkSql, [email, phone]);
+
+        if (existingRecords.length > 0) {
+            return res.status(200).json({
                 success: true,
-                message: 'Data have in database',
-                result
-            })
+                message: 'Data already exists in the database',
+                result: existingRecords,
+            });
         } else {
-            const sql = `insert into ordertable (name, phone, email, state, promoCode, district ) values (?,?,?,?,?)`
-            const [result] = db.query(sql, [name, phone, email, state, promoCode, district])
-            if (result) {
-                return res.status(201).send({
-                    success: true,
-                    message: 'Proceeded',
-                    result
-                })
-            } else {
-                return res.status(404).send({
-                    success: false,
-                    message: 'Something Went wrong',
+            const insertSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district,course) VALUES (?, ?, ?, ?, ?, ?,?)`;
+            const [insertResult] = await db.query(insertSql, [name, phone, email, state, promoCode, district, course]);
 
-                })
+            if (insertResult.affectedRows > 0) {
+                return res.status(201).json({
+                    success: true,
+                    message: 'Record successfully inserted',
+                    result: insertResult,
+                });
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Failed to insert the record',
+                });
             }
         }
-
-
     } catch (error) {
         console.error('Something went wrong in orderCourseController:', error.message);
         return res.status(500).json({
@@ -143,4 +147,4 @@ export const orderCourseController = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
