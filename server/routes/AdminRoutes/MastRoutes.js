@@ -1,5 +1,5 @@
 import express from 'express'
-import { addCategory, addCourse, addGroup, addMode, addSession, franchiseRequest, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getSession, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, franchiseRequest, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 const router = express.Router()
 
 import multer from 'multer'
@@ -62,6 +62,8 @@ router.get('/get-course', getCourse)
 router.get('/get-session', getSession)
 router.get('/get-franchiseactive', getFranchise)
 router.get('/get-incomfranchise',express.static(path.join("franchreqfront","uploads")) ,getIncomFranchise)
+router.get('/get-offer', getOffer)
+
 
 router.post('/updatecostatus', updateCourseStatus) 
 router.post('/updatecmstatus', updateModeStatus) 
@@ -72,10 +74,16 @@ router.post('/updatesesstatus', updateSessionStatus)
 router.post('/update-course', updateCourse) 
 router.post('/update-category', updateCategory) 
 router.post('/update-sesson', updateSesson) 
+router.post('/update-offer', updateOffer) 
 router.post('/get-coursedetails/:CoId', getCourseDetails) 
 
 router.post('/updatefrstatus', updateFranchiseStatus) 
 router.post('/updateincfrstatus', updateIncomFranchiseStatus) 
+
+
+
+// offer routes
+router.post('/offer', addOffer) 
 
 
 // franchiseRequest from frontend
