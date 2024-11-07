@@ -21,6 +21,7 @@ import FranchiseRequest from './components/user/FranchiseRequest.jsx';
 import Entroll from './components/pages/Entroll.jsx';
 import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
+import OfferZone from './components/admin/offer/OfferZone.jsx';
 
 
 
@@ -55,6 +56,11 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+
+          <Route path='/offer' element={<OfferZone />} />
+
+
+
           <Route path='/courses' element={<Courses />} />
           <Route path='/entroll-course/:id' element={<Entroll/>} />
           <Route path='/*' element={<PageNotFound />} />
