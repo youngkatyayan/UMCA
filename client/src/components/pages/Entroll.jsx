@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Userlayout from '../layout/Userlayout';
 import axios from 'axios'
 import { ClipLoader } from 'react-spinners';
+
 const Entroll = () => {
+
     const navigate = useNavigate()
     // const location = useLocation();
     // const { course } = location.state || {};
@@ -55,6 +57,7 @@ const Entroll = () => {
                 setIsLoading(true);
                 setTimeout(() => {
                     setIsLoading(false);
+                    handlePayment()
                 }, 500);
             }
         } catch (error) {
@@ -83,16 +86,55 @@ const Entroll = () => {
                     setPromo(parseInt(course.yearlyfee, 10) - total);
                     setError(false);
                 } else {
-                    setError(true); // Set error to true for invalid promo code
+                    setError(true);
                 }
             }
         } catch (error) {
             console.log(error.message);
-            setError(true); // Optionally handle the error from axios
+            setError(true);
         }
     };
 
+    // payment process
+    const handlePayment = async () => {
+        try {
+            const orderResponse = await axios.post("/api/v1/create-order", {
+                amount: (promo) ? promo : course?.yearlyfee,
+                currency: "INR",
+            });
+            const { order } = orderResponse.data;
 
+            const options = {
+                key: rzp_live_cFGW0bIUY8JHu0,
+                amount: order.amount,
+                currency: order.currency,
+                name: "Donar",
+                description: "Donation",
+                order_id: order.id,
+                handler: async (response) => {
+                    const paymentResult = await axios.post("/api/v1/verify-payment", response);
+                    if (paymentResult.data.success) {
+                        alert("Payment successful!");
+                    } else {
+                        alert("Payment verification failed");
+                    }
+                },
+                prefill: {
+                    name: "Customer Name",
+                    email: "customer@example.com",
+                    contact: "1234567890",
+                },
+                theme: {
+                    color: "#3399cc",
+                },
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } catch (error) {
+            console.error("Error initiating payment:", error);
+        }
+    };
     return (
         <Userlayout>
 
@@ -198,66 +240,99 @@ const Entroll = () => {
                             </div>
 
                             <div className="lg:w-1/3 ">
-                                <div className="bg-white p-6 rounded-lg shadow-sm">
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <span className="text-gray-600">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                            </svg>
-                                        </span>
-                                        <h2 className="text-lg font-semibold">Order Summary</h2>
-                                    </div>
 
-                                    <div className="mb-4">
-                                        <h3 className="text-lg font-semibold">{course?.coursename}</h3>
-                                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                                            <span>Duration: {course?.duration}</span>
-                                            {/* <span>•</span>
-                                    <span>Access Validity: {programDetails.accessValidity}</span> */}
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="flex justify-between mb-2">
-                                            <span>Program Fees</span>
-                                            <span>₹ {course?.yearlyfee}</span>
-                                        </div>
-
-                                        <div className="flex items-center sm:gap-2 gap-1 mb-2">
-                                            <input
-                                                type="text"
-                                                name="promoCode"
-                                                value={formData.promoCode}
-                                                onChange={handleInputChange}
-                                                placeholder="Enter code here"
-                                                className="flex-1 p-2 border rounded"
-                                            />
-                                            <button className="px-4 py-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200" onClick={handleSubmit}>
-                                                APPLY
-                                            </button>
-                                        </div>
-                                        {error && <p className="text-red-600">Invalid promo code.</p>}  {/* Display error message */}
-
-                                    </div>
-
-                                    <div className="border-t pt-4">
-                                        <h3 className="font-semibold mb-2">Billing Details</h3>
-                                        <div className="space-y-2 text-sm">
-                                            <div className="flex justify-between">
-                                                <span>Total Price</span>
-                                                <span>₹ {(promo) ? promo : course?.yearlyfee}</span>
+                                {
+                                    (course?.yearlyfee === '0' ? (
+                                        <>
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <span className="text-gray-600">
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                    </svg>
+                                                </span>
+                                                <h2 className="text-lg font-semibold">Order Summary</h2>
                                             </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
+                                            <div className="mb-4">
+                                                <h3 className="text-lg font-semibold">{course?.coursename}</h3>
+                                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                                    <span>Duration: {course?.duration}</span>
 
-        </Userlayout>
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <div className="flex justify-between mb-2">
+                                                    <span>Program Fees</span>
+                                                    <span>₹ {course?.yearlyfee === '0' && "Free"}</span>
+                                                </div>
+                                            </div>
+
+                                        </>
+                                    ) : (
+                                        <div className="bg-white p-6 rounded-lg shadow-sm">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <span className="text-gray-600">
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                    </svg>
+                                                </span>
+                                                <h2 className="text-lg font-semibold">Order Summary</h2>
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <h3 className="text-lg font-semibold">{course?.coursename}</h3>
+                                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                                    <span>Duration: {course?.duration}</span>
+
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <div className="flex justify-between mb-2">
+                                                    <span>Program Fees</span>
+                                                    <span>₹ {course?.yearlyfee}</span>
+                                                </div>
+
+                                                <div className="flex items-center sm:gap-2 gap-1 mb-2">
+                                                    <input
+                                                        type="text"
+                                                        name="promoCode"
+                                                        value={formData.promoCode}
+                                                        onChange={handleInputChange}
+                                                        placeholder="Enter code here"
+                                                        className="flex-1 p-2 border rounded"
+                                                    />
+                                                    <button className="px-4 py-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200" onClick={handleSubmit}>
+                                                        APPLY
+                                                    </button>
+                                                </div>
+                                                {error && <p className="text-red-600">Invalid promo code.</p>}  {/* Display error message */}
+
+                                            </div>
+
+                                            <div className="border-t pt-4">
+                                                <h3 className="font-semibold mb-2">Billing Details</h3>
+                                                <div className="space-y-2 text-sm">
+                                                    <div className="flex justify-between">
+                                                        <span>Total Price</span>
+                                                        <span>₹ {(promo) ? promo : course?.yearlyfee}</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+
+
+                            </div>
+                        </div >
+                    </div >
+                )}
+            </div >
+
+        </Userlayout >
     );
 };
 

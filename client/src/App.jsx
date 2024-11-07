@@ -22,6 +22,7 @@ import Entroll from './components/pages/Entroll.jsx';
 import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
 import OfferZone from './components/admin/offer/OfferZone.jsx';
+import StudentDashboard from './components/student/StudentDashboard.jsx';
 
 
 
@@ -58,33 +59,35 @@ const App = () => {
           <Route path='/franch-request' element={<FranchiseRequest />} />
 
           <Route path='/offer' element={<OfferZone />} />
-
-
-
           <Route path='/courses' element={<Courses />} />
+          <Route path='/courses/:id' element={<Courses />} />
           <Route path='/entroll-course/:id' element={<Entroll/>} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
 
-    // case 'user-0':
-    //   return (
-    //     <Routes>
-    //       <Route path='/' element={<Home />} />
-    //       <Route path='/login' element={<Login />} />
-    //       <Route path='/admin' element={<Login />} />
-    //       <Route path='/*' element={<PageNotFound />} />
-    //       <Route path='/franch-request' element={<FranchiseRequest />} />
-    //     </Routes>
-    //   );
+    case 'Student-2':
+      return (
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<StudentDashboard/>} />
+          <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
+        </Routes>
+      );
       case 'franchise-1':
       return (
         <Routes>
+           <Route path='/' element={<Home />} />
            <Route path='/login' element={<Login />} />
            <Route path='/dashboard' element={<Fdashboard />} />
            <Route path='/admission-form' element={<Admission />} />
            <Route path='/courses' element={<Courses />} />
            <Route path='/entroll-course/:id' element={<Entroll/>} />
+           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/entroll-course/:id' element={<Entroll/>} />
         </Routes>
       )
     default:
