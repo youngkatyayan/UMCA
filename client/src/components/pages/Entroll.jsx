@@ -49,21 +49,24 @@ const Entroll = () => {
     }, [id]);
 
     // handle handleProceed
+
     const handleProceed = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        console.log("Proceed button clicked");
+    
         try {
-            const { data } = await axios.post('/api/v1/order-course', formData)
+            const { data } = await axios.post('/api/v1/order-course', formData);
             if (data.success) {
                 setIsLoading(true);
                 setTimeout(() => {
                     setIsLoading(false);
-                    handlePayment()
+                    handlePayment();
                 }, 500);
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
-    }
+    };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -95,17 +98,27 @@ const Entroll = () => {
         }
     };
 
-    // payment process
+    // Payment process
     const handlePayment = async () => {
+        if (!window.Razorpay) {
+            console.error("Razorpay SDK not loaded");
+            return;
+        }
+    
         try {
             const orderResponse = await axios.post("/api/v1/create-order", {
-                amount: (promo) ? promo : course?.yearlyfee,
+                amount: 1,
                 currency: "INR",
             });
+    
             const { order } = orderResponse.data;
-
+            if (!order) {
+                console.error("Order creation failed");
+                return;
+            }
+    
             const options = {
-                key: rzp_live_cFGW0bIUY8JHu0,
+                key: "rzp_live_cFGW0bIUY8JHu0",
                 amount: order.amount,
                 currency: order.currency,
                 name: "Donar",
@@ -128,7 +141,9 @@ const Entroll = () => {
                     color: "#3399cc",
                 },
             };
-
+    
+            console.log("Razorpay options:", options);
+    
             const rzp = new window.Razorpay(options);
             rzp.open();
         } catch (error) {
