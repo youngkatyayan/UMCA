@@ -1,8 +1,8 @@
 import express from 'express'
-import { allstudentCourses } from '../../controllers/studentController/StudentController'
+import { allstudentCourses } from '../../controllers/studentController/StudentController.js'
 
 const router=new express.Router()
 
-// router.get('get-studcourse',allstudentCourses)
+router.get('get-studcourse',allstudentCourses)
 
 export default router
