@@ -29,6 +29,10 @@ export const SuperAdminMenuList = [
         {id:2,name:'List',value:'List',to:'/franchise'}
     ] },
     { name: 'Offer Zone', icon: <BiSolidOffer />, value: 'offer', to: '/offer' },
+    { name: 'Create Announcement', icon: <FaStoreAlt />, value: 'Create Announcement', to: '',children:[
+        {id:1,name:'Students ' ,value:'Students',to:'/student-announcement'},
+        {id:2,name:'Franchise',value:'Franchise',to:'/announcements'}
+    ] },
 ]
 
 export const FranchiseMenuList=[
@@ -39,6 +43,9 @@ export const FranchiseMenuList=[
 
 export const StudentMenuList=[
     {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
-    {name: 'Enrolled courses', icon:<PiStudentDuotone />,value:'Enrolled courses',to:'/courses'},
-    {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
+    {name: 'Enrolled courses', icon:<PiStudentDuotone />,value:'Enrolled courses',to:'',children:[
+        { id: 1, name: 'Skill Courses', value: 'Skill Courses', to: '/enrolled-courses' },
+        { id: 2, name: 'Degree Program', value: 'Degree Program', to: '/degreecourses' },
+    ]},
+    {name: 'Certificate', icon:<PiStudentDuotone />,value:'Certificate',to:'/certificate'},
 ]

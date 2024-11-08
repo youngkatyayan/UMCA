@@ -1,6 +1,7 @@
 import { db } from "../../utils/db.js";
 import nodemailer from 'nodemailer'
 import crypto from "crypto"
+import Category from "../../../client/src/components/admin/addMaster/Category.jsx";
 
 export const addGroup = async (req, res) => {
     const connection = await db.getConnection();
@@ -275,8 +276,60 @@ export const franchiseRequest = async (req, res) => {
         if (connection) connection.release();
     }
 };
+export const addStudannoument = async (req, res) => {
 
+    console.log(req.body);
 
+    const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA'; 
+    console.log(`image1: ${image1}`);
+  
+    const connection = await db.getConnection();
+  
+    try {
+      const { title, description, date, category } = req.body;
+      const requiredFields = { title, description, date, category };
+  
+      // Check for missing fields
+      for (const [field, value] of Object.entries(requiredFields)) {
+        if (!value) {
+          return res.status(400).send({ success: false, error: `${field} is required` });
+        }
+      }
+  
+      // Start transaction
+      await connection.beginTransaction();
+  
+      // Get the last AId from the announcement table
+      const ssql = `SELECT AId FROM announcement ORDER BY AId DESC LIMIT 1`;
+      const [result] = await connection.query(ssql);
+  
+      let newAId = 2001;
+      if (result.length > 0) {
+        const AId = result[0].AId;
+        const lastAId = parseInt(AId, 10);
+        newAId = lastAId + 1; // Increment AId
+      }
+  
+      // Insert into the announcement table
+      const sql = `INSERT INTO announcement (AId, title, description, date, category, brochure) 
+                   VALUES (?, ?, ?, ?, ?, ?)`;
+      const values = [newAId, title, description, date, category, image1]; // Include image1 in the insert
+      await connection.query(sql, values);
+  
+      // Commit transaction
+      await connection.commit();
+  
+      return res.status(201).send({ success: true, message: "Announcement Inserted Successfully", result });
+  
+    } catch (error) {
+      // Rollback on error
+      await connection.rollback();
+      return res.status(500).send({ success: false, message: "Error in addStudannouncement", error: error.message });
+    } finally {
+      if (connection) connection.release();
+    }
+  };
+  
 
 
 export const getGroup = async (req, res) => {
@@ -403,6 +456,21 @@ export const getCourseDetails = async (req, res) => {
 export const getOffer = async (req, res) => {
     try {
         const sql = `select * from offer `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getoffer controller" });
+
+    }
+}
+
+export const getAnnouncement = async (req, res) => {
+    try {
+        const sql = `select * from announcement `
 
         const [result] = await db.query(sql)
 
@@ -631,7 +699,25 @@ export const updateIncomFranchiseStatus = async (req, res) => {
 
 export const updateOffer = async (req, res) => {
     try {
-        const { discount, description, courseCode, endDate, startDate, offercode, coursename } = req.body;
+        const {AId, brochure,  category, date,  description, title } = req.body;
+        const sql = `UPDATE announcement SET brochure=?, category=?, date=?, description=?, title=? WHERE AId=?`;
+        const values = [brochure, category, date, description, title, AId];
+
+        
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Announcement ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateAnnouncement controller" });
+
+    }
+}
+
+export const updateAnouncement = async (req, res) => {
+    try {
+        const { AId, brochure, category, date, description, title } = req.body;
         const sql = `UPDATE offer SET discount=?, description=?, endDate=?, startDate=?, offercode=?, coursename=? WHERE courseCode=?`;
         const values = [discount, description, endDate, startDate, offercode, coursename, courseCode];
         

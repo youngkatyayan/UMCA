@@ -1,4 +1,4 @@
-import {Routes, Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import Login from './components/signIn/Login.jsx';
 // import Admin from './components/admin/Admin.jsx';
@@ -24,6 +24,10 @@ import Admission from './components/franchise/Admission.jsx';
 import OfferZone from './components/admin/offer/OfferZone.jsx';
 import StudentDashboard from './components/student/StudentDashboard.jsx';
 import EnrolledCourses from './components/student/EnrolledCourses.jsx';
+import Certificate from './components/student/Certificate.jsx';
+import DegreeProgram from './components/student/DegreeProgram.jsx';
+import FranchAnnounce from './components/admin/announcement/FranchAnnounce.jsx';
+import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
 
 
 
@@ -62,7 +66,13 @@ const App = () => {
           <Route path='/offer' element={<OfferZone />} />
           <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
-          <Route path='/entroll-course/:id' element={<Entroll/>} />
+          <Route path='/entroll-course/:id' element={<Entroll />} />
+
+          {/* announcement  */}
+
+          <Route path='/student-announcement' element={<StudentAnnounc />} />
+          <Route path='/announcements' element={<FranchAnnounce />} />
+
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -72,24 +82,26 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/dashboard' element={<StudentDashboard/>} />
-          <Route path='/courses' element={<EnrolledCourses/>} />
+          <Route path='/dashboard' element={<StudentDashboard />} />
+          <Route path='/enrolled-courses' element={<EnrolledCourses />} />
+          <Route path='/degreecourses' element={<DegreeProgram />} />
+          <Route path='/certificate' element={<Certificate />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );
-      case 'franchise-1':
+    case 'franchise-1':
       return (
         <Routes>
-           <Route path='/' element={<Home />} />
-           <Route path='/login' element={<Login />} />
-           <Route path='/dashboard' element={<Fdashboard />} />
-           <Route path='/admission-form' element={<Admission />} />
-           <Route path='/courses' element={<Courses />} />
-           <Route path='/entroll-course/:id' element={<Entroll/>} />
-           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/dashboard' element={<Fdashboard />} />
+          <Route path='/admission-form' element={<Admission />} />
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/entroll-course/:id' element={<Entroll />} />
+          <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-          <Route path='/entroll-course/:id' element={<Entroll/>} />
+          <Route path='/entroll-course/:id' element={<Entroll />} />
         </Routes>
       )
     default:
@@ -101,7 +113,7 @@ const App = () => {
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-          <Route path='/entroll-course/:id' element={<Entroll/>} />
+          <Route path='/entroll-course/:id' element={<Entroll />} />
 
         </Routes>
       );

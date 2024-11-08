@@ -34,7 +34,7 @@ const EnrolledCourses = () => {
 
             <div className='w-full bg-gray-200 p-2'>
                 <h1 className='text-white text-xl m-4 p-3 font-serif font-bold bg-slate-500 rounded-md '>Enrolled Course</h1>
-                <form onSubmit={handleSubmit} className="flex items-center mb-8">
+                <form onSubmit={handleSubmit} className="flex items-center mb-8 mx-6">
                     <label htmlFor="group" className="m-1 font-serif text-lg px-2">Search course</label>
                     <input
                         required
@@ -43,11 +43,11 @@ const EnrolledCourses = () => {
                         value={formdata.group}
                         onChange={handleChange}
                         placeholder="Search course"
-                        className="p-2 rounded-md my-2 shadow-md"
+                        className="p-1 rounded-l-3xl my-2 shadow-md w-1/4"
                     />
                     <button
                         type="submit"
-                        className="transition-shadow  bg-gray-700 hover:bg-gray-800 border-1    text-white rounded-r-3xl px-2 py-2 flex items-center justify-center  w-16"
+                        className="transition-shadow  bg-gray-700 hover:bg-gray-800 border-1    text-white rounded-r-3xl p-1 flex items-center justify-center  w-16"
                     >
                         <FaSearch className="m-1" />
                     </button>
