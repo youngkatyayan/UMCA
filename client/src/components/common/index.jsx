@@ -36,3 +36,9 @@ export const FranchiseMenuList=[
     {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
 
 ]
+
+export const StudentMenuList=[
+    {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
+    {name: 'Enrolled courses', icon:<PiStudentDuotone />,value:'Enrolled courses',to:'/courses'},
+    {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
+]
