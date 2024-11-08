@@ -31,7 +31,13 @@ const Entroll = () => {
         }))
     }, [course]);
 
-    // console.log(course)
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
     // fetch total couse
     const fetchCourse = async () => {
         try {
@@ -49,37 +55,6 @@ const Entroll = () => {
         fetchCourse();
     }, [id]);
 
-    // handle handleProceed
-
-    const handleProceed = async (e) => {
-        e.preventDefault();
-        console.log("Proceed button clicked");
-
-        try {
-            const { data } = await axios.post('/api/v1/order-course', formData);
-
-            if (data.success) {
-                setIsLoading(true);
-                setTimeout(() => {
-                    setIsLoading(false);
-                    handlePayment();
-                }, 500);
-            } else {
-                alert("Order was not successful, please try again.");
-
-            }
-        } catch (error) {
-            console.error("Error during order creation:", error.message);
-        }
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
 
     // handleSubmit
     const date = new Date().toISOString().split('T')[0]
@@ -103,6 +78,28 @@ const Entroll = () => {
         }
     };
 
+    // handle handleProceed
+    const handleProceed = async (e) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.post('/api/v1/order-course', formData);
+            if (data.success) {
+                setIsLoading(true);
+                setTimeout(() => {
+                    setIsLoading(false);
+                    // sendPassword();
+                    handlePayment();
+                }, 500);
+            } else {
+                alert("Order was not successful, please try again.");
+
+            }
+        } catch (error) {
+            console.error("Error during order creation:", error.message);
+        }
+    };
+
+    // handle payment
     const handlePayment = async () => {
         const { CoId } = course;
         if (!CoId) {
@@ -136,19 +133,7 @@ const Entroll = () => {
                 description: course?.description,
                 order_id: order.id,
                 handler: async (response) => {
-                    try {
-                        const paymentResult = await axios.post("/api/v1/verify-payment", {
-                            ...response, ...formData, CoId
-                        });
-                        if (paymentResult.data.success) {
-                            alert("Payment successful!");
-                        } else {
-                            alert(paymentResult.data.message || "Payment verification failed.");
-                        }
-                    } catch (error) {
-                        console.error("Error verifying payment:", error);
-                        alert("Payment verification encountered an error.");
-                    }
+                    await handlePaymentVerification(response);
                 },
                 prefill: {
                     contact: formData?.phone,
@@ -173,6 +158,39 @@ const Entroll = () => {
         }
     };
 
+
+    // Handle payment verification after Razorpay payment success
+    const handlePaymentVerification = async (response) => {
+        const { CoId } = course;
+        try {
+            const paymentResult = await axios.post("/api/v1/verify-payment", {
+                ...response, ...formData, CoId
+            });
+
+            if (paymentResult.data.success) {
+                alert("Payment successful!");    
+                setTimeout(() => {
+                    setIsLoading(false);
+                    sendPassword();
+                }, 500);
+            } else {
+                alert(paymentResult.data.message || "Payment verification failed.");
+            }
+        } catch (error) {
+            console.error("Error verifying payment:", error);
+            alert("Payment verification encountered an error.");
+        }
+    };
+
+    // sendpassword to user
+    const sendPassword = async () => {
+        try {
+            const response = await axios.post('/api/v1/send-password', { email: formData.email });
+            alert(response.data.message);
+        } catch (error) {
+            alert(error.response ? error.response.data.message : 'Something went wrong');
+        }
+    };
 
 
     return (

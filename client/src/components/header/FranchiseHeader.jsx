@@ -2,19 +2,38 @@ import React, { useState } from 'react'
 import { CiSettings } from "react-icons/ci";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { AiOutlineMenu } from 'react-icons/ai';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import CryptoJS from 'crypto-js';
 
 const FranchiseHeader = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [openSideBar,setOpenSideBar] = useState(false)
+  const handleDelete = async (req, res) => {
+    try {
 
-  const uid= localStorage.getItem('uid')
+      const { data } = await axios.delete('/api/v1/logout')
+      if (data.success) {
+        toast.success(data.message)
+        localStorage.clear()
+        sessionStorage.clear()
+        window.location.href = '/login'
+      }
+      else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+
+  const uid = localStorage.getItem('uid')
   const decryptedType = uid ? CryptoJS.AES.decrypt(uid, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   return (
     <>
-
+      <ToastContainer />
       <div className="flex items-start justify-center ">
         <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
           {/* <span >
@@ -30,7 +49,7 @@ const FranchiseHeader = () => {
               <IoIosNotificationsOutline />
             </span>
             <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings  className='me-6' />
+              <CiSettings className='me-6' />
             </span>
           </div>
         </div>
