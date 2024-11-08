@@ -35,3 +35,22 @@ export const loginController = async (req, res) => {
         });
     }
 };
+
+
+// logout controller
+export const logoutController = async (req, res) => {
+    try {
+        res.clearCookie("token");
+        return res.status(200).send({
+            success: true,
+            message: "Successfully logged out",
+            data: [],
+        });
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: "Something went wrong in deleteuser controller",
+            error: error.message,
+        });
+    }
+}

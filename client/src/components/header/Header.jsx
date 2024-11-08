@@ -2,20 +2,39 @@ import React, { useState } from 'react'
 import { CiSettings } from "react-icons/ci";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { AiOutlineMenu } from 'react-icons/ai';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios'
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [openSideBar,setOpenSideBar] = useState(false)
+  // const [openSideBar, setOpenSideBar] = useState(false)
+
+
+  const handleDelete = async (req, res) => {
+    try {
+
+      const { data } = await axios.delete('/api/v1/logout')
+      if (data.success) {
+        toast.success(data.message)
+        localStorage.clear()
+        sessionStorage.clear()
+        window.location.href='/login'
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   return (
     <>
-
+      <ToastContainer />
       <div className="flex items-start justify-center ">
         <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
-          {/* <span >
-            <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
-          </span> */}
+
           <span className="absolute left-1/2 transform -translate-x-1/2">User:</span>
 
           <div className="flex items-center ml-auto">
@@ -26,7 +45,7 @@ const Header = () => {
               <IoIosNotificationsOutline />
             </span>
             <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings  className='me-6' />
+              <CiSettings className='me-6' />
             </span>
           </div>
         </div>

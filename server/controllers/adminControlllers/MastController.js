@@ -602,7 +602,7 @@ export const updateIncomFranchiseStatus = async (req, res) => {
                 html: `<p>Hello,</p><p>Your UMCA franchise request has been approved. Please log in using the following credentials:<br/></p><p><strong>User ID:</strong> ${cmmob}</p><p><strong>Password:</strong> ${password}</p>`, // html body
             });
 
-            console.log('Email sent:', info.messageId);
+            // console.log('Email sent:', info.messageId);
 
             return res.status(200).send({
                 success: true,

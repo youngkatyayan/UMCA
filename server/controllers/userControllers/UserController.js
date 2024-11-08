@@ -100,7 +100,6 @@ export const promoCodeController = async (req, res) => {
 };
 
 
-
 // orderCourseController
 export const orderCourseController = async (req, res) => {
     const connection = await db.getConnection(); 
