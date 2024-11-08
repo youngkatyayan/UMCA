@@ -1,6 +1,6 @@
 import { db } from "../../utils/db.js";
 
-export const getGroup = async (req, res) => {
+export const allstudentCourses = async (req, res) => {
     try {
         const sql = `select * from ordertable where `
         const [result] = await db.query(sql)
