@@ -103,10 +103,11 @@ export const promoCodeController = async (req, res) => {
 
 // orderCourseController
 export const orderCourseController = async (req, res) => {
+    const connection = await db.getConnection(); 
     try {
+        await connection.beginTransaction(); 
         const { name, phone, email, state, promoCode, district, course } = req.body;
         const fields = { name, phone, email, state, district, course };
-
         for (let [key, value] of Object.entries(fields)) {
             if (!value) {
                 return res.status(400).json({ error: `${key} is required` });
@@ -114,7 +115,7 @@ export const orderCourseController = async (req, res) => {
         }
 
         const checkSql = `SELECT * FROM ordertable WHERE email = ? AND phone = ? AND course=?`;
-        const [existingRecords] = await db.query(checkSql, [email, phone,course]);
+        const [existingRecords] = await connection.query(checkSql, [email, phone, course]);
 
         if (existingRecords.length > 0) {
             return res.status(200).json({
@@ -123,19 +124,19 @@ export const orderCourseController = async (req, res) => {
                 result: existingRecords,
             });
         } else {
-            // Insert data into `ordertable`
             const insertOrderSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district, course) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-            const [insertOrderResult] = await db.query(insertOrderSql, [name, phone, email, state, promoCode, district, course]);
+            const [insertOrderResult] = await connection.query(insertOrderSql, [name, phone, email, state, promoCode, district, course]);
 
             if (insertOrderResult.affectedRows > 0) {
-                const Type = "Student"
-                const Status = "2"
-                const password = Math.floor(parseInt(phone.slice(6),10) + Math.random() * 900000);
+                const Type = "Student";
+                const Status = "2";
+                const password = Math.floor(parseInt(phone.slice(6), 10) + Math.random() * 900000);
 
-                const insertUserSql = `INSERT INTO users (name, email,mobile,Type,Status,password) VALUES (?, ?,?,?,?,?)`;
-                const [insertUserResult] = await db.query(insertUserSql, [name, email, phone, Type, Status, password]);
+                const insertUserSql = `INSERT INTO users (name, email, mobile, Type, Status, password) VALUES (?, ?, ?, ?, ?, ?)`;
+                const [insertUserResult] = await connection.query(insertUserSql, [name, email, phone, Type, Status, password]);
 
                 if (insertUserResult.affectedRows > 0) {
+                    await connection.commit();
                     return res.status(201).json({
                         success: true,
                         message: 'Record successfully inserted in both tables',
@@ -145,12 +146,14 @@ export const orderCourseController = async (req, res) => {
                         },
                     });
                 } else {
+                    await connection.rollback();
                     return res.status(500).json({
                         success: false,
                         message: 'Failed to insert the record in the users table',
                     });
                 }
             } else {
+                await connection.rollback();
                 return res.status(500).json({
                     success: false,
                     message: 'Failed to insert the record in the ordertable',
@@ -158,12 +161,15 @@ export const orderCourseController = async (req, res) => {
             }
         }
     } catch (error) {
+        await connection.rollback();
         console.error('Something went wrong in orderCourseController:', error.message);
         return res.status(500).json({
             success: false,
             message: 'Something went wrong in orderCourseController',
             error: error.message,
         });
+    } finally {
+        connection.release();
     }
 };
 

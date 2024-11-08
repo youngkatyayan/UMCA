@@ -23,6 +23,7 @@ const Entroll = () => {
         district: '',
         course: ''
     });
+
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
@@ -53,18 +54,22 @@ const Entroll = () => {
     const handleProceed = async (e) => {
         e.preventDefault();
         console.log("Proceed button clicked");
-    
+
         try {
             const { data } = await axios.post('/api/v1/order-course', formData);
+
             if (data.success) {
                 setIsLoading(true);
                 setTimeout(() => {
                     setIsLoading(false);
                     handlePayment();
                 }, 500);
+            } else {
+                alert("Order was not successful, please try again.");
+
             }
         } catch (error) {
-            console.log(error.message);
+            console.error("Error during order creation:", error.message);
         }
     };
 
@@ -98,58 +103,78 @@ const Entroll = () => {
         }
     };
 
-    // Payment process
     const handlePayment = async () => {
-        if (!window.Razorpay) {
-            console.error("Razorpay SDK not loaded");
+        const { CoId } = course;
+        if (!CoId) {
+            alert("Required information missing. Unable to proceed with payment.");
             return;
         }
-    
+
+        if (!window.Razorpay) {
+            console.error("Razorpay SDK not loaded");
+            alert("Razorpay SDK is not loaded. Please refresh and try again.");
+            return;
+        }
         try {
             const orderResponse = await axios.post("/api/v1/create-order", {
                 amount: 1,
                 currency: "INR",
             });
-    
+
             const { order } = orderResponse.data;
             if (!order) {
                 console.error("Order creation failed");
+                alert("Order creation failed. Please try again.");
                 return;
             }
-    
+
             const options = {
                 key: "rzp_live_cFGW0bIUY8JHu0",
                 amount: order.amount,
                 currency: order.currency,
-                name: "Donar",
-                description: "Donation",
+                cname: course?.coursename,
+                description: course?.description,
                 order_id: order.id,
                 handler: async (response) => {
-                    const paymentResult = await axios.post("/api/v1/verify-payment", response);
-                    if (paymentResult.data.success) {
-                        alert("Payment successful!");
-                    } else {
-                        alert("Payment verification failed");
+                    try {
+                        const paymentResult = await axios.post("/api/v1/verify-payment", {
+                            ...response, ...formData, CoId
+                        });
+                        if (paymentResult.data.success) {
+                            alert("Payment successful!");
+                        } else {
+                            alert(paymentResult.data.message || "Payment verification failed.");
+                        }
+                    } catch (error) {
+                        console.error("Error verifying payment:", error);
+                        alert("Payment verification encountered an error.");
                     }
                 },
                 prefill: {
-                    name: "Customer Name",
-                    email: "customer@example.com",
-                    contact: "1234567890",
+                    contact: formData?.phone,
+                    email: formData?.email,
+                    name: formData?.name,
                 },
                 theme: {
                     color: "#3399cc",
                 },
             };
-    
-            console.log("Razorpay options:", options);
-    
+
             const rzp = new window.Razorpay(options);
+            rzp.on("payment.failed", (response) => {
+                alert("Payment failed. Please try again.");
+                console.error("Payment failed:", response.error);
+            });
+
             rzp.open();
         } catch (error) {
             console.error("Error initiating payment:", error);
+            alert("Error initiating payment. Please try again later.");
         }
     };
+
+
+
     return (
         <Userlayout>
 
