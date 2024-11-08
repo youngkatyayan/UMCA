@@ -18,7 +18,9 @@ const FranchiseHeader = () => {
         toast.success(data.message)
         localStorage.clear()
         sessionStorage.clear()
-        window.location.href = '/login'
+       setTimeout(() => {
+         window.location.href = '/login'
+       },500);
       }
       else {
         toast.error(data.message)
@@ -33,8 +35,8 @@ const FranchiseHeader = () => {
   const decryptedType = uid ? CryptoJS.AES.decrypt(uid, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   return (
     <>
-      <ToastContainer />
       <div className="flex items-start justify-center ">
+        <ToastContainer />
         <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />

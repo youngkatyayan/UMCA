@@ -3,12 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Userlayout from '../layout/Userlayout';
 import axios from 'axios'
 import { ClipLoader } from 'react-spinners';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Entroll = () => {
-
     const navigate = useNavigate()
-    // const location = useLocation();
-    // const { course } = location.state || {};
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
@@ -24,6 +22,7 @@ const Entroll = () => {
         course: ''
     });
 
+    // console.log(course)
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
@@ -54,7 +53,6 @@ const Entroll = () => {
     useEffect(() => {
         fetchCourse();
     }, [id]);
-
 
     // handleSubmit
     const date = new Date().toISOString().split('T')[0]
@@ -87,12 +85,14 @@ const Entroll = () => {
                 setIsLoading(true);
                 setTimeout(() => {
                     setIsLoading(false);
-                    // sendPassword();
-                    handlePayment();
+                    if (course?.yearlyfee === '0') {
+                        sendPassword();
+                    } else {
+                        handlePayment();
+                    }
                 }, 500);
             } else {
                 alert("Order was not successful, please try again.");
-
             }
         } catch (error) {
             console.error("Error during order creation:", error.message);
@@ -106,7 +106,6 @@ const Entroll = () => {
             alert("Required information missing. Unable to proceed with payment.");
             return;
         }
-
         if (!window.Razorpay) {
             console.error("Razorpay SDK not loaded");
             alert("Razorpay SDK is not loaded. Please refresh and try again.");
@@ -114,7 +113,7 @@ const Entroll = () => {
         }
         try {
             const orderResponse = await axios.post("/api/v1/create-order", {
-                amount: 1,
+                amount: course?.yearlyfee,
                 currency: "INR",
             });
 
@@ -124,7 +123,6 @@ const Entroll = () => {
                 alert("Order creation failed. Please try again.");
                 return;
             }
-
             const options = {
                 key: "rzp_live_cFGW0bIUY8JHu0",
                 amount: order.amount,
@@ -144,7 +142,6 @@ const Entroll = () => {
                     color: "#3399cc",
                 },
             };
-
             const rzp = new window.Razorpay(options);
             rzp.on("payment.failed", (response) => {
                 alert("Payment failed. Please try again.");
@@ -168,11 +165,11 @@ const Entroll = () => {
             });
 
             if (paymentResult.data.success) {
-                alert("Payment successful!");    
+                toast.success("Payment successful!");
                 setTimeout(() => {
                     setIsLoading(false);
                     sendPassword();
-                }, 500);
+                }, 400);
             } else {
                 alert(paymentResult.data.message || "Payment verification failed.");
             }
@@ -186,7 +183,12 @@ const Entroll = () => {
     const sendPassword = async () => {
         try {
             const response = await axios.post('/api/v1/send-password', { email: formData.email });
-            alert(response.data.message);
+            if (response.data.success) {
+                toast.success(response.data.message);
+                setTimeout(() => {
+                    navigate('/login')
+                }, 2000);
+            }
         } catch (error) {
             alert(error.response ? error.response.data.message : 'Something went wrong');
         }
@@ -195,7 +197,7 @@ const Entroll = () => {
 
     return (
         <Userlayout>
-
+            <ToastContainer />
             <div>
                 {isLoading ? (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>

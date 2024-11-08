@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import { db } from '../../utils/db.js'
 import nodemailer from 'nodemailer'
 dotenv.config()
-import { loginController,logoutController } from '../../controllers/signInControllers/LoginController.js'
+import { loginController, logoutController } from '../../controllers/signInControllers/LoginController.js'
 // import { authToken } from '../../middlewares/AuthMiddleware.js'
 const router = express.Router()
 
@@ -45,7 +45,7 @@ router.post("/create-order", async (req, res) => {
 
 // Endpoint to verify payment signature
 router.post("/verify-payment", async (req, res) => {
-    const { razorpay_order_id, CoId, razorpay_payment_id, razorpay_signature, email, phone, cname } = req.body;
+    const { razorpay_order_id, CoId, razorpay_payment_id, razorpay_signature, email, phone, course } = req.body;
 
     console.log(req.body);
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -79,7 +79,7 @@ router.post("/verify-payment", async (req, res) => {
             email,
             CoId,
             phone,
-            cname
+            course
         ]);
 
         if (insertResult.affectedRows === 0) {
@@ -136,19 +136,38 @@ router.post("/send-password", async (req, res) => {
             to: user.email,
             subject: 'Go to Your Dashboard',
             html: `
-        <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px; max-width: 600px;">
-            <h2 style="color: #4CAF50;">Welcome to Your Dashboard!</h2>
-            <p>Hello,</p>
-            <p>We received a request to access your dashboard. Here are your login details:</p>
-            <div style="background-color: #f9f9f9; padding: 15px; border: 1px dashed #ccc; border-radius: 5px; margin: 10px 0;">
-                <strong style="color: #333;">Your Password:</strong> 
-                <span style="font-size: 16px; color: #ff5722;">${user.password}</span>
-            </div>
-            <p>Please keep this information secure, and do not share it with anyone.</p>
-            <p style="margin-top: 20px;">If you didn’t request this email, please contact our support team.</p>
-            <p>Thank you,<br>Your Company Name</p>
-        </div>
-    `,
+            <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px; max-width: 600px;">
+    <h2 style="color: #4CAF50;">Welcome to Your Dashboard!</h2>
+    <p>Hello,</p>
+    <p>We received a request to access your dashboard. Here are your login details:</p>
+
+    <!-- Website URL Section -->
+    <div style="background-image: linear-gradient(135deg, #ff9a9e, #fad0c4); padding: 15px; border: 1px dashed #ccc; border-radius: 5px; margin: 10px 0;">
+        <strong style="color: #333;">Website URL:</strong>
+        <a href="https://umcaeducation.org/" target="_blank" style="font-size: 16px; color: blue; text-decoration: none;">
+            https://umcaeducation.org/
+        </a>
+    </div>
+
+    <!-- User ID Section -->
+    <div style="background-image: linear-gradient(135deg, #fbc2eb, #a6c1ee); padding: 15px; border: 1px dashed #ccc; border-radius: 5px; margin: 10px 0;">
+        <strong style="color: #333;">Your User ID:</strong>
+        <span style="font-size: 16px; color: #ff5722;">${user.mobile}</span>
+    </div>
+
+    <!-- Password Section -->
+    <div style="background-image: linear-gradient(135deg, #ffecd2, #fcb69f); padding: 15px; border: 1px dashed #ccc; border-radius: 5px; margin: 10px 0;">
+        <strong style="color: #333;">Your Password:</strong>
+        <span style="font-size: 16px; color: #ff5722;">${user.password}</span>
+    </div>
+
+    <p>Please keep this information secure, and do not share it with anyone.</p>
+
+    <p style="margin-top: 20px;">If you didn’t request this email, please contact our support team.</p>
+    <p>Thank you,<br>Your Company Name</p>
+</div>
+
+            `
         };
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
@@ -156,7 +175,7 @@ router.post("/send-password", async (req, res) => {
                 return res.status(500).json({ message: 'Error sending email' });
             }
             console.log("Email sent:", info.response);
-            return res.status(200).json({ success: true, message: 'Password sent successfully!' });
+            return res.status(200).json({ success: true, message: 'UserId and Password sent through  email!' });
         });
     } catch (error) {
         console.error("Error in send-password route:", error);

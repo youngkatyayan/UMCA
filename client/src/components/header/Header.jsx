@@ -19,7 +19,9 @@ const Header = () => {
         toast.success(data.message)
         localStorage.clear()
         sessionStorage.clear()
-        window.location.href='/login'
+        setTimeout(() => {
+          window.location.href = '/login'
+        },500);
       }
       else{
         toast.error(data.message)

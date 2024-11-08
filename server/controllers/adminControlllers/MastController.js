@@ -1,7 +1,6 @@
 import { db } from "../../utils/db.js";
 import nodemailer from 'nodemailer'
 import crypto from "crypto"
-import Category from "../../../client/src/components/admin/addMaster/Category.jsx";
 
 export const addGroup = async (req, res) => {
     const connection = await db.getConnection();

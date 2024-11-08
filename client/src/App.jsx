@@ -1,8 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import Login from './components/signIn/Login.jsx';
-// import Admin from './components/admin/Admin.jsx';
-import Category from './components/admin/addMaster/Category.jsx';
+// import Category from './components/admin/addMaster/Category.jsx';
 import Mode from './components/admin/addMaster/Mode.jsx';
 import Session from './components/admin/addMaster/Session.jsx';
 import PageNotFound from './components/pages/PageNotFound.jsx';
@@ -52,7 +51,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/add-category' element={<Category />} />
+          {/* <Route path='/add-category' element={<Category />} /> */}
           <Route path='/create-mode' element={<Mode />} />
           <Route path='/add-session' element={<Session />} />
           <Route path='/add-group' element={<Group />} />
