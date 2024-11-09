@@ -4,6 +4,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { MdOutlineAddBox } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
 import StudentLayout from '../layout/StudentLayout';
+import CryptoJS from 'crypto-js';
 const UserProfile = () => {
     const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
@@ -11,9 +12,11 @@ const UserProfile = () => {
     const [session, setFilteredSession] = useState([])
     const [filteredDistrict, setFilteredDistrict] = useState([])
     const [state, setState] = useState([])
+    // const [data,setFormData]=useState([])
+    const mobile = localStorage.getItem('uid')
     const [formdata, setData] = useState({
-        categoryname: '',
-        session: '',
+        // categoryname: '',
+        // session: '',
         minority: "",
         name: "",
         dob: "",
@@ -24,7 +27,7 @@ const UserProfile = () => {
         mothername: "",
         nationality: "",
         disabled: '',
-        coursename: "",
+        // coursename: "",
         line1: '',
         line2: '',
         town: '',
@@ -85,7 +88,6 @@ const UserProfile = () => {
 
                 if (data.success) {
                     setCourse(data.result);
-                    console.log(data.result);
                 }
             } catch (error) {
                 console.error("Error fetching selected course:", error);
@@ -162,13 +164,38 @@ const UserProfile = () => {
             } else {
                 toast("Eror in Submitting Form")
             }
-            console.log(completeData); // Example submission logging
-            // Perform your form submission logic here
         } catch (error) {
             toast("Error in Submitting Form")
         }
 
     };
+
+    // fetch student proceeding data 
+    const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
+    // console.log(decryptedMobile)
+    const fetchStudent = async () => {
+        try {
+            if (decryptedMobile) {
+                const { data } = await axios.post('/api/v1/getStudent-data', { decryptedMobile })
+                console.log(data.result)
+
+                if (data.success) {
+                    setData({
+                        ...formdata,
+                        name: data.result[0].name,
+                        mobno: data.result[0].phone,
+                        email: data.result[0].email,
+                        state: data.result[0].state,
+                        district: data.result[0].district,
+                    })
+                }
+            }
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+
+    useEffect(() => { fetchStudent() }, [])
     return (
         <StudentLayout>
             <ToastContainer />
@@ -177,56 +204,8 @@ const UserProfile = () => {
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Update Profile</h1>
                 </div>
 
-
-
                 <div className='mt-6 m-4' >
                     <form onSubmit={handleSubmit}>
-                        <div>
-                            <h2 className='text-xl mb-5 text-red-800 border border-b-rose-700 '>Course Details</h2>
-                        </div>
-                        <div className='m-4 border border-gray-300 p-6 rounded-lg shadow-lg bg-gray-50 relative'>
-                            <div className='grid lg:grid-cols-4 md:grid-col-3 sm:grid-cols-2 gap-4  px-2'>
-                                <div>
-                                    <label htmlFor="categoryname" className='text-lg mb-2'> Select Category</label>
-                                    <select type='text'
-                                        id="categoryname"
-                                        onChange={handleChange} value={formdata.categoryname} name="categoryname" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
-                                        <option value="">Select an option</option>
-                                        {category.map((item, index) => (
-                                            <option key={index} value={item.categoryname}>{item.categoryname}</option>
-                                        ))}
-
-                                    </select>
-                                </div>
-                                {
-                                    formdata.categoryname && (
-                                        <div>
-                                            <label htmlFor="coursename" className='text-lg mb-2'>Select course</label>
-                                            <select type='text' onChange={handleChange} value={formdata.coursename} name="coursename" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
-                                                <option value="">Select an option</option>
-                                                {course.map((item, index) => (
-                                                    <option key={index} value={item.coursename}>{item.coursename}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    )
-                                }
-                                {
-                                    formdata.categoryname && (
-                                        <div>
-                                            <label htmlFor="session" className='text-lg mb-2'>Select Session</label>
-                                            <select type='text' onChange={handleChange} value={formdata.session} name="session" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
-                                                <option value="">Select an option</option>
-                                                {session.map((item, index) => (
-                                                    <option key={index} value={item.session}>{item.session}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    )
-                                }
-
-                            </div>
-                        </div>
                         <div>
                             <h2 className='text-xl mb-5 text-red-800 border border-b-rose-700 '>Personal Details</h2>
                         </div>
@@ -236,7 +215,7 @@ const UserProfile = () => {
                             <div className='grid lg:grid-cols-4 md:grid-col-3 sm:grid-cols-2   gap-4 px-2'>
                                 <div>
                                     <label htmlFor="name" className='text-lg mb-2'> Full Name</label>
-                                    <input type='text' onChange={handleChange} value={formdata.name} name="name" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                    <input type='text' onChange={handleChange} value={formdata.name} readOnly disabled name="name" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                 </div>
 
                                 <div>
@@ -343,23 +322,15 @@ const UserProfile = () => {
 
                                     <div>
                                         <label htmlFor="state" className='text-lg mb-2'> State</label>
-                                        <select type='text' onChange={handleChange} value={formdata.state} name="state" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' >
-                                            <option value="">Select State</option>
-                                            {
-                                                state.map((item, index) => (
-                                                    <option key={index} value={item.name}>{item.name}</option>
-                                                ))
-                                            }
-                                        </select>
+
+                                        <input type='text' onChange={handleChange} value={formdata.state} disabled readOnly name="state" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
                                     </div>
                                     <div>
                                         <label htmlFor="district" className='text-lg mb-2'> District</label>
-                                        <select type='text' onChange={handleChange} value={formdata.district} name="district" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
-                                            <option value="">Select District</option>
-                                            {filteredDistrict.map((item, index) => (
-                                                <option key={index} value={item.name}>{item.name}</option>
-                                            ))}
-                                        </select>
+
+                                        <input type='text' onChange={handleChange} value={formdata.district} disabled readOnly name="district" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
                                     </div>
                                     <div>
                                         <label htmlFor="pincode" className='text-lg mb-2'> Pincode</label>
@@ -401,23 +372,15 @@ const UserProfile = () => {
 
                                     <div>
                                         <label htmlFor="perstate" className='text-lg mb-2'> State</label>
-                                        <select type='text' onChange={handleChange} value={formdata.perstate} name="perstate" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' >
-                                            <option value="">Select State</option>
-                                            {
-                                                state.map((item, index) => (
-                                                    <option key={index} value={item.name}>{item.name}</option>
-                                                ))
-                                            }
-                                        </select>
+                                        
+                                        <input type='text' onChange={handleChange} value={formdata.perstate}  name="perstate" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
                                     </div>
                                     <div>
                                         <label htmlFor="perdistrict" className='text-lg mb-2'> District</label>
-                                        <select type='text' onChange={handleChange} value={formdata.perdistrict} name="perdistrict" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
-                                            <option value="">Select District</option>
-                                            {filteredDistrict.map((item, index) => (
-                                                <option key={index} value={item.name}>{item.name}</option>
-                                            ))}
-                                        </select>
+                                      
+                                        <input type='text' onChange={handleChange} value={formdata.perdistrict}  name="perdistrict" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
                                     </div>
                                     <div>
                                         <label htmlFor="perpincode" className='text-lg mb-2'> Pincode</label>
@@ -425,7 +388,7 @@ const UserProfile = () => {
                                     </div>
                                     <div>
                                         <label htmlFor="mobno" className='text-lg mb-2'> Mobile No. </label>
-                                        <input type='text' onChange={handleChange} value={formdata.mobno} name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                        <input type='text' onChange={handleChange} value={formdata.mobno} readOnly disabled name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                     </div>
                                     <div>
                                         <label htmlFor="whatsappno" className='text-lg mb-2'> Whatsapp No. </label>
@@ -433,7 +396,7 @@ const UserProfile = () => {
                                     </div>
                                     <div>
                                         <label htmlFor="email" className='text-lg mb-2'> Email</label>
-                                        <input type='text' onChange={handleChange} value={formdata.email} name="email" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                        <input type='text' onChange={handleChange} value={formdata.email} name="email" readOnly disabled className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                     </div>
                                 </div>
 

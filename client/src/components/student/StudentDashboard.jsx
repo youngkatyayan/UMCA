@@ -8,7 +8,7 @@ const StudentDashboard = () => {
   const accessanouncement = async () => {
     const { data } = await axios.get('/api/v1/get-studannouncement');
     if (data.success) {
-      // setAnnouncement(data.result);
+      setAnnouncement(data.result);
     }
   };
 
@@ -20,7 +20,7 @@ const StudentDashboard = () => {
     <StudentLayout>
       <div className="w-full">
         <div>
-          <h1 className="text-xl font-serif mx-2 mb-4">Announcement</h1>
+          {/* <h1 className="text-xl font-serif mx-2 mb-4">Announcement</h1> */}
 
           {/* Single Announcement Scrolling */}
           {announcement.length > 0 ? (

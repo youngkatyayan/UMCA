@@ -43,7 +43,7 @@ export const addCategory = async (req, res) => {
 
     const connection = await db.getConnection();
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const { category, groupname } = req.body;
 
         await connection.beginTransaction();
@@ -56,7 +56,7 @@ export const addCategory = async (req, res) => {
         if (result.length > 0) {
             const Caid = result[0].Caid;
             const lastCeid = parseInt(Caid, 10);
-            newCaid = lastCeid + 1; // Increment Caid
+            newCaid = lastCeid + 1; 
         }
 
         const sql = `insert into category (Caid,categoryname,groupname) values(?,?,?)`
