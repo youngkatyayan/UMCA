@@ -31,6 +31,8 @@ import CourseCommision from './components/franchise/CourseCommision.jsx';
 import StudentCommision from './components/franchise/StudentCommision.jsx';
 
 import UserProfile from './components/user/UserProfile.jsx';
+import FeeStatement from './components/student/FeeStatement.jsx';
+import IdCard from './components/student/IdCard.jsx';
 
 
 
@@ -92,6 +94,8 @@ const App = () => {
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/update-profile' element={<UserProfile />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/fees-details' element={<FeeStatement />} />
+          <Route path='/student-id' element={<IdCard />} />
         </Routes>
       );
     case 'franchise-1':
