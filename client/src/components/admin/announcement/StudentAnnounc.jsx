@@ -83,13 +83,7 @@ const StudentAnnounc = () => {
       });
       if (data.success) {
         accessanouncement()
-        setData({
-          title: '',
-          brochure: '',
-          description: '',
-          category: "",
-          date: ""
-        })
+        setData({})
         toast.success(data.message);
       }
     } catch (error) {
@@ -102,6 +96,7 @@ const StudentAnnounc = () => {
     const formattedDate = item.date ? new Date(item.date).toISOString().split('T')[0] : '';
 
     setData({
+      ...formdata,
       AId: item.AId,
       category: item.categoryname || '',
       title: item.title || '',
@@ -111,7 +106,7 @@ const StudentAnnounc = () => {
       category: item.category || ""
 
     })
-    console.log(formdata)
+    // console.log(formdata)
   }
 
   const handleDelete = async (item) => {
@@ -122,10 +117,9 @@ const StudentAnnounc = () => {
       if (data.success) {
         console.log(data.message)
         toast.success(data.message);
-
       }
       else {
-        console.log('error')
+        toast.error("Error in Deleting Announcement"); 
       }
     } catch (error) {
       toast.error("Error in Deleting Announcement"); 
@@ -134,7 +128,7 @@ const StudentAnnounc = () => {
   const handleUpdate = async (e) => {
     e.preventDefault()
     try {
-      console.log(formdata)
+      // console.log(formdata)
       const { data } = await axios.post('/api/v1/update-announcement', formdata)
       if (data.success) {
         toast.success(data.message);

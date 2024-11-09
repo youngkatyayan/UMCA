@@ -86,7 +86,7 @@ const OfferZone = () => {
                 toast.success(data.message)
             }
             else {
-                toast(data.error)
+                toast.error(data.error)
             }
         } catch (error) {
             toast.error("EError in submitting the form")
@@ -114,7 +114,7 @@ const OfferZone = () => {
                 accessoffer()
             }
             else {
-                toast(data.error)
+                toast.error(data.error)
             }
         } catch (error) {
             toast.error("EError in submitting the form")
