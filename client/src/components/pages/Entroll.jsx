@@ -324,7 +324,7 @@ const Entroll = () => {
                                             <div className="mb-4">
                                                 <div className="flex justify-between mb-2">
                                                     <span>Program Fees</span>
-                                                    <span>₹ {course?.yearlyfee === '0' && "Free"}</span>
+                                                    <span>₹ {course?.yearlyfee === '0' && (<b>Free</b>)}</span>
                                                 </div>
                                             </div>
 

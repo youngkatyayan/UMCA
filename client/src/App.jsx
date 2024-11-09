@@ -27,6 +27,7 @@ import Certificate from './components/student/Certificate.jsx';
 import DegreeProgram from './components/student/DegreeProgram.jsx';
 import FranchAnnounce from './components/admin/announcement/FranchAnnounce.jsx';
 import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
+import UserProfile from './components/user/UserProfile.jsx';
 
 
 
@@ -86,6 +87,7 @@ const App = () => {
           <Route path='/degreecourses' element={<DegreeProgram />} />
           <Route path='/certificate' element={<Certificate />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/update-profile' element={<UserProfile />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );

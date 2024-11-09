@@ -61,8 +61,8 @@ const StudentHeader = () => {
       {
         openMenu && (
           <div className='min-w-32 bg-slate-50 font-serif px-3 py-3 rounded-sm shadow-md shadow-gray-400 flex flex-col gap-3 whitespace-nowrap justify-start absolute right-2 top-14' style={{ zIndex: '1000' }}>
-            <Link className='hover:border-2 hover:bg-purple-100 hover:shadow-sm  hover:rounded-s px-2 hover:text-purple-600 hover:shadow-purple p-1'>
-              Profile
+            <Link to={'/update-profile'} className='hover:border-2 hover:bg-purple-100 hover:shadow-sm  hover:rounded-s px-2 hover:text-purple-600 hover:shadow-purple p-1'>
+             Update Profile
             </Link>
             <hr />
             <Link className='hover:border-2 hover:bg-purple-100 hover:shadow-sm  hover:rounded-s px-2 hover:text-purple-600 hover:shadow-purple p-1'>
