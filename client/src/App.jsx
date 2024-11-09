@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
 import Login from './components/signIn/Login.jsx';
-// import Admin from './components/admin/Admin.jsx';
 import Mode from './components/admin/addMaster/Mode.jsx';
 import Session from './components/admin/addMaster/Session.jsx';
 import PageNotFound from './components/pages/PageNotFound.jsx';
@@ -30,6 +29,9 @@ import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
 import Category from './components/admin/addMaster/Category.jsx';
 import CourseCommision from './components/franchise/CourseCommision.jsx';
 import StudentCommision from './components/franchise/StudentCommision.jsx';
+
+import UserProfile from './components/user/UserProfile.jsx';
+
 
 
 
@@ -88,6 +90,7 @@ const App = () => {
           <Route path='/degreecourses' element={<DegreeProgram />} />
           <Route path='/certificate' element={<Certificate />} />
           <Route path='/*' element={<PageNotFound />} />
+          <Route path='/update-profile' element={<UserProfile />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
         </Routes>
       );
