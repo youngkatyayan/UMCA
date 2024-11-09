@@ -3,8 +3,8 @@ import SuperAdminLayout from '../../layout/SuperAdminLayout'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
-import { MdEdit } from 'react-icons/md';
-
+import { MdDelete, MdEdit } from 'react-icons/md';
+import 'react-toastify/dist/ReactToastify.css';
 const StudentAnnounc = () => {
   const [formdata, setData] = useState({
     title: '',
@@ -17,7 +17,7 @@ const StudentAnnounc = () => {
   const [img, setImg] = useState([])
   const [announcement, setAnnouncement] = useState([])
 
-
+  
 
   const accessanouncement = async () => {
     const { data } = await axios.get('/api/v1/get-announcement')
@@ -64,22 +64,16 @@ const StudentAnnounc = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formdataToSend = new FormData();
-    console.log("Form data before appending:", formdata);
 
     for (const [key, value] of Object.entries(formdata)) {
       formdataToSend.append(key, value);
     }
-
     img.forEach((fileObj, index) => {
       if (fileObj) {
         formdataToSend.append(`image${index}`, fileObj.file);
       }
     });
-
-    // Log each item in FormData to check if fields were appended
-    formdataToSend.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
+    
 
     try {
       const { data } = await axios.post('/api/v1/add-anouncement', formdataToSend, {
@@ -88,6 +82,14 @@ const StudentAnnounc = () => {
         },
       });
       if (data.success) {
+        accessanouncement()
+        setData({
+          title: '',
+          brochure: '',
+          description: '',
+          category: "",
+          date: ""
+        })
         toast.success(data.message);
       }
     } catch (error) {
@@ -97,18 +99,38 @@ const StudentAnnounc = () => {
 
   const handleEdit = async (item) => {
     setUpdateC(true)
+    const formattedDate = item.date ? new Date(item.date).toISOString().split('T')[0] : '';
+
     setData({
       AId: item.AId,
       category: item.categoryname || '',
       title: item.title || '',
       brochure: item.brochure || '',
       description: item.description || '',
-      date: item.date || '',
+      date:  formattedDate,
       category: item.category || ""
 
     })
+    console.log(formdata)
   }
 
+  const handleDelete = async (item) => {
+
+    const Aid=item.AId
+    try {
+      const { data } = await axios.post('/api/v1/delete-announcement', {Aid})
+      if (data.success) {
+        console.log(data.message)
+        toast.success(data.message);
+
+      }
+      else {
+        console.log('error')
+      }
+    } catch (error) {
+      toast.error("Error in Deleting Announcement"); 
+    }
+  }
   const handleUpdate = async (e) => {
     e.preventDefault()
     try {
@@ -116,7 +138,7 @@ const StudentAnnounc = () => {
       const { data } = await axios.post('/api/v1/update-announcement', formdata)
       if (data.success) {
         toast.success(data.message);
-        setData({
+       setData({
           title: '',
           brochure: '',
           description: '',
@@ -136,7 +158,7 @@ const StudentAnnounc = () => {
 
   return (
     <SuperAdminLayout>
-      <ToastContainer />
+
       <div className='w-full  bg-gray-200 p-2 h-auto '>
         <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
           <h1 className='text-white text-xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Student Announcement' : ' Student Announcement'}</h1>
@@ -145,7 +167,7 @@ const StudentAnnounc = () => {
 
         <form onSubmit={updateC ? handleUpdate : handleSubmit} className='  px-4 '>
 
-          <div className='border-2 rounded-sm  grid grid-cols-3 gap-6 items-center'>
+          <div className='border-2 rounded-sm  grid lg:grid-cols-3 gap-6 md:grid-cols-2 items-center'>
             <div>
               <label htmlFor="category" className=' mb-2 text-lg font-serif'> Announcement Category  : </label>
               <select
@@ -222,7 +244,9 @@ const StudentAnnounc = () => {
 
           <div className='flex flex-row-1 justify-center'>
 
-            <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 w-56'>{updateC ? "UPDATE ANNOUNCEMENT" : " SUBMIT"}</button>
+          <button type='submit' className='transition-shadow w-40 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 text-xl' style={{
+                            background: 'linear-gradient(90deg, rgba(26,0,36,1) 0%, rgba(76,98,177,1) 0%, rgba(0,172,255,1) 100%)'
+                        }}>{updateC ? "UPDATE " : " SUBMIT"}</button>
           </div>
         </form>
 
@@ -261,6 +285,12 @@ const StudentAnnounc = () => {
                       >
                         <MdEdit />
                       </button>
+                      <button
+                        className='p-2 shadow-md rounded-full text-lg text-red-500 hover:bg-red-500 hover:border hover:shadow-md hover:shadow-red-400 hover:text-white bg-white '
+                        onClick={() => handleDelete(item)}
+                      >
+                        <MdDelete />
+                      </button>
 
                     </div>
                   </td>
@@ -273,6 +303,7 @@ const StudentAnnounc = () => {
         </div>
 
       </div>
+      <ToastContainer />
     </SuperAdminLayout>
   )
 }

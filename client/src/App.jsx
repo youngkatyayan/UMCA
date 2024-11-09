@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 
 import Login from './components/signIn/Login.jsx';
 // import Admin from './components/admin/Admin.jsx';
-import Category from './components/admin/addMaster/Category.jsx';
 import Mode from './components/admin/addMaster/Mode.jsx';
 import Session from './components/admin/addMaster/Session.jsx';
 import PageNotFound from './components/pages/PageNotFound.jsx';
@@ -28,6 +27,9 @@ import Certificate from './components/student/Certificate.jsx';
 import DegreeProgram from './components/student/DegreeProgram.jsx';
 import FranchAnnounce from './components/admin/announcement/FranchAnnounce.jsx';
 import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
+import Category from './components/admin/addMaster/Category.jsx';
+import CourseCommision from './components/franchise/CourseCommision.jsx';
+import StudentCommision from './components/franchise/StudentCommision.jsx';
 
 
 
@@ -70,8 +72,7 @@ const App = () => {
 
           {/* announcement  */}
 
-          <Route path='/student-announcement' element={<StudentAnnounc />} />
-          <Route path='/announcements' element={<FranchAnnounce />} />
+          <Route path='/announcement' element={<StudentAnnounc />} />
 
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
@@ -102,6 +103,8 @@ const App = () => {
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/entroll-course/:id' element={<Entroll />} />
+          <Route path='/course-commision' element={<CourseCommision />} />
+          <Route path='/student-commision' element={<StudentCommision />} />
         </Routes>
       )
     default:

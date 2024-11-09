@@ -1,5 +1,5 @@
 import express from 'express'
-import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, franchiseRequest, getAnnouncement, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, deleteAnouncement, franchiseRequest, getAnnouncement, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 const router = express.Router()
 
 import multer from 'multer'
@@ -105,6 +105,7 @@ router.post('/updateincfrstatus', updateIncomFranchiseStatus)
 router.post('/update-announcement', updateAnouncement) 
 
 
+router.post('/delete-announcement', deleteAnouncement) 
 
 // offer routes
 router.post('/offer', addOffer) 

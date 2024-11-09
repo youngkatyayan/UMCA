@@ -4,6 +4,7 @@ import axios from 'axios'
 import { MdOutlineDelete } from "react-icons/md";
 import { MdOutlineAddBox } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
+import CryptoJS from 'crypto-js';
 
 
 
@@ -13,10 +14,11 @@ const Admission = () => {
     const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
     const [district, setDistrict] = useState([])
-    const [session,setFilteredSession]=useState([])
+    const [session, setFilteredSession] = useState([])
     const [filteredDistrict, setFilteredDistrict] = useState([])
     const [state, setState] = useState([])
     const [formdata, setData] = useState({
+        Uid: '',
         categoryname: '',
         session: '',
         minority: "",
@@ -56,6 +58,7 @@ const Admission = () => {
         },
     ]);
 
+    const UId = localStorage.getItem('uid')
 
     const accesscategory = async () => {
         const { data } = await axios.get('/api/v1/get-category')
@@ -68,7 +71,7 @@ const Admission = () => {
         if (data.success) {
             setState(data.result)
         }
-       
+
     }
     const accessDistrict = async () => {
         const { data } = await axios.get('/api/v1/get-district')
@@ -97,9 +100,9 @@ const Admission = () => {
             }
         }
 
-        if(name==='coursename'){
-            const filteredSession=course.filter((item)=>{
-                return item.coursename==value;
+        if (name === 'coursename') {
+            const filteredSession = course.filter((item) => {
+                return item.coursename == value;
             })
             setFilteredSession(filteredSession)
             setData((prevData) => ({ ...prevData, [name]: value }));
@@ -128,7 +131,8 @@ const Admission = () => {
     };
 
 
-    // Add new education entry
+    
+    
     const handleAddEntry = () => {
         setEducationEntries((prevEntries) => [
             ...prevEntries,
@@ -164,26 +168,41 @@ const Admission = () => {
     };
 
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const completeData = { ...formdata, educationEntries };
-        try {
-            const {data}=await axios.post('/api/v1/admission-form',completeData)
-        if(data.success){
-            toast(data.message)
-        } else{
-            toast("Eror in Submitting Form")
+        
+        const UId = localStorage.getItem('uid');
+        if (!UId) {
+            console.error("No UId found in localStorage");
+            return;
         }
-        console.log(completeData); // Example submission logging
-        // Perform your form submission logic here
+
+        const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
+    
+        setData(prevData => {
+            const updatedData = { ...prevData, Uid: decryptedMobile };
+            console.log("Updated data:", updatedData); 
+            return updatedData;
+        });
+    
+        const completeData = { ...formdata, educationEntries, Uid: decryptedMobile };
+        try {
+            const { data } = await axios.post('/api/v1/admission-form', completeData)
+            if (data.success) {
+                toast(data.message)
+            } else {
+                toast("Eror in Submitting Form")
+            }
+            console.log(completeData); // Example submission logging
+           
         } catch (error) {
             toast("Error in Submitting Form")
         }
-        
+
     };
     return (
         <FranchiseLayout>
-              <ToastContainer />
+            <ToastContainer />
             <div className='flex flex-col flex-1 overflow-auto'>
                 <div className='flex flex-col m-4 border rounded-md bg-transparent-300  bg-slate-400 shadow-md' >
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Admission</h1>
@@ -192,7 +211,7 @@ const Admission = () => {
 
 
                 <div className='mt-6 m-4' >
-                    <form  onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div>
                             <h2 className='text-xl mb-5 text-red-800 border border-b-rose-700 '>Course Details</h2>
                         </div>
@@ -436,21 +455,21 @@ const Admission = () => {
                                         <input type='text' onChange={handleChange} value={formdata.perpincode} name="perpincode" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                     </div>
                                     <div>
-                                    <label htmlFor="mobno" className='text-lg mb-2'> Mobile No. </label>
-                                    <input type='text' onChange={handleChange} value={formdata.mobno} name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
-                                </div>
-                                <div>
-                                    <label htmlFor="whatsappno" className='text-lg mb-2'> Whatsapp No. </label>
-                                    <input type='text' onChange={handleChange} value={formdata.whatsappno} name="whatsappno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
-                                </div>
-                                <div>
-                                    <label htmlFor="email" className='text-lg mb-2'> Email</label>
-                                    <input type='text' onChange={handleChange} value={formdata.email} name="email" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
-                                </div>
+                                        <label htmlFor="mobno" className='text-lg mb-2'> Mobile No. </label>
+                                        <input type='text' onChange={handleChange} value={formdata.mobno} name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="whatsappno" className='text-lg mb-2'> Whatsapp No. </label>
+                                        <input type='text' onChange={handleChange} value={formdata.whatsappno} name="whatsappno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="email" className='text-lg mb-2'> Email</label>
+                                        <input type='text' onChange={handleChange} value={formdata.email} name="email" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                    </div>
                                 </div>
 
                             </div>
-                           
+
                         </div>
                         <div>
                             <h2 className='text-lg mb-5 mt-5 text-red-800 border border-b-rose-700 '>Education Details</h2>
@@ -574,8 +593,8 @@ const Admission = () => {
                         </div>
                         <div className='flex flex-row justify-center'>
                             <button type='submit' className='transition-shadow w-40 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 text-xl' style={{
-                    background: 'linear-gradient(90deg, rgba(26,0,36,1) 0%, rgba(76,98,177,1) 0%, rgba(0,172,255,1) 100%)'
-                }}>Submit</button>
+                                background: 'linear-gradient(90deg, rgba(26,0,36,1) 0%, rgba(76,98,177,1) 0%, rgba(0,172,255,1) 100%)'
+                            }}>Submit</button>
 
                         </div>
                     </form>

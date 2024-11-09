@@ -29,15 +29,17 @@ export const SuperAdminMenuList = [
         {id:2,name:'List',value:'List',to:'/franchise'}
     ] },
     { name: 'Offer Zone', icon: <BiSolidOffer />, value: 'offer', to: '/offer' },
-    { name: 'Create Announcement', icon: <FaStoreAlt />, value: 'Create Announcement', to: '',children:[
-        {id:1,name:'Students ' ,value:'Students',to:'/student-announcement'},
-        {id:2,name:'Franchise',value:'Franchise',to:'/announcements'}
-    ] },
+    { name: 'Create Announcement', icon: <FaStoreAlt />, value: 'Create Announcement', to: '/announcement'  },
 ]
 
 export const FranchiseMenuList=[
     {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
     {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
+    {name: 'Commision', icon:<PiStudentDuotone />,value:'Commision',to:'',children:[
+       { id:1 ,name:'Student Wise' ,value:"Student Wise",to:'/student-commision'},
+       { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
+    ]},
+
 
 ]
 

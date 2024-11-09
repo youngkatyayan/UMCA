@@ -1,7 +1,6 @@
 import { db } from "../../utils/db.js";
 import nodemailer from 'nodemailer'
 import crypto from "crypto"
-import Category from "../../../client/src/components/admin/addMaster/Category.jsx";
 
 export const addGroup = async (req, res) => {
     const connection = await db.getConnection();
@@ -697,7 +696,25 @@ export const updateIncomFranchiseStatus = async (req, res) => {
     }
 };
 
+
 export const updateOffer = async (req, res) => {
+    try {
+        const {discount, description, endDate, startDate, offercode, coursename, courseCode} = req.body;
+        const sql = `UPDATE offer SET discount=?, description=?, endDate=?, startDate=?, offercode=?, coursename=? WHERE courseCode=?`;
+        const values = [discount, description, endDate, startDate, offercode, coursename, courseCode];
+        
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Offer ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateOffer controller" });
+
+    }
+}
+
+export const updateAnouncement  = async (req, res) => {
     try {
         const {AId, brochure,  category, date,  description, title } = req.body;
         const sql = `UPDATE announcement SET brochure=?, category=?, date=?, description=?, title=? WHERE AId=?`;
@@ -714,24 +731,6 @@ export const updateOffer = async (req, res) => {
 
     }
 }
-
-export const updateAnouncement = async (req, res) => {
-    try {
-        const { AId, brochure, category, date, description, title } = req.body;
-        const sql = `UPDATE offer SET discount=?, description=?, endDate=?, startDate=?, offercode=?, coursename=? WHERE courseCode=?`;
-        const values = [discount, description, endDate, startDate, offercode, coursename, courseCode];
-        
-        const [result] = await db.query(sql, values)
-
-        if (result) {
-            return res.status(201).send({ success: true, result, message: 'Successfully Updated Offer ' });
-        }
-    } catch (error) {
-        return res.status(500).send({ success: false, message: "Error in UpdateOffer controller" });
-
-    }
-}
-
 
 {/* Course Offer*/}
 
@@ -763,6 +762,22 @@ export const addOffer = async (req, res) => {
 
     } catch (error) {
         return res.status(500).send({ success: false, message: "Error in addOfferyController", error: error.message });
+
+    }
+}
+
+
+export const deleteAnouncement = async (req, res) => {
+    const {Aid} =req.body;
+    console.log(req.body)
+    try {
+        const sql = `DELETE FROM announcement where AId=?`;
+        const value=[Aid]
+        const [result] = await db.query(sql,value)
+
+        return res.status(201).send({ success: true, message: "announcement Deleted Successfully", result });
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in DeleteAnouncement controller" });
 
     }
 }

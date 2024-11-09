@@ -10,3 +10,17 @@ export const allstudentCourses = async (req, res) => {
         return res.status(500).send({ success: false, message: "Error in getGroup controller", error: error.message });
     }
 };
+
+
+
+export const getStudAnnouncement = async (req, res) => {
+    try {
+        const sql = `select * from announcement where category = 'Students' `
+        const [result] = await db.query(sql)
+
+        return res.status(201).send({ success: true, result });
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in GetAnnouncement controller" });
+
+    }
+}
