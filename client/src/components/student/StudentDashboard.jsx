@@ -18,9 +18,9 @@ const StudentDashboard = () => {
 
   return (
     <StudentLayout>
-  <div className="w-full">
+  <div className="w-full bg-slate-300">
   <div>
-    <h1 className="text-xl font-serif mx-2 mb-4">Announcement</h1>
+    <h1 className="text-xl font-serif mx-4 mb-4 mt-4 ">Announcement</h1>
 
     {/* Single Announcement Scrolling */}
     <div
