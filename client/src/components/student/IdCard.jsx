@@ -51,7 +51,7 @@ const IdCard = () => {
   const handlePrint = () => {
     const content = document.getElementById('print-section');
     const newWindow = window.open('', '', 'height=600, width=800');
-    
+
     newWindow.document.write('<html><head><title>Print</title>');
     newWindow.document.write('<style>');
     newWindow.document.write(`
@@ -137,7 +137,7 @@ const IdCard = () => {
     `);
     newWindow.document.write('</style>');
     newWindow.document.write('</head><body>');
-    
+
     newWindow.document.write(`
       <div class="print-container">
         <div class="flex-center">
@@ -185,21 +185,21 @@ const IdCard = () => {
         </div>
       </div>
     `);
-     newWindow.document.write('</body></html>');
-  newWindow.document.close();
-  newWindow.print();
-};
+    newWindow.document.write('</body></html>');
+    newWindow.document.close();
+    newWindow.print();
+  };
   return (
     <StudentLayout>
-      <div className="w-full bg-blue-100 ">
-        <div className="bg-blue-100">
+      <div className="w-full bg-blue-50 shadow-md">
+        <div className="bg-blue-50">
           <div className="flex flex-col m-4 border rounded-md bg-transparent-100 bg-blue-800 shadow-md">
             <h1 className="text-white text-2xl m-4 text-center font-serif">
               Student Identity
             </h1>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 ml-12 mr-12 "  id="print-section">
+          <div className="grid grid-cols-2 gap-4 ml-12 mr-12 " id="print-section">
 
             <div className="flex justify-center" style={{ height: '380px', }}>
               {/* Front view section */}
@@ -208,8 +208,8 @@ const IdCard = () => {
                 style={{
                   backgroundImage: `url(${Id})`,
                   backgroundSize: 'contain',
-                  backgroundPosition: 'center', // Centers the image
-                  backgroundRepeat: 'no-repeat', // Prevents repeat
+                  backgroundPosition: 'center', 
+                  backgroundRepeat: 'no-repeat',
                   aspectRatio: '591 / 1004',
                   height: '380px',
                   position: 'relative'
