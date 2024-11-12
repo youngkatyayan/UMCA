@@ -104,7 +104,7 @@ const UserHeader = () => {
               <Link to={'/franch-request' } className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link>
+              {/* <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link> */}
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Workshop</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Contact Us</Link>
             </div>
@@ -169,7 +169,7 @@ const UserHeader = () => {
           <Link to={'/franch-request' } className=' text-zinc-50 '>Franchise</Link>
           <Link className=' text-zinc-50 '>Gallery</Link>
           <Link className=' text-zinc-50 '>Placement</Link>
-          <Link className=' text-zinc-50 '>PMKVY</Link>
+          {/* <Link className=' text-zinc-50 '>PMKVY</Link> */}
           <Link className=' text-zinc-50 '>Workshop</Link>
           <Link  className=' text-zinc-50 '>Contact Us</Link>
         </div>
