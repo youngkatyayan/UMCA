@@ -78,15 +78,16 @@ const IdCard = () => {
       .absolute-header {
         position: absolute;
         width: 100%;
-        height: 400px;
+        height: 380px;
       }
       .relative-header {
         position: relative;
         text-align: center;
          display: grid; 
+         margin: 8px;
         grid-template-columns: repeat(4, 1fr);
         // background-color: rgba(0, 0, 255, 0.75);
-       padding-top: 16px  !important;
+       padding-top: 20px  !important;
       }
       // .relative-header header-text{
       // display: grid;
@@ -105,7 +106,7 @@ const IdCard = () => {
       .student-details span {
         font-size: 0.7rem;
       }
-          .student-details .photo {
+      .student-details .photo {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -115,7 +116,7 @@ const IdCard = () => {
     .student-details .photo img {
       height: 70px;
       width: auto;
-      border-radius: 8px;
+      // border-radius: 8px;
     }
       .blue-bg {
         background-color: #1e3a8a;
@@ -132,19 +133,72 @@ const IdCard = () => {
       }
       .instruction-list {
         font-size: 0.5rem;
-        margin-top: 16px;
+        margin-top: 4px;
         list-style-type: decimal;
         padding-left: 16px;
       }
       .reative-header mt-16 {
         marin-top:4rem;
       }
-      .absolute{
+      
+        .font-bold{
+        font-weight:700;
+        }
+      .text-[0.8rem]{
+      font-size:0.8rem;
+      }
+      .border-blue-700{
+       border-color: #1d4ed8;
+       margin: 0px;
+      }
+      .rounded-b-md{
+        border-radius:0px 0px 12px 12px;
+        overflow: hidden;
+        
+      }
+        .relative{
+        position:relative;
+        height: 60px;
+        
+        }
+        .absolute{
         position:absolute;
-      }
-      .relative{
-        position:relative
-      }
+        }
+        .registrar {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding-right: 1rem; 
+        }
+        .umca-heading {
+          color: #1e3a8a;  
+          grid-column: span 3; 
+          font-size: 1rem;
+          display: flex;
+          align-items: center; 
+          font-weight: 600;  
+          justify-content: flex-start; 
+        }
+          .back-details{
+            position:absolute;
+            margin:24px 0px;
+            padding:2px;
+          }
+          .back-details h3{
+            color: #1d4ed8;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            margin-top: 4rem;
+          }
+          .inst-head{
+          padding:4px;
+            color: #1d4ed8;
+            font-weight: bold;
+            margin-bottom: 0.1rem;
+            margin-top: 1rem;
+           }
 
     `);
     newWindow.document.write('</style>');
@@ -154,15 +208,15 @@ const IdCard = () => {
       <div class="print-container">
         <div class="flex-center">
           <div class="front-view" style="background-image: url(${Id});">
-            <div class="absolute-header">
-              <div class="relative-header">
+            <div class="absolute-header" style="margin-top:24px;">
+              <div class="relative-header" >
                 <div class="header-logo">
                   <img src="${logo}" alt="UMCA Logo" width="52" />
                 </div>
-                <div class="text-blue-900 font-semibold header-text">UMCA EDUCATION</div>
+                <div class="umca-heading text-blue-900 font-semibold header-text">UMCA EDUCATION</div>
               </div>
-              <hr class="border-blue-700" style="margin-top: 8px;" />
-              <div class="blue-bg">Student Id</div>
+              <hr class="border-blue-700"  />
+              <div class="blue-bg rounded-b-md">Student Id</div>
               <div class="student-details">
                 <div class="grid grid-cols-1 mt-1 bg-opacity-75">
                    <div class="photo">
@@ -174,7 +228,7 @@ const IdCard = () => {
                     <div><span class="font-bold text-[0.8rem]">Email: </span><span style="font-size: 0.7rem;">${stDetails.email}</span></div>
                     <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${stDetails.course}</span></div>
                     <div class="h-10 relative">
-                      <span class="font-bold absolute text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
+                      <span class="font-bold absolute registrar text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
                     </div>
                   </div>
                 </div>
@@ -184,16 +238,16 @@ const IdCard = () => {
         </div>
         <div class="gap-4 flex-center">
           <div class="back-view" style="background-image: url(${Id});">
-            <div class="absolute mt-20 px-2">
+            <div class="absolute mt-20 px-2 back-details">
               <div>
                 <h3 class="text-blue-700 font-bold mb-1">Campus Address</h3>
-                <div class="font-semibold" style="font-size: 0.5rem;">
-                  H.N. 37, 2nd Floor, Near Alwatiya Hospital Chhama Enclave, Maruti Estate, Shahganj Agra, UP 282010
+                <div class="font-semibold" style="font-size: 0.5rem; padding:4px">
+                  H.N. 37, 2nd Floor, <br /> Near Alwatiya Hospital Chhama Enclave, Maruti Estate, <br /> Shahganj Agra, UP 282010
                   <br /> +91-9149261291 <br /> umcafoundation@gmail.com
                 </div>
               </div>
               <div>
-                <div class="text-blue-700 font-bold mt-4">Instructions</div>
+                <div class="text-blue-700 font-bold mt-4 inst-head">Instructions</div>
                 <ul class="instruction-list">
                   <li>Carry this ID card at all times while on the premises. It must be shown upon request for identification.</li>
                   <li>Report a lost or stolen card immediately to administration or security for a replacement.</li>
@@ -240,12 +294,12 @@ const IdCard = () => {
                 }}
               >
                 {/* Header section */}
-                <div className=" absolute w-full" style={{ height: "400px" }}>
+                <div className=" absolute w-full" style={{ height: "380px" }}>
                   <div className=" relative text-center grid grid-cols-4 bg-opacity-75 mt-16">
                     <div className="col-span-1  ">
                       <img src={logo} alt="UMCA Logo" className="object-contain" width={52} />
                     </div>
-                    <div className="text-blue-900 col-span-3 text-base flex items-center font-semibold justify-start">
+                    <div className=" text-blue-900 col-span-3 text-base flex items-center font-semibold justify-start">
                       UMCA EDUCATION
                     </div>
                   </div>
@@ -308,7 +362,7 @@ const IdCard = () => {
                   </div>
 
                   <div>
-                    <div className="text-blue-700 font-bold mt-4">Instruction</div>
+                    <div className="text-blue-700 font-bold mt-4 ">Instruction</div>
                     <ul className="font-semibold text-xs list-decimal list-inside " style={{ listStyleType: 'decimal', fontSize: '0.5rem' }}>
                       <li>Carry this ID card at all times while on the premises. It must be shown upon request for identification.</li>
                       <li>Report a lost or stolen card immediately to administration or security for a replacement.</li>
