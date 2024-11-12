@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import StudentLayout from '../layout/StudentLayout';
 import axios from 'axios';
-
+import CryptoJS from 'crypto-js';
 const StudentDashboard = () => {
   const [announcement, setAnnouncement] = useState([]);
-
+  const [Entroll, setEntroll] = useState([]);
+  let uid = localStorage.getItem('uid');
+  // console.log(Entroll)
+  const mobile = uid ? CryptoJS.AES.decrypt(uid, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   const accessanouncement = async () => {
     const { data } = await axios.get('/api/v1/get-studannouncement');
     if (data.success) {
@@ -12,12 +15,25 @@ const StudentDashboard = () => {
     }
   };
 
+  const fetchCourse = async () => {
+    try {
+      const { data } = await axios.post(`/api/v1/get-entroll-course`, { mobile })
+      if (data.success) {
+        setEntroll(data.result[0])
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   useEffect(() => {
     accessanouncement();
+    fetchCourse()
   }, []);
 
   return (
     <StudentLayout>
+
       <div className="w-full">
         <div>
           {/* <h1 className="text-xl font-serif mx-2 mb-4">Announcement</h1> */}
@@ -54,7 +70,64 @@ const StudentDashboard = () => {
             </div>
           )}
         </div>
+
+        <div className="mt-8 w-full shadow-md bg-white px-4 sm:px-8 md:px-16 py-5">
+          <p className="text-center py-3 text-lg mb-4">
+            <b>Registration No :</b> {Entroll?.SId}
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+            <div>
+              <div className="flex">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Name</p>
+                <p>: {Entroll?.name}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Course Name</p>
+                <p>: {Entroll?.course || Entroll?.coursename}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Gender</p>
+                <p>: {Entroll?.gender}</p>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Email</p>
+                <p>: {Entroll?.email}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Mobile No.</p>
+                <p>: {Entroll?.phone || Entroll?.mobno}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Date of Birth</p>
+                <p>: {Entroll?.dob ? Entroll.dob.split('T')[0].split('-').reverse().join('/') : "N/A"}</p>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">District</p>
+                <p className="capitalize">: {Entroll?.district}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">State</p>
+                <p>: {Entroll?.state}</p>
+              </div>
+              <div className="flex mt-4">
+                <p className="w-24 sm:w-28 md:w-32 font-semibold">Pin Code</p>
+                <p>: {Entroll?.pincode}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
       </div>
+
 
       {/* Add keyframes for the scrolling animation */}
       <style>

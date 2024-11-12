@@ -6,17 +6,16 @@ import { toast, ToastContainer } from 'react-toastify';
 import StudentLayout from '../layout/StudentLayout';
 import CryptoJS from 'crypto-js';
 const UserProfile = () => {
-    const [category, setCategory] = useState([])
+    // const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
-    const [district, setDistrict] = useState([])
+    // const [district, setDistrict] = useState([])
     const [session, setFilteredSession] = useState([])
     const [filteredDistrict, setFilteredDistrict] = useState([])
-    const [state, setState] = useState([])
+    // const [state, setState] = useState([])
     // const [data,setFormData]=useState([])
     const mobile = localStorage.getItem('uid')
+    const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
     const [formdata, setData] = useState({
-        // categoryname: '',
-        // session: '',
         minority: "",
         name: "",
         dob: "",
@@ -27,7 +26,6 @@ const UserProfile = () => {
         mothername: "",
         nationality: "",
         disabled: '',
-        // coursename: "",
         line1: '',
         line2: '',
         town: '',
@@ -55,26 +53,26 @@ const UserProfile = () => {
         },
     ]);
 
-    const accesscategory = async () => {
-        const { data } = await axios.get('/api/v1/get-category')
-        if (data.success) {
-            setCategory(data.result)
-        }
-    }
-    const accessState = async () => {
-        const { data } = await axios.get('/api/v1/get-state')
-        if (data.success) {
-            setState(data.result)
-        }
+    // const accesscategory = async () => {
+    //     const { data } = await axios.get('/api/v1/get-category')
+    //     if (data.success) {
+    //         setCategory(data.result)
+    //     }
+    // }
+    // const accessState = async () => {
+    //     const { data } = await axios.get('/api/v1/get-state')
+    //     if (data.success) {
+    //         setState(data.result)
+    //     }
 
-    }
-    const accessDistrict = async () => {
-        const { data } = await axios.get('/api/v1/get-district')
-        if (data.success) {
-            setDistrict(data.result)
-        }
-    }
-    useEffect(() => { accesscategory(); accessDistrict(); accessState() }, [])
+    // }
+    // const accessDistrict = async () => {
+    //     const { data } = await axios.get('/api/v1/get-district')
+    //     if (data.success) {
+    //         setDistrict(data.result)
+    //     }
+    // }
+    // useEffect(() => { accesscategory(); accessDistrict(); accessState() }, [])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
@@ -154,31 +152,28 @@ const UserProfile = () => {
     const handleRemoveEntry = (index) => {
         setEducationEntries((prevEntries) => prevEntries.filter((_, idx) => idx !== index));
     };
-    const handleSubmit = async (e) => {
+
+        // update profile of user
+    const handleUpdate = async (e) => {
         e.preventDefault()
-        const completeData = { ...formdata, educationEntries };
         try {
-            const { data } = await axios.post('/api/v1/admission-form', completeData)
+            const { data } = await axios.post('/api/v1/updateProfile-user', {decryptedMobile,...formdata,educationEntries})
             if (data.success) {
-                toast(data.message)
+                toast.success(data.message)
             } else {
-                toast("Eror in Submitting Form")
+                toast.error("Eror in Submitting Form")
             }
         } catch (error) {
-            toast("Error in Submitting Form")
+            toast.error("Error in Submitting Form")
         }
 
     };
 
     // fetch student proceeding data 
-    const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
-    // console.log(decryptedMobile)
     const fetchStudent = async () => {
         try {
             if (decryptedMobile) {
                 const { data } = await axios.post('/api/v1/getStudent-data', { decryptedMobile })
-                console.log(data.result)
-
                 if (data.success) {
                     setData({
                         ...formdata,
@@ -194,8 +189,10 @@ const UserProfile = () => {
             alert(error.message)
         }
     }
-
     useEffect(() => { fetchStudent() }, [])
+
+
+
     return (
         <StudentLayout>
             <ToastContainer />
@@ -205,7 +202,7 @@ const UserProfile = () => {
                 </div>
 
                 <div className='mt-6 m-4' >
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleUpdate}>
                         <div>
                             <h2 className='text-xl mb-5 text-red-800 border border-b-rose-700 '>Personal Details</h2>
                         </div>
@@ -372,14 +369,14 @@ const UserProfile = () => {
 
                                     <div>
                                         <label htmlFor="perstate" className='text-lg mb-2'> State</label>
-                                        
-                                        <input type='text' onChange={handleChange} value={formdata.perstate}  name="perstate" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
+                                        <input type='text' onChange={handleChange} value={formdata.perstate} name="perstate" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
 
                                     </div>
                                     <div>
                                         <label htmlFor="perdistrict" className='text-lg mb-2'> District</label>
-                                      
-                                        <input type='text' onChange={handleChange} value={formdata.perdistrict}  name="perdistrict" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+
+                                        <input type='text' onChange={handleChange} value={formdata.perdistrict} name="perdistrict" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
 
                                     </div>
                                     <div>

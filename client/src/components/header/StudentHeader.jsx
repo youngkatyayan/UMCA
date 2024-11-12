@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import CryptoJS from 'crypto-js';
-
+import user from '../../assets/gif/user.gif'
 const StudentHeader = () => {
   const [openMenu, setOpenMenu] = useState(false);
   // const [openSideBar, setOpenSideBar] = useState(false)
@@ -51,8 +51,9 @@ const StudentHeader = () => {
             <span className='px-4'>
               <IoIosNotificationsOutline />
             </span>
-            <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings className='me-6' />
+            <span className="ml-4 overflow-hidden" onClick={() => setOpenMenu(prev => !prev)}>
+              <img src={user} alt="" className='me-6 h-10 mix-blend-multiply' />
+              {/* <CiSettings className='me-6' /> */}
             </span>
           </div>
         </div>

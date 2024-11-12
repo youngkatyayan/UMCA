@@ -613,7 +613,7 @@ export const updateFranchiseStatus = async (req, res) => {
         const sql = `update franchiseactive set  status=? where FId=? `
         const values = [status, FId]
         const [result] = await db.query(sql, values)
-        console.log(result)
+        // console.log(result)
         if (result) {
             return res.status(201).send({ success: true, result, message: 'Successfully Updated Franchise Status ' });
         }
