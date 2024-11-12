@@ -74,7 +74,7 @@ const StudentDashboard = () => {
           )}
         </div>
 
-        <div className="mt-8 w-full bg-white px-4 sm:px-8 md:px-16 py-5 gradient-shadow">
+        <div className="mt-4 w-full bg-white px-4 sm:px-8 md:px-16 py-2 gradient-shadow">
           <p className="text-center py-3 text-lg mb-4">
             <b>Registration No :</b> {Entroll?.SId}
           </p>
