@@ -102,10 +102,11 @@ export const promoCodeController = async (req, res) => {
 
 // orderCourseController
 export const orderCourseController = async (req, res) => {
-    const connection = await db.getConnection(); 
+    const connection = await db.getConnection();
     try {
-        await connection.beginTransaction(); 
-        const { name, phone, email, state, promoCode, district, course } = req.body;
+        await connection.beginTransaction();
+        const { name, phone, email, state, promoCode, district, course, CoId, Caid } = req.body;
+        // console.log(req.body)
         const fields = { name, phone, email, state, district, course };
         for (let [key, value] of Object.entries(fields)) {
             if (!value) {
@@ -123,8 +124,8 @@ export const orderCourseController = async (req, res) => {
                 result: existingRecords,
             });
         } else {
-            const insertOrderSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district, course) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-            const [insertOrderResult] = await connection.query(insertOrderSql, [name, phone, email, state, promoCode, district, course]);
+            const insertOrderSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district, course,categoryId,courseId) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
+            const [insertOrderResult] = await connection.query(insertOrderSql, [name, phone, email, state, promoCode, district, course, Caid, CoId]);
 
             if (insertOrderResult.affectedRows > 0) {
                 const Type = "Student";

@@ -143,7 +143,11 @@ export const ectrollCourseController = async (req, res) => {
         if (!mobile) {
             return res.status(404).send({ error: 'mobile is required' })
         }
-        const sql = `select * from franchadmission left join ordertable on franchadmission.mobno=ordertable.phone where mobno=? GROUP BY COALESCE(ordertable.course, franchadmission.coursename)`
+        const sql = `select * from franchadmission 
+left join ordertable on franchadmission.mobno=ordertable.phone 
+left join course on ordertable.courseId=course.CoId
+left join category on  ordertable.categoryId=category.Caid
+where mobno=? GROUP BY COALESCE(ordertable.course, franchadmission.coursename)`
         const [result] = await db.query(sql, [mobile])
         if (result.length > 0) {
             return res.status(200).send({ success: true, message: "data access successfully", result });

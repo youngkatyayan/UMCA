@@ -19,7 +19,7 @@ const Entroll = () => {
         state: '',
         promoCode: '',
         district: '',
-        course: ''
+        course: '',
     });
 
     // console.log(course)
@@ -80,19 +80,22 @@ const Entroll = () => {
     const handleProceed = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post('/api/v1/order-course', formData);
-            if (data.success) {
-                setIsLoading(true);
-                setTimeout(() => {
-                    setIsLoading(false);
-                    if (course?.yearlyfee === '0') {
-                        sendPassword();
-                    } else {
-                        handlePayment();
-                    }
-                }, 500);
-            } else {
-                alert("Order was not successful, please try again.");
+            if (course) {
+                const { data } = await axios.post('/api/v1/order-course', { ...formData, CoId: course?.CoId, Caid: course?.Caid });
+                if (data.success) {
+                    setIsLoading(true);
+                    setTimeout(() => {
+                        setIsLoading(false);
+                        if (course?.yearlyfee === '0') {
+                            sendPassword();
+                        } else {
+                            handlePayment();
+                        }
+                    }, 500);
+
+                } else {
+                    alert("Order was not successful, please try again.");
+                }
             }
         } catch (error) {
             console.error("Error during order creation:", error.message);
@@ -113,7 +116,7 @@ const Entroll = () => {
         }
         try {
             const orderResponse = await axios.post("/api/v1/create-order", {
-                amount: course?.yearlyfee,
+                amount:(promo) ? promo : course?.yearlyfee,
                 currency: "INR",
             });
 

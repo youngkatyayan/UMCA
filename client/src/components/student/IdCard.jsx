@@ -260,15 +260,14 @@ const IdCard = () => {
         </div>
       </div>
     `);
-
     newWindow.document.write('</body></html>');
     newWindow.document.close();
     newWindow.print();
   };
   return (
     <StudentLayout>
-      <div className="w-full bg-blue-100 ">
-        <div className="bg-blue-100">
+      <div className="w-full bg-blue-50 shadow-md">
+        <div className="bg-blue-50">
           <div className="flex flex-col m-4 border rounded-md bg-transparent-100 bg-blue-800 shadow-md">
             <h1 className="text-white text-2xl m-4 text-center font-serif">
               Student Identity
@@ -284,8 +283,8 @@ const IdCard = () => {
                 style={{
                   backgroundImage: `url(${Id})`,
                   backgroundSize: 'contain',
-                  backgroundPosition: 'center', // Centers the image
-                  backgroundRepeat: 'no-repeat', // Prevents repeat
+                  backgroundPosition: 'center', 
+                  backgroundRepeat: 'no-repeat',
                   aspectRatio: '591 / 1004',
                   height: '380px',
                   position: 'relative'
