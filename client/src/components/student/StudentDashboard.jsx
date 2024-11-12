@@ -13,7 +13,7 @@ const StudentDashboard = () => {
   const accessanouncement = async () => {
     const { data } = await axios.get('/api/v1/get-studannouncement');
     if (data.success) {
-      setAnnouncement(data.result);
+      // setAnnouncement(data.result);
     }
   };
 
