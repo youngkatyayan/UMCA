@@ -51,7 +51,7 @@ const IdCard = () => {
   const handlePrint = () => {
     const content = document.getElementById('print-section');
     const newWindow = window.open('', '', 'height=600, width=800');
-    
+
     newWindow.document.write('<html><head><title>Print</title>');
     newWindow.document.write('<style>');
     newWindow.document.write(`
@@ -105,6 +105,18 @@ const IdCard = () => {
       .student-details span {
         font-size: 0.7rem;
       }
+          .student-details .photo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    .student-details .photo img {
+      height: 70px;
+      width: auto;
+      border-radius: 8px;
+    }
       .blue-bg {
         background-color: #1e3a8a;
         color: white;
@@ -137,7 +149,7 @@ const IdCard = () => {
     `);
     newWindow.document.write('</style>');
     newWindow.document.write('</head><body>');
-    
+
     newWindow.document.write(`
       <div class="print-container">
         <div class="flex-center">
@@ -152,11 +164,20 @@ const IdCard = () => {
               <hr class="border-blue-700" style="margin-top: 8px;" />
               <div class="blue-bg">Student Id</div>
               <div class="student-details">
-                <div><span class="font-bold">Name:</span> ${stDetails.name}</div>
-                <div><span class="font-bold">Phone:</span> ${stDetails.mobno}</div>
-                <div><span class="font-bold">Email:</span> ${stDetails.email}</div>
-                <div><span class="font-bold">Course:</span> ${stDetails.course}</div>
-                <div><span class="font-bold absolute text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span></div>
+                <div class="grid grid-cols-1 mt-1 bg-opacity-75">
+                   <div class="photo">
+              <img src="${Photo}" alt="Student Photo" />
+            </div>
+                  <div class="relative pl-6 justify-center text-start content-center mt-2 mb-12">
+                    <div><span class="font-bold text-[0.8rem]">Name: </span><span style="font-size: 0.7rem;">${stDetails.name}</span></div>
+                    <div><span class="font-bold text-[0.8rem]">Phone: </span><span style="font-size: 0.7rem;">${stDetails.mobno}</span></div>
+                    <div><span class="font-bold text-[0.8rem]">Email: </span><span style="font-size: 0.7rem;">${stDetails.email}</span></div>
+                    <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${stDetails.course}</span></div>
+                    <div class="h-10 relative">
+                      <span class="font-bold absolute text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -185,10 +206,11 @@ const IdCard = () => {
         </div>
       </div>
     `);
-     newWindow.document.write('</body></html>');
-  newWindow.document.close();
-  newWindow.print();
-};
+
+    newWindow.document.write('</body></html>');
+    newWindow.document.close();
+    newWindow.print();
+  };
   return (
     <StudentLayout>
       <div className="w-full bg-blue-100 ">
@@ -199,7 +221,7 @@ const IdCard = () => {
             </h1>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 ml-12 mr-12 "  id="print-section">
+          <div className="grid grid-cols-2 gap-4 ml-12 mr-12 " id="print-section">
 
             <div className="flex justify-center" style={{ height: '380px', }}>
               {/* Front view section */}
