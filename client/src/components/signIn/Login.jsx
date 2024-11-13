@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom'
+import Userlayout from '../layout/Userlayout';
 const Login = () => {
     const navigate = useNavigate();
 
@@ -94,9 +95,9 @@ const Login = () => {
     }
 
     return (
-        <>
+        <Userlayout>
             <div
-                className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
+                className=" h-[60vh]  flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
                 style={{ backgroundImage: `url(${BackgroundImage})` }}
             >
                 <ToastContainer />
@@ -213,7 +214,7 @@ const Login = () => {
                     </div>
                 )}
             </div>
-        </>
+        </Userlayout>
     );
 };
 

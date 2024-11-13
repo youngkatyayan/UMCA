@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-
 import Login from './components/signIn/Login.jsx';
 import Mode from './components/admin/addMaster/Mode.jsx';
 import Session from './components/admin/addMaster/Session.jsx';
@@ -15,7 +14,6 @@ import Courses from './components/user/Courses.jsx';
 import NewApplicant from './components/admin/franchise/NewApplicant.jsx';
 import FranchiseList from './components/admin/franchise/FranchiseList.jsx';
 import FranchiseRequest from './components/user/FranchiseRequest.jsx';
-
 import Entroll from './components/pages/Entroll.jsx';
 import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
@@ -29,13 +27,12 @@ import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
 import Category from './components/admin/addMaster/Category.jsx';
 import CourseCommision from './components/franchise/CourseCommision.jsx';
 import StudentCommision from './components/franchise/StudentCommision.jsx';
-
 import UserProfile from './components/user/UserProfile.jsx';
 import FeeStatement from './components/student/FeeStatement.jsx';
 import IdCard from './components/student/IdCard.jsx';
-
-
-
+import Contact from './components/pages/Contact.jsx';
+import AboutUs from './components/user/AboutUs.jsx';
+import UserCertificate from './components/user/UserCertificate.jsx';
 
 
 const App = () => {
@@ -68,16 +65,11 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-
           <Route path='/offer' element={<OfferZone />} />
           <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/entroll-course/:id' element={<Entroll />} />
-
-          {/* announcement  */}
-
           <Route path='/announcement' element={<StudentAnnounc />} />
-
           <Route path='/*' element={<PageNotFound />} />
         </Routes>
       );
@@ -124,6 +116,9 @@ const App = () => {
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/entroll-course/:id' element={<Entroll />} />
+          <Route path='/contact' element={<Contact/>} />
+          <Route path='/about-us' element={<AboutUs/>} />
+          <Route path='/user-certificate' element={<UserCertificate/>} />
 
         </Routes>
       );

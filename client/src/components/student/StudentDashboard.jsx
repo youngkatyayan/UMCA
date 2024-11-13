@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StudentLayout from '../layout/StudentLayout';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import { TfiAnnouncement } from "react-icons/tfi";
 const StudentDashboard = () => {
   const [announcement, setAnnouncement] = useState([]);
   const [Entroll, setEntroll] = useState([]);
@@ -64,12 +65,12 @@ const StudentDashboard = () => {
               </div>
             ))
           ) : (
-            <div className="text-white text-xl p-2 rounded-md font-sans mb-4" style={{
+            <div className="text-white text-xl p-2 rounded-md font-sans mb-4 flex items-center gap-5" style={{
               background:
                 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)',
               opacity: 0.7,
             }} >
-              No announcements available.
+             <TfiAnnouncement className=''/> No announcements available.
             </div>
           )}
         </div>
