@@ -33,6 +33,7 @@ import StudentCommision from './components/franchise/StudentCommision.jsx';
 import UserProfile from './components/user/UserProfile.jsx';
 import FeeStatement from './components/student/FeeStatement.jsx';
 import IdCard from './components/student/IdCard.jsx';
+import CreateCommission from './components/admin/commission/CreateCommission.jsx';
 
 
 
@@ -73,6 +74,8 @@ const App = () => {
           <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/entroll-course/:id' element={<Entroll />} />
+
+          <Route path='/create-commission' element={<CreateCommission/>} />
 
           {/* announcement  */}
 
