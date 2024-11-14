@@ -201,7 +201,7 @@ const Entroll = () => {
     return (
         <Userlayout>
             <ToastContainer />
-            <div>
+            <div className=''>
                 {isLoading ? (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
                         <ClipLoader color="#123abc" loading={isLoading} size={50} />

@@ -49,7 +49,7 @@ export const updateUserProfileController = async (req, res) => {
     let connection;
     try {
         connection = await db.getConnection();
-
+        const files = req.file ? req.file.filename : null;
         const {
             minority, name, dob, gender, category, relation, relaname, mothername, nationality, disabled, line1, line2, town, state, district, pincode, perline1,
             perline2, pertown, perstate, perdistrict, perpincode, Uid, mobno, email, sameAsAbove, whatsappno, educationEntries
@@ -94,8 +94,8 @@ export const updateUserProfileController = async (req, res) => {
 
         } else {
             const insSql = `INSERT INTO franchadmission (SId, franchMobile, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation,
-             state, town, whatsappno) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            const insResult = [newSId, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno];
+             state, town, whatsappno,profileImg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+            const insResult = [newSId, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno,files];
 
             const [insertResult] = await connection.query(insSql, insResult);
             if (insertResult.affectedRows === 0) {

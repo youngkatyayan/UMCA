@@ -45,9 +45,9 @@ const StudentHeader = () => {
           <span className="absolute left-1/2 transform -translate-x-1/2">UserId:{decryptedType}</span>
 
           <div className="flex items-center ml-auto">
-            <span className='px-4'>
+            {/* <span className='px-4'>
               <FaRegMessage className='mx-2' />
-            </span>
+            </span> */}
             <span className='px-4'>
               <IoIosNotificationsOutline />
             </span>

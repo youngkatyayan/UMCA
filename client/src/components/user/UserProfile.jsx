@@ -6,13 +6,10 @@ import { toast, ToastContainer } from 'react-toastify';
 import StudentLayout from '../layout/StudentLayout';
 import CryptoJS from 'crypto-js';
 const UserProfile = () => {
-    // const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
-    // const [district, setDistrict] = useState([])
     const [session, setFilteredSession] = useState([])
     const [filteredDistrict, setFilteredDistrict] = useState([])
-    // const [state, setState] = useState([])
-    // const [data,setFormData]=useState([])
+    const [image, setImage] = useState(null);
     const mobile = localStorage.getItem('uid')
     const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
     const [formdata, setData] = useState({
@@ -53,26 +50,12 @@ const UserProfile = () => {
         },
     ]);
 
-    // const accesscategory = async () => {
-    //     const { data } = await axios.get('/api/v1/get-category')
-    //     if (data.success) {
-    //         setCategory(data.result)
-    //     }
-    // }
-    // const accessState = async () => {
-    //     const { data } = await axios.get('/api/v1/get-state')
-    //     if (data.success) {
-    //         setState(data.result)
-    //     }
-
-    // }
-    // const accessDistrict = async () => {
-    //     const { data } = await axios.get('/api/v1/get-district')
-    //     if (data.success) {
-    //         setDistrict(data.result)
-    //     }
-    // }
-    // useEffect(() => { accesscategory(); accessDistrict(); accessState() }, [])
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setImage(file);
+        }
+    };
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
@@ -153,11 +136,15 @@ const UserProfile = () => {
         setEducationEntries((prevEntries) => prevEntries.filter((_, idx) => idx !== index));
     };
 
-        // update profile of user
+    // update profile of user
     const handleUpdate = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.post('/api/v1/updateProfile-user', {decryptedMobile,...formdata,educationEntries})
+            const { data } = await axios.post('/api/v1/updateProfile-user', { decryptedMobile, ...formdata, educationEntries,image },{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            })
             if (data.success) {
                 toast.success(data.message)
             } else {
@@ -282,9 +269,10 @@ const UserProfile = () => {
                                     </div>
                                 </div>
 
-
-
-
+                                <div>
+                                    <label htmlFor="minority" className='text-lg mb-2'>Upload Image</label>
+                                    <input type="file" name="image" id="" className='m-1  p-1 cursor-pointer' onChange={handleImageChange} />
+                                </div>
 
                             </div>
                         </div>

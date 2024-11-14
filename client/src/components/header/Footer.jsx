@@ -25,7 +25,7 @@ const Footer = () => {
                         <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>PNKVY</p>
                         <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0'>
                             <Link className='font-semibold' to={''}>Franchise Proposal</Link>
-                            <Link className='font-semibold' to={'/login'}>Admin Login</Link>
+                            <Link className='font-semibold' to={'/login'}>Login</Link>
                             {/* <Link className='font-semibold' to={''}>Certificate Verification</Link> */}
                         </div>
                     </div>

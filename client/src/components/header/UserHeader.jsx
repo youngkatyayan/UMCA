@@ -41,7 +41,7 @@ const UserHeader = () => {
       <div className='w-full h-16 bg-black flex items-center p-0 md:px-5'>
 
 
-        <div className='visible md:hidden flex items-center justify-between w-full relative ' >
+        <div className='visible z-50 md:hidden flex items-center justify-between w-full relative ' >
 
           <Link to='/' className='text-orange-600 font-semibold flex ms-5' >
             <p style={clipStyle} className='h-full flex items-center ps-2 font-semibold gap-1'>
@@ -57,7 +57,7 @@ const UserHeader = () => {
 
           {changeBar && (
             <div className={`w-full bg-slate-600 mt-2 py-2 absolute top-full -z-20 flex flex-col space-y-2 transition-transform duration-300 ease-in ${changeBar ? 'translate-y-0 visible' : '-translate-y-full'}`}>
-              <Link className='text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>About</Link>
+              <Link to={'/about-us'}  className='text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>About</Link>
 
               {/* Courses Dropdown */}
               <div className='text-zinc-50 relative menu group'>
@@ -65,7 +65,7 @@ const UserHeader = () => {
                   Courses <RiArrowDropDownFill />
                 </Link>
 
-                {course === 1 && (
+                {/* {course === 1 && (
                   <div className='flex flex-col w-full absolute z-20 text-[.9rem] bg-neutral-700 px-4 py-2 top-full space-y-1 courses transition-transform duration-300 ease-in rounded-md translate-y-0 visible'>
                     <Link className='whitespace-nowrap'>O Level</Link>
                     <Link className='whitespace-nowrap'>CCC</Link>
@@ -83,7 +83,7 @@ const UserHeader = () => {
                     <Link className='whitespace-nowrap'>DCHM</Link>
                     <Link className='whitespace-nowrap'>MDCA</Link>
                   </div>
-                )}
+                )} */}
               </div>
 
               {/* Student Zone Dropdown */}
@@ -92,21 +92,22 @@ const UserHeader = () => {
                   Student Zone <RiArrowDropDownFill />
                 </Link>
 
-                {course === 2 && (
+                {/* {course === 2 && (
                   <div className='flex flex-col absolute w-full  text-[.9rem] bg-neutral-700 px-4 py-2 top-full space-y-1 transition-transform duration-300 ease-in rounded-md  translate-y-0 visible'>
                     <Link className='whitespace-nowrap'>Enquiry</Link>
                     <Link className='whitespace-nowrap'>Certificate Verification</Link>
                   </div>
-                )}
+                )} */}
               </div>
 
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Centers</Link>
               <Link to={'/franch-request' } className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
+                <Link to={'/user-certificate'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Certificate</Link>
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Workshop</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Contact Us</Link>
+              {/* <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link> */}
+              {/* <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Workshop</Link> */}
+              <Link to={'/contact'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Contact Us</Link>
             </div>
           )}
         </div>
@@ -124,7 +125,7 @@ const UserHeader = () => {
             </span>
             Educational
           </Link>
-          <Link className=' text-zinc-50 '>About</Link>
+          <Link to={'/about-us'} className=' text-zinc-50 '>About</Link>
 
           <Link   to={'/courses'} className=' text-zinc-50  relative  menu group'>Courses
             {/* <p onClick={(e) => toggleMenu(e, 1)} className='group-focus:text-sky-500 flex items-center justify-center'>Courses <RiArrowDropDownFill /></p> */}
@@ -168,10 +169,10 @@ const UserHeader = () => {
           <Link className=' text-zinc-50 '>Centers</Link>
           <Link to={'/franch-request' } className=' text-zinc-50 '>Franchise</Link>
           <Link className=' text-zinc-50 '>Gallery</Link>
+          <Link to={'/user-certificate'} className=' text-zinc-50 '>Certificate</Link>
           <Link className=' text-zinc-50 '>Placement</Link>
-          <Link className=' text-zinc-50 '>PMKVY</Link>
-          <Link className=' text-zinc-50 '>Workshop</Link>
-          <Link  className=' text-zinc-50 '>Contact Us</Link>
+          {/* <Link className=' text-zinc-50 '>Workshop</Link> */}
+          <Link  to={'/contact'} className=' text-zinc-50 '>Contact Us</Link>
         </div>
 
       </div>
