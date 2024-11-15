@@ -44,7 +44,7 @@ export const addCategory = async (req, res) => {
     const connection = await db.getConnection();
     try {
         // console.log(req.body)
-        const { category, groupname } = req.body;
+        const { category, groupname ,description} = req.body;
 
         await connection.beginTransaction();
 
@@ -59,8 +59,8 @@ export const addCategory = async (req, res) => {
             newCaid = lastCeid + 1; 
         }
 
-        const sql = `insert into category (Caid,categoryname,groupname) values(?,?,?)`
-        const values = [newCaid, category, groupname]
+        const sql = `insert into category (Caid,categoryname,groupname,description) values(?,?,?,?)`
+        const values = [newCaid, category, groupname,description    ]
         const [insertResult] = await db.query(sql, values)
 
         if (insertResult.affectedRows > 0) {
@@ -165,14 +165,14 @@ export const addCourse = async (req, res) => {
 
     try {
 
-        const { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee } = req.body;
+        const { applicationfee,popular, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee } = req.body;
         const requiredFields = { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee }
         for (const [field, value] of Object.entries(requiredFields)) {
             if (!value) {
                 return res.status(400).send({ success: false, error: `${field} is required` })
             }
         }
-
+        
 
 
         await connection.beginTransaction();
@@ -189,8 +189,8 @@ export const addCourse = async (req, res) => {
 
 
 
-        const sql = `insert into course (CoId,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [newCoId, applicationfee,image1,image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
+        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [newCoId,popular, applicationfee,image1,image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
         await connection.query(sql, values)
 
 

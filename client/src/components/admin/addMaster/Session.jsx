@@ -298,7 +298,7 @@ const Session = () => {
                 </div>
 
             </div>
-            <ToastContainer />
+            
         </SuperAdminLayout>
     )
 }

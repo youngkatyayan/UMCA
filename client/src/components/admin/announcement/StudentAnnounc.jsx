@@ -153,24 +153,24 @@ const StudentAnnounc = () => {
   return (
     <SuperAdminLayout>
 
-      <div className='w-full  bg-gray-200 p-2 h-auto '>
+      <div className='w-full  bg-gray-200 p-2 overflow-y-auto h-auto '>
         <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
           <h1 className='text-white text-xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Student Announcement' : ' Student Announcement'}</h1>
         </div>
 
-
+        <div className='m-4 bg-white rounded-md p-2 px-4'>
         <form onSubmit={updateC ? handleUpdate : handleSubmit} className='  px-4 '>
 
-          <div className='border-2 rounded-sm  grid lg:grid-cols-3 gap-6 md:grid-cols-2 items-center'>
+          <div className=' grid lg:grid-cols-3 gap-6 md:grid-cols-2 items-center'>
             <div>
-              <label htmlFor="category" className=' mb-2 text-lg font-serif'> Announcement Category  : </label>
+              <label htmlFor="category" className=' mb-2  font-serif'> Announcement Category  : </label>
               <select
 
                 name='category'
                 value={formdata.category}
                 onChange={handleChange}
                 required
-                className='w-full p-2 rounded-md my-2 shadow-md'
+                className='w-full p-1 border border-blue-400 rounded-md my-2 shadow-md'
               >
                 <option value="">Select Category</option>
                 {["Homepage", "Franchise", "Students"].map((item, index) => (
@@ -183,7 +183,7 @@ const StudentAnnounc = () => {
 
             </div>
             <div>
-              <label htmlFor="title" className=' mb-2 text-lg font-serif'> Title <sup className='text-red-600'>*</sup> :  </label>
+              <label htmlFor="title" className=' mb-2  font-serif'> Title <sup className='text-red-600'>*</sup> :  </label>
               <input
                 type="text"
                 name='title'
@@ -191,12 +191,12 @@ const StudentAnnounc = () => {
                 onChange={handleChange}
                 required
                 placeholder='Enter Category Name'
-                className='w-full p-2 rounded-md my-2 shadow-md'
+                className='w-full p-1 border border-blue-400 rounded-md my-2 shadow-md'
               />
             </div>
 
             <div>
-              <label htmlFor="date" className=' mb-2 text-lg font-serif'> Date :  </label>
+              <label htmlFor="date" className=' mb-2  font-serif'> Date :  </label>
               <input
                 type="date"
                 name='date'
@@ -204,47 +204,43 @@ const StudentAnnounc = () => {
                 onChange={handleChange}
                 required
                 placeholder='Enter Category Name'
-                className='w-full p-2 rounded-md my-2 shadow-md'
+                className='w-full p-1 border border-blue-400 rounded-md my-2 shadow-md'
               />
             </div>
 
             <div >
-              <label htmlFor="description" className=' flex m-1 font-serif text-lg w-full'>  Description :</label>
+              <label htmlFor="description" className=' flex m-1 font-serif  w-full'>  Description :</label>
               <textarea
                 // type="text"
                 name='description'
                 value={formdata.description}
                 onChange={handleChange}
                 placeholder=' Description'
-                className=' p-2 rounded-md  shadow-md w-full '
+                className=' p-2 border border-blue-400 rounded-md  shadow-md w-full '
               />
             </div>
 
             <div>
-              <label htmlFor="brochure" className=' mb-2 text-lg font-serif'> Brouche :  </label>
+              <label htmlFor="brochure" className=' mb-2  font-serif'> Brouche :  </label>
               <input
                 type="file"
                 name='brochure'
                 onChange={(e) => handleImage(e, 1)}
                 placeholder='Add Brochure Name'
-                className='w-full p-2 rounded-md my-2 shadow-md'
+                className='w-full p-1 border border-blue-400 rounded-md my-2 shadow-md'
               />
-
             </div>
           </div>
 
-
-
-
           <div className='flex flex-row-1 justify-center'>
-
           <button type='submit' className='transition-shadow w-40 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 text-xl' style={{
                             background: 'linear-gradient(90deg, rgba(26,0,36,1) 0%, rgba(76,98,177,1) 0%, rgba(0,172,255,1) 100%)'
                         }}>{updateC ? "UPDATE " : " SUBMIT"}</button>
           </div>
-        </form>
+        </form> 
+        </div>
 
-        <div className='bg-gray-200 w-full overflow-x-scroll'>
+        <div className='bg-gray-100  p-4 m-4   rounded-md   overflow-x-scroll '>
           <table className='min-w-full border-collapse border border-gray-300 '>
             <thead className='bg-slate-600 text-white' >
               <tr className='font-serif whitespace-nowrap'>
