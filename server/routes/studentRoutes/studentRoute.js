@@ -2,7 +2,9 @@
 import express from 'express';
 import multer from 'multer'
 import fs from 'fs'
-import { allstudentCourses, getStudAnnouncement, getStudentProceedDataController, updateUserProfileController, ectrollCourseController } from '../../controllers/studentController/StudentController.js';
+import { allstudentCourses, getStudAnnouncement, getStudentProceedDataController, updateUserProfileController, ectrollCourseController,feeStatementController
+    
+ } from '../../controllers/studentController/StudentController.js';
 import path from 'path';
 
 
@@ -32,5 +34,7 @@ router.post('/updateProfile-user', upload.single('image'), updateUserProfileCont
 
 router.post('/get-entroll-course', ectrollCourseController)
 router.use('/get-entroll-course',express.static(path.join('Profile')))
+
+router.post('/fee-statement',feeStatementController)
 
 export default router;

@@ -20,6 +20,7 @@ const Entroll = () => {
         promoCode: '',
         district: '',
         course: '',
+        payment:(promo) ? promo : course?.yearlyfee,
     });
 
     // console.log(course)

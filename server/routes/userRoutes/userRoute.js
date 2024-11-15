@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-import { displayCourseController, getCourseController,promoCodeController,orderCourseController } from '../../controllers/userControllers/UserController.js'
+import { displayCourseController, getCourseController,promoCodeController,orderCourseController,createContactController } from '../../controllers/userControllers/UserController.js'
 
 const router=express.Router()
 
@@ -13,5 +13,6 @@ router.use('/display-popular-course',express.static(path.join('courseimage','upl
 router.post('/promocode',promoCodeController)
 router.post('/order-course',orderCourseController)
 
-
+// contact router
+router.post('/contact-us',createContactController)
 export default router

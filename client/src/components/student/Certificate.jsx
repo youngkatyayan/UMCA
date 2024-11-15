@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import StudentLayout from '../layout/StudentLayout'
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Certificate = () => {
   const [searchData, setSearchData] = useState({
     enrollmentNo: '',
-    name: '',
-    course: '',
+    // name: '',
+    // course: '',
   });
 
   const [searchResult, setSearchResult] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
-
+  const [captchaValue, setCaptchaValue] = useState(null);
   // Sample certificate data
   const sampleCertificate = {
     studentName: "John Doe",
@@ -48,20 +49,23 @@ const Certificate = () => {
       Grade: ${searchResult.grade}
       Status: ${searchResult.status}
     `;
-  
+
     // Create a Blob from the certificate data
     const blob = new Blob([certificateData], { type: 'text/plain' });
-  
+
     // Create an anchor element to simulate the download link
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `${searchResult.studentName}_certificate.txt`; // Set the file name
-  
+
     // Trigger the click event on the anchor link to start the download
     link.click();
   };
-  
 
+  const handleCaptchaChange = (value) => {
+    setCaptchaValue(value);
+    // console.log(value)
+  };
   return (
     <StudentLayout>
       <div className="bg-gray-50 py-8 w-full">
@@ -74,7 +78,7 @@ const Certificate = () => {
 
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <form onSubmit={handleSearch} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1  gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Enrollment Number</label>
                   <input
@@ -87,7 +91,7 @@ const Certificate = () => {
                     required
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                   <input
                     type="text"
@@ -98,8 +102,8 @@ const Certificate = () => {
                     className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
                   <input
                     type="text"
@@ -110,9 +114,14 @@ const Certificate = () => {
                     className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
-                </div>
+                </div> */}
               </div>
-
+              <div className="flex justify-center mt-4">
+                <ReCAPTCHA
+                  sitekey='6Lf5TH4qAAAAAEBV4Ctf3HScguqB5-MpNv5UdbZl'
+                  onChange={handleCaptchaChange}
+                />
+              </div>
               <div className="flex justify-center">
                 <button
                   type="submit"
@@ -157,6 +166,7 @@ const Certificate = () => {
                   </span>
                 </div>
               </div>
+             
 
               <div className="flex justify-center">
                 <button

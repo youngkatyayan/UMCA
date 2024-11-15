@@ -45,7 +45,7 @@ router.post("/create-order", async (req, res) => {
 
 // Endpoint to verify payment signature
 router.post("/verify-payment", async (req, res) => {
-    const { razorpay_order_id, CoId, razorpay_payment_id, razorpay_signature, email, phone, course } = req.body;
+    const { razorpay_order_id, CoId, razorpay_payment_id, razorpay_signature, email, phone, course,payment } = req.body;
 
     console.log(req.body);
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -68,8 +68,8 @@ router.post("/verify-payment", async (req, res) => {
 
         const insertSql = `
             INSERT INTO coursetrans 
-            (TranctionId, status, payment_sign, payment_id, email, courseId, mobile, coursename) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (TranctionId, status, payment_sign, payment_id, email, courseId, mobile, coursename,payment) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
         `;
         const [insertResult] = await connection.query(insertSql, [
             razorpay_order_id,
@@ -79,7 +79,8 @@ router.post("/verify-payment", async (req, res) => {
             email,
             CoId,
             phone,
-            course
+            course,
+            payment
         ]);
 
         if (insertResult.affectedRows === 0) {

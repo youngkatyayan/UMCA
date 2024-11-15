@@ -95,7 +95,7 @@ export const updateUserProfileController = async (req, res) => {
         } else {
             const insSql = `INSERT INTO franchadmission (SId, franchMobile, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation,
              state, town, whatsappno,profileImg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            const insResult = [newSId, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno,files];
+            const insResult = [newSId, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno, files];
 
             const [insertResult] = await connection.query(insSql, insResult);
             if (insertResult.affectedRows === 0) {
@@ -143,11 +143,11 @@ export const ectrollCourseController = async (req, res) => {
         if (!mobile) {
             return res.status(404).send({ error: 'mobile is required' })
         }
-        const sql = `select * from franchadmission 
-left join ordertable on franchadmission.mobno=ordertable.phone 
+        const sql = `select * from ordertable
+left join franchadmission on franchadmission.mobno=ordertable.phone 
 left join course on ordertable.courseId=course.CoId
 left join category on  ordertable.categoryId=category.Caid
-where mobno=? GROUP BY COALESCE(ordertable.course, franchadmission.coursename)`
+where phone=? GROUP BY COALESCE(ordertable.course, franchadmission.coursename)`
         const [result] = await db.query(sql, [mobile])
         if (result.length > 0) {
             return res.status(200).send({ success: true, message: "data access successfully", result });
@@ -155,5 +155,29 @@ where mobno=? GROUP BY COALESCE(ordertable.course, franchadmission.coursename)`
     } catch (error) {
         console.log(error.message)
         return res.status(500).send({ success: false, message: "Error in ectrollCourseController" });
+    }
+}
+
+
+// feeStatementController
+export const feeStatementController = async (req, res) => {
+    try {
+        const { mobile } = req.body
+        if (!mobile) {
+            return res.status(404).send({ error: 'mobile is required' })
+        }
+        const sql = `SELECT * FROM ordertable
+left join course on ordertable.courseId=course.CoId 
+left JOIN coursetrans on ordertable.courseId=coursetrans.courseId 
+where ordertable.phone=?`
+
+        const [result] = await db.query(sql, [mobile])
+        if (result.length > 0) {
+            return res.status(200).send({ success: true, message: "data access successfully", result });
+        }
+
+    } catch (error) {
+        console.log(error.message)
+        return res.status(500).send({ success: false, message: "Error in feeStatementController" });
     }
 }
