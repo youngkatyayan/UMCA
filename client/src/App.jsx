@@ -19,10 +19,10 @@ import Fdashboard from './components/franchise/Fdashboard.jsx';
 import Admission from './components/franchise/Admission.jsx';
 import OfferZone from './components/admin/offer/OfferZone.jsx';
 import StudentDashboard from './components/student/StudentDashboard.jsx';
-import EnrolledCourses from './components/student/EnrolledCourses.jsx';
+// import EnrolledCourses from './components/student/EnrolledCourses.jsx';
 import Certificate from './components/student/Certificate.jsx';
-import DegreeProgram from './components/student/DegreeProgram.jsx';
-import FranchAnnounce from './components/admin/announcement/FranchAnnounce.jsx';
+// import DegreeProgram from './components/student/DegreeProgram.jsx';
+// import FranchAnnounce from './components/admin/announcement/FranchAnnounce.jsx';
 import StudentAnnounc from './components/admin/announcement/StudentAnnounc.jsx';
 import Category from './components/admin/addMaster/Category.jsx';
 import CourseCommision from './components/franchise/CourseCommision.jsx';
@@ -37,6 +37,9 @@ import CreateCommission from './components/admin/commission/CreateCommission.jsx
 import Contact from './components/pages/Contact.jsx';
 import AboutUs from './components/user/AboutUs.jsx';
 import UserCertificate from './components/user/UserCertificate.jsx';
+import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
+import TermCondition from './components/pages/TermCondition.jsx';
+import RefundPolicy from './components/pages/RefundPolicy.jsx';
 
 
 
@@ -92,8 +95,8 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<StudentDashboard />} />
-          <Route path='/enrolled-courses' element={<EnrolledCourses />} />
-          <Route path='/degreecourses' element={<DegreeProgram />} />
+          {/* <Route path='/enrolled-courses' element={<EnrolledCourses />} /> */}
+          {/* <Route path='/degreecourses' element={<DegreeProgram />} /> */}
           <Route path='/certificate' element={<Certificate />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/update-profile' element={<UserProfile />} />
@@ -131,6 +134,9 @@ const App = () => {
           <Route path='/contact' element={<Contact/>} />
           <Route path='/about-us' element={<AboutUs/>} />
           <Route path='/user-certificate' element={<UserCertificate/>} />
+          <Route path='/privacy&policy' element={<PrivacyPolicy/>} />
+          <Route path='/term-condition' element={<TermCondition/>} />
+          <Route path='/refund-policy' element={<RefundPolicy/>} />
 
         </Routes>
       );

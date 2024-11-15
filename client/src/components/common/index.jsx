@@ -1,11 +1,11 @@
-import { AiFillDashboard } from "react-icons/ai";
+// import { AiFillDashboard } from "react-icons/ai";
 import { IoMdHome } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { FaStoreAlt } from "react-icons/fa";
 import { PiStudentDuotone } from "react-icons/pi";
 import { BiSolidOffer } from "react-icons/bi";
-import { MdAttachMoney } from "react-icons/md";
+// import { PiIdentificationBadgeBold } from "react-icons/pi";
 
 export const SuperAdminMenuList = [
     { name: 'Dashboard', icon: <IoMdHome className="text-red-600 text-xl mr-2"/>, value: 'Dashboard', to: '/dashboard' },
@@ -50,10 +50,10 @@ export const FranchiseMenuList=[
 
 export const StudentMenuList=[
     {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
-    {name: 'Enrolled courses', icon:<PiStudentDuotone />,value:'Enrolled courses',to:'',children:[
-        { id: 1, name: 'Skill Courses', value: 'Skill Courses', to: '/enrolled-courses' },
-        { id: 2, name: 'Degree Program', value: 'Degree Program', to: '/degreecourses' },
-    ]},
+    // {name: 'Enrolled courses', icon:<PiStudentDuotone />,value:'Enrolled courses',to:'',children:[
+    //     { id: 1, name: 'Skill Courses', value: 'Skill Courses', to: '/enrolled-courses' },
+    //     { id: 2, name: 'Degree Program', value: 'Degree Program', to: '/degreecourses' },
+    // ]},
     {name: 'Certificate', icon:<PiStudentDuotone />,value:'Certificate',to:'/certificate'},
     { name: 'Fees Statement', icon: <FaStoreAlt />, value: 'Fees Statement', to: '/fees-details'  },
     { name: 'Identity Card', icon: <FaStoreAlt />, value: 'Identity Card', to: '/student-id'  },

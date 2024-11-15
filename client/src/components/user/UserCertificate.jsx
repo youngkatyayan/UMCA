@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Userlayout from '../layout/Userlayout'
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const UserCertificate = () => {
     const [searchData, setSearchData] = useState({
         enrollmentNo: '',
         name: '',
-        course: '',
     });
 
     const [searchResult, setSearchResult] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
-
+    const [captchaValue, setCaptchaValue] = useState(null);
     // Sample certificate data
     const sampleCertificate = {
         studentName: "John Doe",
@@ -57,6 +57,10 @@ const UserCertificate = () => {
 
         link.click();
     };
+    const handleCaptchaChange = (value) => {
+        setCaptchaValue(value);
+        // console.log(value)
+    };
 
     return (
         <Userlayout>
@@ -71,7 +75,7 @@ const UserCertificate = () => {
                             <p className="text-gray-600">Enter your details below to download your certificate</p>
                         </div>
                         <form onSubmit={handleSearch} className="space-y-6">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 sm:mx-5 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Enrollment Number</label>
                                     <input
@@ -96,7 +100,7 @@ const UserCertificate = () => {
                                         required
                                     />
                                 </div>
-                                <div>
+                                {/* <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
                                     <input
                                         type="text"
@@ -107,7 +111,13 @@ const UserCertificate = () => {
                                         className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         required
                                     />
-                                </div>
+                                </div> */}
+                            </div>
+                            <div className="flex justify-center mt-4">
+                                <ReCAPTCHA
+                                    sitekey='6Lf5TH4qAAAAAEBV4Ctf3HScguqB5-MpNv5UdbZl'
+                                    onChange={handleCaptchaChange}
+                                />
                             </div>
 
                             <div className="flex justify-center">

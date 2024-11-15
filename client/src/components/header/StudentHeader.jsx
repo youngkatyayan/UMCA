@@ -38,20 +38,15 @@ const StudentHeader = () => {
     <>
       <ToastContainer />
       <div className="flex items-start justify-center ">
-        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
-          {/* <span >
-            <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
-          </span> */}
-          <span className="absolute left-1/2 transform -translate-x-1/2">UserId:{decryptedType}</span>
+        <div className="header text-black flex justify-between items-center w-full sm:text-3xl gap-2 font-serif sm:p-3 p-1 relative">
+         
+          <div className="absolute left-1/2 transform -translate-x-1/2 ">UserId:{decryptedType}</div>
 
           <div className="flex items-center ml-auto">
-            {/* <span className='px-4'>
-              <FaRegMessage className='mx-2' />
-            </span> */}
             <span className='px-4'>
               <IoIosNotificationsOutline />
             </span>
-            <span className="ml-4 overflow-hidden" onClick={() => setOpenMenu(prev => !prev)}>
+            <span className="sm:ml-4 overflow-hidden" onClick={() => setOpenMenu(prev => !prev)}>
               <img src={user} alt="" className='me-6 h-10 mix-blend-multiply' />
               {/* <CiSettings className='me-6' /> */}
             </span>
@@ -63,7 +58,7 @@ const StudentHeader = () => {
         openMenu && (
           <div className='min-w-32 bg-slate-50 font-serif px-3 py-3 rounded-sm shadow-md shadow-gray-400 flex flex-col gap-3 whitespace-nowrap justify-start absolute right-2 top-14' style={{ zIndex: '1000' }}>
             <Link to={'/update-profile'} className='hover:border-2 hover:bg-purple-100 hover:shadow-sm  hover:rounded-s px-2 hover:text-purple-600 hover:shadow-purple p-1'>
-             Update Profile
+              Update Profile
             </Link>
             <hr />
             <Link className='hover:border-2 hover:bg-purple-100 hover:shadow-sm  hover:rounded-s px-2 hover:text-purple-600 hover:shadow-purple p-1'>

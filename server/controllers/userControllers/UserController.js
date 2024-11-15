@@ -174,3 +174,39 @@ export const orderCourseController = async (req, res) => {
 };
 
 
+export const createContactController = async (req, res) => {
+    let connection;
+    try {
+        connection = await db.getConnection();
+        const { fullName, phone, email, message } = req.body;
+
+        if (!fullName || !phone || !email || !message) {
+            return res.status(400).send({ error: 'All fields are required' });
+        }
+
+        const checkQuery = 'SELECT * FROM contactus WHERE mobile = ?';
+        const [existingContact] = await connection.query(checkQuery, [phone]);
+
+        if (existingContact.length > 0) {
+            return res.status(200).send({ success: true, message: 'Data already exists in the database' });
+        } else {
+            const insertQuery = 'INSERT INTO contactus (name, email, mobile, message) VALUES (?, ?, ?, ?)';
+            const [insertResult] = await connection.query(insertQuery, [fullName, email, phone, message]);
+
+            if (insertResult) {
+                await connection.commit();
+                return res.status(200).send({ success: true, message: 'Query sent successfully' });
+            }
+        }
+    } catch (error) {
+        console.error('Something went wrong in createContactController:', error.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong in createContactController',
+            error: error.message,
+        });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+ 
