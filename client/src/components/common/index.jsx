@@ -5,6 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { FaStoreAlt } from "react-icons/fa";
 import { PiStudentDuotone } from "react-icons/pi";
 import { BiSolidOffer } from "react-icons/bi";
+import { MdAttachMoney } from "react-icons/md";
 // import { PiIdentificationBadgeBold } from "react-icons/pi";
 
 export const SuperAdminMenuList = [
