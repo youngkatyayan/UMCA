@@ -36,7 +36,6 @@ const CreateCommission = () => {
         if (data.success) {
             setCommission(data.result)
             console.log(data.result)
-            console.log(category)
         }
     }
 
@@ -114,86 +113,88 @@ const CreateCommission = () => {
     return (
 
         <SuperAdminLayout>
-            <div className='w-full  bg-gray-200 p-2 h-auto  '>
+            <div className='h-auto bg-gray-200 p-2 overflow-y-auto '>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Commission' : 'Add New Commission'}</h1>
                 </div>
 
-                <form onSubmit={updateC ? handleUpdate : handleSubmit} className='  px-4 '>
+                <div className='m-4 bg-white rounded-md p-2 px-4'>
+                    <form onSubmit={updateC ? handleUpdate : handleSubmit} className=' m-4'>
 
-                    <div className='border-2 rounded-sm  grid grid-cols-1   sm:grid-cols-3  gap-6 items-center'>
-                        <div>
-                            <label htmlFor="groupname" className=' mb-2 text-lg font-serif'> Select Group : </label>
-                            <select
-                                name='groupname'
-                                value={formdata.groupname}
-                                onChange={handleChange}
-                                required
-                                className='w-full p-2 rounded-md my-2 shadow-md'
-                            >
-                                <option value="">Select Group</option>
-                                {group.map((item, index) => (
-                                    <option key={index} value={item.groupname}>{item.groupname}</option>
-                                )
-                                )}
-                            </select>
+                        <div className=' rounded-sm  grid grid-cols-1 md:grid-cols-3   lg:grid-cols-4  gap-4 items-center mt-6'>
+                            <div>
+                                <label htmlFor="groupname" className=' mb-2  font-serif'> Select Group : </label>
+                                <select
+                                    name='groupname'
+                                    value={formdata.groupname}
+                                    onChange={handleChange}
+                                    required
+                                    className='w-full border border-blue-400 p-1 rounded-md my-2 shadow-md'
+                                >
+                                    <option value="">Select Group</option>
+                                    {group.map((item, index) => (
+                                        <option key={index} value={item.groupname}>{item.groupname}</option>
+                                    )
+                                    )}
+                                </select>
+
+                            </div>
+                            <div>
+                                <label htmlFor="commissionper" className=' mb-2  font-serif'> Commission Percentage <sup className='text-red-600'>*</sup> :  </label>
+                                <input
+                                    type="text"
+                                    name='commissionper'
+                                    value={formdata.commissionper}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder='Enter Commission Percentage '
+                                    className='w-full border border-blue-400 text-sm p-1 rounded-md my-2 shadow-md'
+                                />
+
+                            </div>
+                            <div>
+                                <label htmlFor="startdate" className=' mb-2  font-serif'> Start Date <sup className='text-red-600'>*</sup> :  </label>
+                                <input
+                                    type="date"
+                                    name='startdate'
+                                    value={formdata.startdate}
+                                    onChange={handleChange}
+                                    required
+                                    className='w-full border border-blue-400 text-sm p-1  rounded-md my-2 shadow-md'
+                                />
+
+                            </div>
+                            <div>
+                                <label htmlFor="enddate" className=' mb-2  font-serif'> End Date  :  </label>
+                                <input
+                                    type="date"
+                                    name='enddate'
+                                    value={formdata.enddate}
+                                    onChange={handleChange}
+                                    className='w-full border border-blue-400 text-sm p-1  rounded-md my-2 shadow-md'
+                                />
+
+                            </div>
 
                         </div>
-                        <div>
-                            <label htmlFor="commissionper" className=' mb-2 text-lg font-serif'> Commission Percentage <sup className='text-red-600'>*</sup> :  </label>
-                            <input
-                                type="text"
-                                name='commissionper'
-                                value={formdata.commissionper}
-                                onChange={handleChange}
-                                required
-                                placeholder='Enter Commission Percentage '
-                                className='w-full p-2 rounded-md my-2 shadow-md'
-                            />
 
+                        <div className='flex flex-row-1 justify-center'>
+
+                            <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 w-48'>{updateC ? "Update Commission" : "Add Commission"}</button>
                         </div>
-                        <div>
-                            <label htmlFor="startdate" className=' mb-2 text-lg font-serif'> Start Date <sup className='text-red-600'>*</sup> :  </label>
-                            <input
-                                type="date"
-                                name='startdate'
-                                value={formdata.startdate}
-                                onChange={handleChange}
-                                required
-                                className='w-full p-2 rounded-md my-2 shadow-md'
-                            />
-
-                        </div>
-                        <div>
-                            <label htmlFor="enddate" className=' mb-2 text-lg font-serif'> End Date  :  </label>
-                            <input
-                                type="date"
-                                name='enddate'
-                                value={formdata.enddate}
-                                onChange={handleChange}
-                                className='w-full p-2 rounded-md my-2 shadow-md'
-                            />
-
-                        </div>
-
-                    </div>
-
-                    <div className='flex flex-row-1 justify-center'>
-
-                        <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 w-48'>{updateC ? "Update Commission" : "Add Commission"}</button>
-                    </div>
-                </form>
-
-                <div className='bg-gray-200 w-full overflow-x-scroll'>
+                    </form>
+                </div>
+                                    
+                <div className='bg-gray-100  p-4 m-4   rounded-md   overflow-x-scroll '>
                     <table className='min-w-full border-collapse border border-gray-300 '>
-                        <thead className='bg-slate-600 text-white' >
-                            <tr className='font-serif whitespace-nowrap'>
-                                <th className='p-2 border-2'>Commisson Id </th>
-                                <th className='p-2 border-2 '>Commission </th>
-                                <th className='p-2 border-2'>Group Name </th>
-                                <th className='p-2 border-2 '>Start Date </th>
-                                <th className='p-2 border-2'>End Date</th>
-                                <th className='p-2 border-2'>Action</th>
+                        <thead className='bg-slate-600  text-white ' >
+                            <tr className='font-serif whitespace-nowrap '>
+                                <th className='p-2 sm:text-base text-sm border-2'>Commisson Id </th>
+                                <th className='p-2 sm:text-base text-sm border-2 '>Commission </th>
+                                <th className='p-2 sm:text-base text-sm border-2'>Group Name </th>
+                                <th className='p-2 sm:text-base text-sm border-2 '>Start Date </th>
+                                <th className='p-2 sm:text-base text-sm border-2'>End Date</th>
+                                <th className='p-2 sm:text-base text-sm border-2'>Action</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -1,13 +1,36 @@
 import { db } from "../../utils/db.js";
 
 
-export const SeletedCourse = async (req, res) => {
+export const SeletedCategory = async (req, res) => {
 
     const { cname } = req.body;
     console.log('Category name:', cname);
 
-    const sql = `SELECT * FROM course WHERE categoryname = ?`;
+    const sql = `SELECT * 
+        FROM course 
+        WHERE categoryname = ? 
+        GROUP BY coursename;
+`;
     const values = [cname];
+
+    const [result] = await db.query(sql, values)
+
+    if (result.length) {
+        console.log('Query successful:', result);
+        return res.status(200).json({ success: true, result, message: 'Courses successfully retrieved' });
+    }
+
+};
+
+export const SeletedCourse = async (req, res) => {
+
+    const { catname,coursename } = req.body;
+
+    const sql = `SELECT * 
+        FROM course 
+        WHERE categoryname = ? AND coursename=?
+`;
+    const values = [catname,coursename];
 
     const [result] = await db.query(sql, values)
 
@@ -47,12 +70,27 @@ export const getDistrict = async (req, res) => {
     }
 }
 
+export const getPartCommission = async (req, res) => {
+    try {
+        console.log("dfas",req.body)
+        const { decryptedMobile } = req.body;
+        const sql = `select * from franchadmission  where franchMobile=? `
+        const [result] = await db.query(sql, [decryptedMobile])
+        if (result) {
+            return res.status(201).send({ success: true, message: "fetched commission Successfully", result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getTotalStudent controller" });
+
+    }
+}
+
 export const getTotalStudent = async (req, res) => {
     try {
         console.log(req.body)
-        const {decryptedMobile}=req.body;
+        const { decryptedMobile } = req.body;
         const sql = `select count(SId) AS count from franchadmission  where franchMobile=? `
-        const [result] = await db.query(sql,[decryptedMobile])
+        const [result] = await db.query(sql, [decryptedMobile])
         if (result) {
             return res.status(201).send({ success: true, message: "fetched district Successfully", result });
         }
@@ -65,16 +103,16 @@ export const getTotalStudent = async (req, res) => {
 
 
 export const Admission = async (req, res) => {
-    const { category,Uid, categoryname, coursename, disabled, district, dob, town,
+    const { category, Uid, categoryname,groupname,yearlyfee	, coursename, disabled, district, dob, town,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
-        perstate, pertown, pincode, relaname, relation, session, whatsappno, educationEntries } = req.body;
+        perstate, pertown, pincode, relaname, relation, session, whatsappno,CommissionRs, educationEntries } = req.body;
 
     console.log(educationEntries);
 
     // Get the database connection
     const connection = await db.getConnection();
-    
+
     try {
         await connection.beginTransaction();
 
@@ -91,14 +129,14 @@ export const Admission = async (req, res) => {
 
         // Insert into franchadmission table
         const sql = `INSERT INTO franchadmission 
-                     (SId, category,franchMobile, categoryname, coursename, disabled, district, dob, email,  
+                     (SId, category,franchMobile,commissionern, categoryname,groupname,yearlyfee, coursename, disabled, district, dob, email,  
                      gender, line1, line2, minority, mobno, mothername, name, 
                      nationality, perdistrict, perline1, perline2, perpincode, perstate,
                      pertown, pincode, relaname, relation, session, state, town, whatsappno) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?)`;
 
         const values = [
-            newSId, category,Uid, categoryname, coursename, disabled, district, dob, email,
+            newSId, category, Uid,CommissionRs, categoryname,groupname,yearlyfee, coursename, disabled, district, dob, email,
             gender, line1, line2, minority, mobno, mothername, name,
             nationality, perdistrict, perline1, perline2, perpincode, perstate,
             pertown, pincode, relaname, relation, session, state, town, whatsappno

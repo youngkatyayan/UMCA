@@ -238,7 +238,7 @@ const Course = () => {
 
     return (
         <SuperAdminLayout>
-            <div className='w-full bg-gray-200 p-2 h-auto'>
+            <div className='w-full bg-gray-200 p-2 h-auto overflow-y-auto'>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Course' : 'Add New Course'}</h1>
                 </div>
@@ -248,6 +248,7 @@ const Course = () => {
                     <div className='border-2 rounded-sm grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center'>
 
                         <div>
+                            
                             <label htmlFor="coursename" className=' m-2 font-serif text-lg'> Course Name :</label>
                             <input
                                 type="text"

@@ -39,9 +39,9 @@ export const SuperAdminMenuList = [
 ]
 
 export const FranchiseMenuList=[
-    {name: 'Dashboard', icon:<IoMdHome/>,value:'Dashboard',to:'/dashboard'},
-    {name: 'Admission', icon:<PiStudentDuotone />,value:'Admission',to:'/admission-form'},
-    {name: 'Commision', icon:<MdAttachMoney />,value:'Commision',to:'',children:[
+    {name: 'Dashboard', icon:<IoMdHome  className="text-red-600 text-xl mr-2"/>,value:'Dashboard',to:'/dashboard'},
+    {name: 'Admission', icon:<PiStudentDuotone  className="text-blue-600 text-xl mr-2" />,value:'Admission',to:'/admission-form'},
+    {name: 'Commision', icon:<MdAttachMoney   className="text-green-600 text-xl mr-2"/>,value:'Commision',to:'',children:[
        { id:1 ,name:'Student Wise' ,value:"Student Wise",to:'/student-commision'},
        { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
     ]},

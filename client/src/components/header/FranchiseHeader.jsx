@@ -18,9 +18,9 @@ const FranchiseHeader = () => {
         toast.success(data.message)
         localStorage.clear()
         sessionStorage.clear()
-       setTimeout(() => {
-         window.location.href = '/login'
-       },500);
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 500);
       }
       else {
         toast.error(data.message)
@@ -37,22 +37,21 @@ const FranchiseHeader = () => {
     <>
       <div className="flex items-start justify-center ">
         <ToastContainer />
-        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
+        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-6  relative">
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
           </span> */}
-          <span className="absolute left-1/2 transform -translate-x-1/2">Branch:{decryptedType}</span>
+          <span className="absolute left-1/2 transform -translate-x-1/2 text-sm sm:text-2xl ">Branch:{decryptedType}</span>
 
           <div className="flex items-center ml-auto">
-            <span className='px-4'>
-              <FaRegMessage className='mx-2' />
+
+            <span className='sm:px-3'>
+              <IoIosNotificationsOutline className='mx-2 text-lg sm:text-2xl' />
             </span>
-            <span className='px-4'>
-              <IoIosNotificationsOutline />
+            <span className="sm:ml-3" onClick={() => setOpenMenu(prev => !prev)}>
+              <CiSettings className='mx-2 text-lg sm:text-2xl' />
             </span>
-            <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings className='me-6' />
-            </span>
+
           </div>
         </div>
       </div>
