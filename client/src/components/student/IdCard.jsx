@@ -266,7 +266,7 @@ const IdCard = () => {
   };
   return (
     <StudentLayout>
-      <div className="w-full bg-blue-50 shadow-md">
+      <div className="w-full bg-blue-50 py-2 h-auto shadow-md">
         <div className="bg-blue-50">
           <div className="flex flex-col m-4 border rounded-md bg-transparent-100 bg-blue-800 shadow-md">
             <h1 className="text-white text-2xl m-4 text-center font-serif">
@@ -274,7 +274,7 @@ const IdCard = () => {
             </h1>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 ml-12 mr-12 " id="print-section">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-12 mr-12 " id="print-section">
 
             <div className="flex justify-center" style={{ height: '380px', }}>
               {/* Front view section */}
@@ -338,7 +338,7 @@ const IdCard = () => {
               </div>
             </div>
 
-            <div className=" gap-4 w-full" style={{ height: '380px', }}>
+            <div className="flex justify-center " style={{ height: '380px', }}>
               {/* Back view section */}
               <div
                 className="relative "
@@ -374,9 +374,10 @@ const IdCard = () => {
                 </div>
               </div>
             </div>
+            
           </div>
 
-          <div className="flex items-center absolute bg-red-700 m-4 p-2 rounded-md">
+          <div className="flex items-center fixed top-24 right-6 scroll-hidden z-20  bg-red-700 m-4 p-2 rounded-md">
             <button onClick={handlePrint} className="flex items-center justify-center w-16 h-6 bg-red-700 p-1 rounded-md">
               <VscFilePdf className="text-white text-3xl" />
             </button>

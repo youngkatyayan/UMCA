@@ -30,12 +30,17 @@ import StudentCommision from './components/franchise/StudentCommision.jsx';
 import UserProfile from './components/user/UserProfile.jsx';
 import FeeStatement from './components/student/FeeStatement.jsx';
 import IdCard from './components/student/IdCard.jsx';
+
+import CreateCommission from './components/admin/commission/CreateCommission.jsx';
+
+
 import Contact from './components/pages/Contact.jsx';
 import AboutUs from './components/user/AboutUs.jsx';
 import UserCertificate from './components/user/UserCertificate.jsx';
 import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
 import TermCondition from './components/pages/TermCondition.jsx';
 import RefundPolicy from './components/pages/RefundPolicy.jsx';
+
 
 
 const App = () => {
@@ -72,6 +77,13 @@ const App = () => {
           <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
           <Route path='/entroll-course/:id' element={<Entroll />} />
+
+          <Route path='/create-commission' element={<CreateCommission/>} />
+
+          {/* announcement  */}
+
+
+
           <Route path='/announcement' element={<StudentAnnounc />} />
           <Route path='/*' element={<PageNotFound />} />
         </Routes>

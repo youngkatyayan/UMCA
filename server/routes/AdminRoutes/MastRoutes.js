@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, deleteAnouncement, franchiseRequest, getAnnouncement, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addCommission, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, deleteAnouncement, franchiseRequest, getAnnouncement, getCategory,  getCommission,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 
 // import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, franchiseRequest, getAnnouncement, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 
@@ -78,6 +78,9 @@ router.post('/add-anouncement',announcementUpload.fields([
   { name: 'image2', maxCount: 1 }
 ]),  addStudannoument)
 
+router.post('/add-commission', addCommission)
+
+
 
 
 
@@ -90,6 +93,7 @@ router.get('/get-franchiseactive', getFranchise)
 router.get('/get-incomfranchise',express.static(path.join("franchreqfront","uploads")) ,getIncomFranchise)
 router.get('/get-offer', getOffer)
 router.get('/get-announcement', getAnnouncement)
+router.get('/get-commission', getCommission)
 
 
 router.post('/updatecostatus', updateCourseStatus) 

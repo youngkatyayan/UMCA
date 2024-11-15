@@ -328,6 +328,48 @@ export const addStudannoument = async (req, res) => {
       if (connection) connection.release();
     }
   };
+
+  export const addCommission = async (req, res) => {
+    
+    const connection = await db.getConnection();
+    try {
+        // console.log(req.body)
+        const {startdate,enddate,commissionper, groupname } = req.body;
+
+        await connection.beginTransaction();
+
+
+        const ssql = `SELECT CMId FROM commission ORDER BY CMId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newCMId = 4001;
+        if (result.length > 0) {
+            const CMId = result[0].CMId;
+            const lastCMId = parseInt(CMId, 10);
+            newCMId = lastCMId + 1; 
+        }
+
+        const sql = `insert into commission (CMId,startdate,enddate,commissionper,groupname) values(?,?,?,?,?)`
+        const values = [newCMId,startdate,enddate,commissionper, groupname]
+        const [insertResult] = await db.query(sql, values)
+
+        if (insertResult.affectedRows > 0) {
+
+            await connection.commit();
+            return res.status(201).send({ success: true, message: "Commission Inserted Successfully" });
+        }
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Failed to insert Commission" });
+    } catch (error) {
+
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Error in addCategoryController", error: error.message });
+
+    } finally {
+        connection.release();
+    }
+}
+
   
 
 
@@ -481,6 +523,21 @@ export const getAnnouncement = async (req, res) => {
 
     }
 }
+export const getCommission= async (req, res) => {
+    try {
+        const sql = `select * from commission `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getcommission controller" });
+
+    }
+}
+
 
 
 
