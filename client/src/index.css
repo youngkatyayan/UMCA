@@ -9,3 +9,16 @@ input[type="checkbox"]:checked + span {
     background-color: rgba(184, 216, 247, 0.788);
     box-shadow: 2px 2px 3px 3px #ddd;
 }
+
+
+/* Hide arrows in Chrome, Edge, Safari */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

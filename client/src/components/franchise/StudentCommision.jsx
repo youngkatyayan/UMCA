@@ -42,11 +42,11 @@ const StudentCommision = () => {
                             <tr className='font-serif whitespace-nowrap'>
                                 <th className='p-2 border-2'>S.No </th>
                                 <th className='p-2 border-2'> Student Name</th>
-                                <th className='p-2 border-2'>Group Type </th>
                                 <th className='p-2 border-2 '>Category </th>
                                 <th className='p-2 border-2 '>Course </th>
                                 <th className='p-2 border-2 '>Session </th>
                                 <th className='p-2 border-2 '>Total Fees </th>
+                                <th className='p-2 border-2 '>Commission Percent</th>
                                 <th className='p-2 border-2 '>Commission </th>
                                 </tr>
                         </thead>
@@ -56,11 +56,11 @@ const StudentCommision = () => {
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{index+1}</td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.name}</td>
-                                    <td className='px-3 border-2 border-gray-400  '>{item.groupname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.categoryname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.coursename}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.session}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.yearlyfee}</td>
+                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.commissionper}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.commissionern}</td>
                                 </tr>
                             ))}

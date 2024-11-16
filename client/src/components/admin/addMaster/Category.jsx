@@ -10,7 +10,8 @@ const Category = () => {
     const [formdata, setData] = useState({
         category: '',
         groupname: '',
-        description: ''
+        description: '',
+        totcommison:''
     })
     const [category, setCategory] = useState([])
     const [group, setGroup] = useState([])
@@ -165,9 +166,21 @@ const Category = () => {
 
                         </div>
 
+                        <div>
+                            <label htmlFor="totcommison" className=' mb-2 text-lg font-serif'>  Total Commission :  </label>
+                            <input
+                                type="text"
+                                name='totcommison'
+                                value={formdata.totcommison}
+                                onChange={handleChange}
+                                required
+                                placeholder='Enter Total Commission '
+                                className='w-full p-2 rounded-md my-2 shadow-md'
+                            />
 
-                    </div>
-                    <div >
+                        </div>
+
+                        <div >
                         <label htmlFor="description" className=' flex m-1 font-serif text-lg w-full'>  Description :</label>
                         <textarea
                             // type="text"
@@ -175,9 +188,12 @@ const Category = () => {
                             value={formdata.description}
                             onChange={handleChange}
                             placeholder=' Description'
-                            className=' p-2 rounded-md  shadow-md w-1/2 '
+                            className=' p-2 rounded-md  shadow-md w-full '
                         />
                     </div>
+
+                    </div>
+                    
                     <div className='flex flex-row-1 justify-center'>
 
                         <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 w-48'>{updateC ? "UPDATE CATEGORY" : "ADD CATEGORY"}</button>
@@ -190,6 +206,7 @@ const Category = () => {
                             <tr className='font-serif whitespace-nowrap'>
                                 <th className='p-2 border-2'>Group Name </th>
                                 <th className='p-2 border-2 '>Category </th>
+                                <th className='p-2 border-2 '>Total Commission </th>
                                 <th className='p-2 border-2 '>Description </th>
                                 <th className='p-2 border-2'>Status</th>
                                 <th className='p-2 border-2'>Action</th>
@@ -201,6 +218,7 @@ const Category = () => {
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{item.groupname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.categoryname}</td>
+                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.totalcommission}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.description}</td>
 
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>

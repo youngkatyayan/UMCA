@@ -45,9 +45,12 @@ const Admission = () => {
         perstate: '',
         perdistrict: '',
         perpincode: '',
-        CommissionRs:'',
-        groupname:'',
-        yearlyfee:''
+        CommissionRs: '',
+        commissionper: '',
+        yearlyfee: '',
+        Admincommission: '',
+        totalfranchCommission:'',
+        totaladmincommission:''
     });
 
     const [educationEntries, setEducationEntries] = useState([
@@ -61,7 +64,7 @@ const Admission = () => {
             subjects: '',
         },
     ]);
-
+    const [TotalCommission, setTotalCommission] = useState([])
     const UId = localStorage.getItem('uid')
 
     const accesscommission = async () => {
@@ -83,13 +86,29 @@ const Admission = () => {
         }
 
     }
+    const accesstotalcommission = async () => {
+
+        const UId = localStorage.getItem('uid');
+        if (!UId) {
+            console.error("No UId found in localStorage");
+            return;
+        }
+
+        const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
+        const { data } = await axios.post('/api/v1/get-totalcommission', decryptedMobile)
+        if (data.success) {
+            setTotalCommission(data.result)
+        }
+    }
     const accessDistrict = async () => {
         const { data } = await axios.get('/api/v1/get-district')
         if (data.success) {
             setDistrict(data.result)
         }
     }
-    useEffect(() => { accesscategory(); accessDistrict(); accessState(); accesscommission() }, [])
+
+
+    useEffect(() => { accesscategory(); accessDistrict(); accessState(); accesscommission(); accesstotalcommission(); }, [])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
@@ -102,8 +121,16 @@ const Admission = () => {
                 const data = response.data;
 
                 if (data.success) {
-                    setCourse(data.result);
-                    console.log(data.result);
+                    if (data.result.length > 0) {
+                        setCourse(data.result);
+                        console.log(data.result);
+                    } else {
+                        setCourse([]);
+                        toast.error("No Coures Found")
+                        console.log("no course available", data.result);
+                    }
+                } else {
+                    setCourse("")
                 }
             } catch (error) {
                 console.error("Error fetching selected course:", error);
@@ -111,12 +138,10 @@ const Admission = () => {
         }
 
         if (name === 'coursename') {
-            const {categoryname}=formdata;
-            console.log(categoryname,value)
-
+            const { categoryname } = formdata;
+            console.log(categoryname, value)
             try {
-
-                const response = await axios.post('/api/v1/get-selctedcourse', { coursename: value ,catname:categoryname});
+                const response = await axios.post('/api/v1/get-selctedcourse', { coursename: value, catname: categoryname });
                 const data = response.data;
 
                 if (data.success) {
@@ -149,34 +174,58 @@ const Admission = () => {
 
         }
 
-        if(name==='session'){
-            const optedsession=value;
+        if (name === 'session') {
+
+            const optedsession = value;
             setData((prevData) => ({ ...prevData, [name]: value }));
 
-            const { coursename, categoryname,} = formdata;
+            const { coursename, categoryname, } = formdata;
             // console.log(coursename, categoryname,optedsession)
             // console.log(session)
 
-            
-            const seyealyfee = session.find(((item) => categoryname === item.categoryname && optedsession==item.session))
+
+            const seyealyfee = session.find(((item) => categoryname === item.categoryname && optedsession == item.session))
             const Yearlyfee = seyealyfee ? seyealyfee.yearlyfee : null
             // console.log("yearlyfee",Yearlyfee)
 
             const selectedgroup = category.find(((item) => categoryname === item.categoryname))
-            const Groupname = selectedgroup ? selectedgroup.groupname : null
-            // console.log("groupname",Groupname)
-            
+            const Categoryname = selectedgroup ? selectedgroup.categoryname : null
+            const totalcommissn = selectedgroup ? selectedgroup.totalcommission : null
+            // console.log("categoryname , totalcommission",Categoryname ,totalcommissn)
 
-            const selectedcommisson = commission.find(((item) => Groupname == item.groupname))
-            
+
+            const selectedcommisson = commission.find(((item) => Categoryname == item.categoryname))
             const Commissionper = selectedcommisson ? selectedcommisson.commissionper : null
-            
+
             // console.log("commission",Commissionper)
+            const admincommission = totalcommissn - Commissionper
+            const netadmincommission = (admincommission / 100) * Yearlyfee
+            // console.log(" admincommission",netadmincommission)
 
-            const CommissionRs=(Commissionper / 100) * Yearlyfee
-            // console.log(CommissionRs)
 
-            setData((prevData) => ({ ...prevData, CommissionRs:CommissionRs,groupname:Groupname,yearlyfee:Yearlyfee}));
+            const CommissionRs = (Commissionper / 100) * Yearlyfee
+            // console.log(" centercommission",CommissionRs)
+
+
+            /* calculaton for Net commission  of admin and franchise */
+            let uptofranchcommission =
+                !isNaN(TotalCommission.frannchcommission) &&
+                    Number.isInteger(Number(TotalCommission.frannchcommission))
+                    ? Number(TotalCommission.frannchcommission)
+                    : 0;
+
+            uptofranchcommission += CommissionRs;
+            console.log(uptofranchcommission);
+
+            let uptoAdmincommission = 
+                !isNaN(TotalCommission.Admincommission) &&
+                    Number.isInteger(Number(TotalCommission.Admincommission)) 
+                        ? Number(TotalCommission.Admincommission) 
+                        : 0;
+
+            uptoAdmincommission +=netadmincommission;
+            console.log(uptoAdmincommission)
+            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission,totaladmincommission:uptoAdmincommission }));
 
         }
     };

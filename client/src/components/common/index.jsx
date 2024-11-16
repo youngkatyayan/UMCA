@@ -5,6 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { FaStoreAlt } from "react-icons/fa";
 import { PiStudentDuotone } from "react-icons/pi";
 import { BiSolidOffer } from "react-icons/bi";
+import { MdAttachMoney } from "react-icons/md";
 // import { PiIdentificationBadgeBold } from "react-icons/pi";
 
 export const SuperAdminMenuList = [
@@ -33,7 +34,7 @@ export const SuperAdminMenuList = [
     { name: 'Create Announcement', icon: <FaStoreAlt className="text-yellow-600 text-xl mr-2"/>, value: 'Create Announcement', to: '/announcement'  },
     { name: 'Commission', icon: <MdAttachMoney className="text-green-600 text-xl mr-2" />, value: 'Commission', to: '',children:[
         {id:1,name:"Create commission",value:"Create commission",to:'/create-commission'},
-        {id:1,name:" View commission ",value:" View commission ",to:'/'},
+        {id:2,name:" View commission ",value:" View commission ",to:'/Viewa-commission'},
     ]  },
 ]
 

@@ -1,5 +1,5 @@
 import express, { Router } from "express"
-import { Admission, getDistrict, getPartCommission, getState, getTotalStudent, SeletedCategory, SeletedCourse } from "../../controllers/franchiseController/FranchiseController.js"
+import { Admission, getDistrict, getPartCommission, getState, getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse } from "../../controllers/franchiseController/FranchiseController.js"
 
 const router=  express.Router()
 
@@ -12,5 +12,6 @@ router.post('/get-partcommission',getPartCommission)
 router.post('/get-student',getTotalStudent)
 
 router.post('/admission-form',Admission)
+router.post('/get-totalcommission',getTotalcommission)
 
 export default router
