@@ -41,6 +41,7 @@ import UserCertificate from './components/user/UserCertificate.jsx';
 import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
 import TermCondition from './components/pages/TermCondition.jsx';
 import RefundPolicy from './components/pages/RefundPolicy.jsx';
+import StudentDetails from './components/franchise/StudentDetails.jsx';
 
 
 
@@ -121,6 +122,7 @@ const App = () => {
           <Route path='/entroll-course/:id' element={<Entroll />} />
           <Route path='/course-commision' element={<CourseCommision />} />
           <Route path='/student-commision' element={<StudentCommision />} />
+          <Route path='/student-list' element={<StudentDetails/>} />
         </Routes>
       )
     default:

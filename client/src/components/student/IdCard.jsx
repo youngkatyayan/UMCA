@@ -8,7 +8,8 @@ import axios from "axios";
 import { FaRegFilePdf } from "react-icons/fa";
 import { VscFilePdf } from "react-icons/vsc";
 
-const IdCard = () => {
+const IdCard = ({student}) => {
+  console.log(student)
   const [stDetails, setStDetails] = useState(null); // Start with null or an empty object
 
   const mobile = localStorage.getItem("uid");

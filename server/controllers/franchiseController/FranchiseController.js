@@ -106,6 +106,23 @@ export const getTotalcommission = async (req, res) => {
         const { decryptedMobile } = req.body;
         const sql = `select *  from totalcommission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
+        console.log(result)
+        if (result) {
+            return res.status(201).send({ success: true, message: "fetched totalcommission Successfully", result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getTotalStudent controller" });
+
+    }
+}
+
+export const franStudentDetails = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { decryptedMobile } = req.body;
+        const sql = `select *  from franchadmission  where franchMobile=? `
+        const [result] = await db.query(sql, [decryptedMobile])
+        console.log(result)
         if (result) {
             return res.status(201).send({ success: true, message: "fetched totalcommission Successfully", result });
         }
@@ -117,13 +134,14 @@ export const getTotalcommission = async (req, res) => {
 
 
 
+
 export const Admission = async (req, res) => {
     const { category, Uid, categoryname,groupname,yearlyfee	, coursename, disabled, district, dob, town,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
         perstate, pertown, pincode, relaname, relation, session, whatsappno,
         CommissionRs, educationEntries,commissionper,Admincommission,
-        totaladmincommission,totalfranchCommission } = req.body;
+        totaladmincommission,totalfranchCommission, } = req.body;
 
     console.log(educationEntries);
 
@@ -176,6 +194,21 @@ export const Admission = async (req, res) => {
             await connection.query(sql3, values3);
         }
         console.log("Education entries inserted");
+
+
+        const sql4=`Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+        AdminCommission=VALUES (AdminCommission) ,
+        franchCommission =VALUES(franchcommission)
+        `
+        const values4=[totaladmincommission,Uid,totalfranchCommission]
+
+        await connection.query(sql4,values4,(err,result )=>{
+            if(err){
+                return res.status(500).send({success:true,message:"Error in updating TotalCommisson",err:err.message})   
+            }
+           
+        })
 
         // Commit transaction
         await connection.commit();

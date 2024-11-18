@@ -45,6 +45,10 @@ export const FranchiseMenuList=[
        { id:1 ,name:'Student Wise' ,value:"Student Wise",to:'/student-commision'},
        { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
     ]},
+    {name: 'Sutdents Report', icon:< MdAttachMoney   className="text-green-600 text-xl mr-2"/>,value:'Sutdents Report',to:'',children:[
+       { id:1 ,name:'Student List' ,value:"Student List",to:'/student-list'},
+       { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
+    ]},
 
 
 ]
