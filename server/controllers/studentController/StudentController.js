@@ -181,3 +181,35 @@ where ordertable.phone=?`
         return res.status(500).send({ success: false, message: "Error in feeStatementController" });
     }
 }
+
+// get getFeeRecieptController
+export const getFeeRecieptController = async (req, res) => {
+    try {
+        const { transactionId } = req.params;
+
+        if (!transactionId) {
+            return res.status(400).send({ error: 'transactionId is required' });
+        }
+        const sql = `SELECT coursetrans.*,franchadmission.name FROM coursetrans inner join franchadmission on coursetrans.mobile=franchadmission.mobno WHERE courseId LIKE ?`;
+        const [result] = await db.query(sql, [`%${transactionId}%`]);
+
+        if (result.length > 0) {
+            return res.status(200).send({ 
+                success: true, 
+                message: "Data accessed successfully", 
+                result 
+            });
+        } else {
+            return res.status(404).send({ 
+                success: false, 
+                message: "No data found for the provided transactionId" 
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).send({ 
+            success: false, 
+            message: "Error in getFeeRecieptController" 
+        });
+    }
+};
