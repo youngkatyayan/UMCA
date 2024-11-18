@@ -12,9 +12,12 @@ const CreateCommission = () => {
         startdate: '',
         groupname: '',
         commissionper: "",
-        enddate: ''
+        enddate: '',
+        totalcommission:''
     })
     const [commission, setCommission] = useState([])
+    const [category, setCategory] = useState([])
+
     const [group, setGroup] = useState([])
     const [updateC, setUpdateC] = useState(false)
     const accessdata = async () => {
@@ -38,10 +41,19 @@ const CreateCommission = () => {
             console.log(data.result)
         }
     }
+    const accesscategory = async () => {
+        const { data } = await axios.get('/api/v1/get-category')
+        if (data.success) {
+            setCategory(data.result)
+            console.log(data.result)
+            console.log(category)
+        }
+    }
 
     useEffect(() => {
         accessdata();
         accesscommission();
+        accesscategory();
     }, [])
 
 
@@ -49,6 +61,23 @@ const CreateCommission = () => {
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))
+
+        if(name==='categoryname'){
+            const totalcomm=category.find(item=>value===item.categoryname)
+            const Totalcomm=totalcomm.totalcommission
+            console.log(Totalcomm)
+            
+            
+            setData(prevData => ({ ...prevData, totalcommission: Totalcomm }))
+        }
+
+        if(name==='groupname'){
+            
+            const {data}=await axios.post('/api/v1/get-grouponcatery',{value})
+            setCategory(data.result)
+
+
+        }
 
     }
 
@@ -64,6 +93,7 @@ const CreateCommission = () => {
                     description: '',
                 });
                 accesscategory();
+                accesscommission();
             } else {
                 toast.error('Failed to add commission');
             }
@@ -82,6 +112,8 @@ const CreateCommission = () => {
             commissionper: item.commissionper || '',
             groupname: item.groupname || '',
             CMId: item.CMId || '',
+            categoryname:item.categoryname || '',
+            totalcommission:item.totalcommission ||'',
             startdate: formattedstartDate,
             enddate: formattedendDate
         })
@@ -140,15 +172,49 @@ const CreateCommission = () => {
 
                             </div>
                             <div>
-                                <label htmlFor="commissionper" className=' mb-2  font-serif'> Commission Percentage <sup className='text-red-600'>*</sup> :  </label>
+                                <label htmlFor="categoryname" className=' mb-2  font-serif'> Select Category : </label>
+                                <select
+                                    name='categoryname'
+                                    value={formdata.categoryname}
+                                    onChange={handleChange}
+                                    required
+                                    className='w-full border border-blue-400 p-1 rounded-md my-2 shadow-md'
+                                >
+                                    <option value="">Select Category</option>
+                                    {category.map((item, index) => (
+                                        <option key={index} value={item.categoryname}>{item.categoryname}</option>
+                                    )
+                                    )}
+                                </select>
+
+                            </div>
+                            <div>
+                                <label htmlFor="totalcommission" className=' mb-2  font-serif'> Total Commission :  </label>
                                 <input
                                     type="text"
+                                    name='totalcommission'
+                                    value={formdata.totalcommission}
+                                    onChange={handleChange}
+                                    readOnly
+                                    placeholder='Enter Commission Percentage '
+                                    className='w-full border border-blue-400 text-sm p-1 rounded-md my-2 shadow-md'
+                                />
+
+                            </div>
+                            <div>
+                                <label htmlFor="commissionper" className=' mb-2  font-serif'> Center Commission ( % )<sup className='text-red-600'>*</sup> :  </label>
+                                <input
+                                    type="number"
                                     name='commissionper'
                                     value={formdata.commissionper}
                                     onChange={handleChange}
                                     required
                                     placeholder='Enter Commission Percentage '
                                     className='w-full border border-blue-400 text-sm p-1 rounded-md my-2 shadow-md'
+                                    style={{
+                                        WebkitAppearance: 'none',
+                                        MozAppearance: 'textfield',
+                                      }}
                                 />
 
                             </div>
@@ -190,7 +256,9 @@ const CreateCommission = () => {
                         <thead className='bg-slate-600  text-white ' >
                             <tr className='font-serif whitespace-nowrap '>
                                 <th className='p-2 sm:text-base text-sm border-2'>Commisson Id </th>
-                                <th className='p-2 sm:text-base text-sm border-2 '>Commission </th>
+                                <th className='p-2 sm:text-base text-sm border-2'> Total Commisson  </th>
+                                <th className='p-2 sm:text-base text-sm border-2 '>Center Commission </th>
+                                <th className='p-2 sm:text-base text-sm border-2 '>Category </th>
                                 <th className='p-2 sm:text-base text-sm border-2'>Group Name </th>
                                 <th className='p-2 sm:text-base text-sm border-2 '>Start Date </th>
                                 <th className='p-2 sm:text-base text-sm border-2'>End Date</th>
@@ -202,7 +270,9 @@ const CreateCommission = () => {
                             {commission.map((item, index) => (
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{item.CMId}</td>
+                                    <td className='px-3 border-2 border-gray-400  '>{item.totalcommission}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.commissionper}</td>
+                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.categoryname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.groupname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>
                                         {new Date(item.startdate).toLocaleDateString('en-US', {

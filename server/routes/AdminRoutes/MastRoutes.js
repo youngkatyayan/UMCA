@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { addCategory, addCommission, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, deleteAnouncement, franchiseRequest, getAnnouncement, getCategory,  getCommission,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
+import { addCategory, addCommission, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, deleteAnouncement, franchiseRequest, getAnnouncement, getCategory,  getCommission,  getCourse,  getCourseDetails,  getFranchernCommsion,  getFranchise,  getGroup,  getGrouponCatery,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCommission, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 
 // import { addCategory, addCourse, addGroup, addMode, addOffer, addSession, addStudannoument, franchiseRequest, getAnnouncement, getCategory,  getCourse,  getCourseDetails,  getFranchise,  getGroup,  getIncomFranchise,  getMode, getOffer, getSession, updateAnouncement, updateCategory, updateCourse, updateCourseStatus, updateFranchiseStatus, updateGroupStatus, updateIncomFranchiseStatus, updateModeStatus, updateOffer, updateSessionStatus, updateSesson } from '../../controllers/adminControlllers/MastController.js'
 
@@ -94,6 +94,8 @@ router.get('/get-incomfranchise',express.static(path.join("franchreqfront","uplo
 router.get('/get-offer', getOffer)
 router.get('/get-announcement', getAnnouncement)
 router.get('/get-commission', getCommission)
+router.post('/get-grouponcatery', getGrouponCatery)
+router.get('/get-francherncommsion',getFranchernCommsion)
 
 
 router.post('/updatecostatus', updateCourseStatus) 
@@ -111,6 +113,7 @@ router.post('/get-coursedetails/:CoId', getCourseDetails)
 router.post('/updatefrstatus', updateFranchiseStatus) 
 router.post('/updateincfrstatus', updateIncomFranchiseStatus) 
 router.post('/update-announcement', updateAnouncement) 
+router.post('/update-commission', updateCommission) 
 
 
 router.post('/delete-announcement', deleteAnouncement) 

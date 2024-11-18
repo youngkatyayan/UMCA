@@ -100,13 +100,30 @@ export const getTotalStudent = async (req, res) => {
     }
 }
 
+export const getTotalcommission = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { decryptedMobile } = req.body;
+        const sql = `select *  from totalcommission  where franchMobile=? `
+        const [result] = await db.query(sql, [decryptedMobile])
+        if (result) {
+            return res.status(201).send({ success: true, message: "fetched totalcommission Successfully", result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getTotalStudent controller" });
+
+    }
+}
+
 
 
 export const Admission = async (req, res) => {
     const { category, Uid, categoryname,groupname,yearlyfee	, coursename, disabled, district, dob, town,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
-        perstate, pertown, pincode, relaname, relation, session, whatsappno,CommissionRs, educationEntries } = req.body;
+        perstate, pertown, pincode, relaname, relation, session, whatsappno,
+        CommissionRs, educationEntries,commissionper,Admincommission,
+        totaladmincommission,totalfranchCommission } = req.body;
 
     console.log(educationEntries);
 
@@ -129,14 +146,14 @@ export const Admission = async (req, res) => {
 
         // Insert into franchadmission table
         const sql = `INSERT INTO franchadmission 
-                     (SId, category,franchMobile,commissionern, categoryname,groupname,yearlyfee, coursename, disabled, district, dob, email,  
+                     (SId, category,franchMobile,commissionern,Admincommission, categoryname,commissionper,groupname,yearlyfee, coursename, disabled, district, dob, email,  
                      gender, line1, line2, minority, mobno, mothername, name, 
                      nationality, perdistrict, perline1, perline2, perpincode, perstate,
                      pertown, pincode, relaname, relation, session, state, town, whatsappno) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?)`;
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?,? ,?)`;
 
         const values = [
-            newSId, category, Uid,CommissionRs, categoryname,groupname,yearlyfee, coursename, disabled, district, dob, email,
+            newSId, category, Uid,CommissionRs,Admincommission, categoryname,commissionper ,groupname,yearlyfee, coursename, disabled, district, dob, email,
             gender, line1, line2, minority, mobno, mothername, name,
             nationality, perdistrict, perline1, perline2, perpincode, perstate,
             pertown, pincode, relaname, relation, session, state, town, whatsappno
@@ -172,3 +189,4 @@ export const Admission = async (req, res) => {
         connection.release(); // Release the connection back to the pool
     }
 };
+

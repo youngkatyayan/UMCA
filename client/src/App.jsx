@@ -32,6 +32,7 @@ import FeeStatement from './components/student/FeeStatement.jsx';
 import IdCard from './components/student/IdCard.jsx';
 
 import CreateCommission from './components/admin/commission/CreateCommission.jsx';
+import ViewAdCommission from './components/admin/commission/ViewAdCommission.jsx';
 
 
 import Contact from './components/pages/Contact.jsx';
@@ -79,6 +80,7 @@ const App = () => {
           <Route path='/entroll-course/:id' element={<Entroll />} />
 
           <Route path='/create-commission' element={<CreateCommission/>} />
+          <Route path='/Viewa-commission' element={<ViewAdCommission/>} />
 
           {/* announcement  */}
 
