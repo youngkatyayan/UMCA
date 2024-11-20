@@ -10,7 +10,7 @@ import CryptoJS from 'crypto-js';
 
 const Admission = () => {
 
-
+    
     const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
     const [district, setDistrict] = useState([])
@@ -49,8 +49,8 @@ const Admission = () => {
         commissionper: '',
         yearlyfee: '',
         Admincommission: '',
-        totalfranchCommission:'',
-        totaladmincommission:''
+        totalfranchCommission: '',
+        totaladmincommission: ''
     });
 
     const [educationEntries, setEducationEntries] = useState([
@@ -86,6 +86,13 @@ const Admission = () => {
         }
 
     }
+    
+    const accessDistrict = async () => {
+        const { data } = await axios.get('/api/v1/get-district')
+        if (data.success) {
+            setDistrict(data.result)
+        }
+    }
     const accesstotalcommission = async () => {
 
         const UId = localStorage.getItem('uid');
@@ -95,18 +102,12 @@ const Admission = () => {
         }
 
         const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
-        const { data } = await axios.post('/api/v1/get-totalcommission', decryptedMobile)
+        const { data } = await axios.post('/api/v1/get-totalcommission', {decryptedMobile})
         if (data.success) {
+            console.log(data.result)
             setTotalCommission(data.result)
         }
     }
-    const accessDistrict = async () => {
-        const { data } = await axios.get('/api/v1/get-district')
-        if (data.success) {
-            setDistrict(data.result)
-        }
-    }
-
 
     useEffect(() => { accesscategory(); accessDistrict(); accessState(); accesscommission(); accesstotalcommission(); }, [])
 
@@ -199,33 +200,25 @@ const Admission = () => {
 
             // console.log("commission",Commissionper)
             const admincommission = totalcommissn - Commissionper
+            // console.log("adminper , yearlyfee",admincommission,Yearlyfee)
             const netadmincommission = (admincommission / 100) * Yearlyfee
-            // console.log(" admincommission",netadmincommission)
+            // console.log(" presentadmincommission",netadmincommission)
+            let uptoAdmincommission =parseInt(TotalCommission[0]?.AdminCommission || 0,10)
 
+            // console.log("prevadmincomm",uptoAdmincommission)
+            uptoAdmincommission += netadmincommission;  
+            // console.log("newtotaladmincomm",uptoAdmincommission)
 
             const CommissionRs = (Commissionper / 100) * Yearlyfee
             // console.log(" centercommission",CommissionRs)
 
-
-            /* calculaton for Net commission  of admin and franchise */
-            let uptofranchcommission =
-                !isNaN(TotalCommission.frannchcommission) &&
-                    Number.isInteger(Number(TotalCommission.frannchcommission))
-                    ? Number(TotalCommission.frannchcommission)
-                    : 0;
-
+            let uptofranchcommission =parseInt(TotalCommission[0]?.franchcommission || 0,10)
+            // console.log("prevcentercomm",uptofranchcommission)
             uptofranchcommission += CommissionRs;
-            console.log(uptofranchcommission);
+            // console.log("newtotalcentcom",uptofranchcommission);
 
-            let uptoAdmincommission = 
-                !isNaN(TotalCommission.Admincommission) &&
-                    Number.isInteger(Number(TotalCommission.Admincommission)) 
-                        ? Number(TotalCommission.Admincommission) 
-                        : 0;
 
-            uptoAdmincommission +=netadmincommission;
-            console.log(uptoAdmincommission)
-            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission,totaladmincommission:uptoAdmincommission }));
+            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission }));
 
         }
     };
@@ -300,7 +293,6 @@ const Admission = () => {
     };
     return (
         <FranchiseLayout>
-            <ToastContainer />
             <div className='flex flex-col flex-1 overflow-auto p-2 bg-slate-100'>
                 <div className='flex flex-col m-4 border rounded-md bg-transparent-300  bg-blue-500 shadow-md' >
                     <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Admission</h1>

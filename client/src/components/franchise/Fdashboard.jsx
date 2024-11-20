@@ -6,14 +6,14 @@ import CryptoJS from 'crypto-js';
 
 const Fdashboard = () => {
 
-    const [FAInfo, setFAInfo] = useState({ totalAdmission: 0, totalOutgoingForms: 0, totalOutgoingForms: 0 });
+    const [FAInfo, setFAInfo] = useState({ totalAdmission: 0, totalearnedcommission: 0, totalOutgoingForms: 0 });
+    const [TotalCommission, setTotalCommission] = useState([])
 
     const UId = localStorage.getItem('uid');
     if (!UId) {
         console.error("No UId found in localStorage");
         return;
     }
-    // console.log(FAInfo)
 
     const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
 
@@ -23,8 +23,14 @@ const Fdashboard = () => {
             setFAInfo( {totalAdmission: data.result[0] })
         }
     }
+    const accesstotalcommission = async () => {
+        const { data } = await axios.post('/api/v1/get-totalcommission', {decryptedMobile})
+        if (data.success) {
+            setTotalCommission(data.result[0].franchcommission)
+        }
+    }
     useEffect(() => {
-        student();
+        student(); accesstotalcommission();
     }, [])
     return (
         <FranchiseLayout>
@@ -49,7 +55,7 @@ const Fdashboard = () => {
                         </div>
                         <div className='h-18 sm:h-24 w-full flex items-start justify-center text-white flex-col px-3'>
                             <p>TOTAL FEES DEPOSITED</p>
-                            <span className='text-2xl'>{FAInfo.totalOutgoingForms}</span>
+                            <span className='text-2xl'>{FAInfo.totalearnedcommission}</span>
                         </div>
                     </div>
                     <div className='h-18 sm:h-24 lg:w-[20vw] w-full bg-green-500 flex my-1 box hover:bg-green-600 hover:transition-transform hover:transform-gpu'>
@@ -58,7 +64,7 @@ const Fdashboard = () => {
                         </div>
                         <div className='h-18 sm:h-24 w-full flex items-start justify-center text-white flex-col px-3'>
                             <p>EARNED COMMESSION</p>
-                            <span className='text-2xl'>{FAInfo.totalOutgoingForms}</span>
+                            <span className='text-2xl'>{TotalCommission}</span>
                         </div>
                     </div>
                 </div>

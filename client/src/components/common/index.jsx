@@ -45,6 +45,7 @@ export const SuperAdminMenuList = [
     },
 ]
 
+
 export const FranchiseMenuList = [
     { name: 'Dashboard', icon: <IoMdHome className="text-red-600 text-xl mr-2" />, value: 'Dashboard', to: '/dashboard' },
     { name: 'Admission', icon: <PiStudentDuotone className="text-blue-600 text-xl mr-2" />, value: 'Admission', to: '/admission-form' },
@@ -55,6 +56,18 @@ export const FranchiseMenuList = [
         ]
     },
     { name: 'Student Fee', icon: <RiSecurePaymentLine className="text-blue-600 text-xl mr-2" />, value: 'Student Fee', to: '/student-fee-statement' },
+
+// export const FranchiseMenuList=[
+//     {name: 'Dashboard', icon:<IoMdHome  className="text-red-600 text-xl mr-2"/>,value:'Dashboard',to:'/dashboard'},
+//     {name: 'Admission', icon:<PiStudentDuotone  className="text-blue-600 text-xl mr-2" />,value:'Admission',to:'/admission-form'},
+//     {name: 'Commision', icon:<MdAttachMoney   className="text-green-600 text-xl mr-2"/>,value:'Commision',to:'',children:[
+//        { id:1 ,name:'Student Wise' ,value:"Student Wise",to:'/student-commision'},
+//        { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
+//     ]},
+//     {name: 'Sutdents Report', icon:< MdAttachMoney   className="text-green-600 text-xl mr-2"/>,value:'Sutdents Report',to:'',children:[
+//        { id:1 ,name:'Student List' ,value:"Student List",to:'/student-list'},
+//        { id:1 ,name:'course Wise' ,value:"Course Wise",to:'/course-commision'},
+//     ]},
 
 
 ]

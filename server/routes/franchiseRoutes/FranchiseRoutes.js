@@ -14,6 +14,7 @@ router.post('/get-student',getTotalStudent)
 
 router.post('/admission-form',Admission)
 router.post('/get-totalcommission',getTotalcommission)
+router.post('/get-franstudentdetails',franStudentDetails)
 
 router.post('/get-student-unpaid-data',getUnpaidStudentdataController)
 router.post('/submit-student-payment',offlinePaymentController)
