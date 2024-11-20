@@ -1,5 +1,5 @@
 import express, { Router } from "express"
-import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentdataController,
+import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentdataController,franStudentDetails,
     getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController } from "../../controllers/franchiseController/FranchiseController.js"
 
 const router=  express.Router()
