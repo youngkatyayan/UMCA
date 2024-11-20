@@ -102,9 +102,9 @@ const UserHeader = () => {
 
               <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Centers</Link>
               <Link to={'/franch-request' } className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Franchise </Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
+              <Link to={'/gallary'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'> Gallery</Link>
                 <Link to={'/user-certificate'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Certificate</Link>
-              <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
+              <Link to={'/user-placement'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Placement</Link>
               {/* <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>PMKVY</Link> */}
               {/* <Link className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Workshop</Link> */}
               <Link to={'/contact'} className='whitespace-nowrap text-zinc-50 ps-5 focus-within:bg-black focus-within:py-2'>Contact Us</Link>
@@ -168,9 +168,9 @@ const UserHeader = () => {
 
           <Link className=' text-zinc-50 '>Centers</Link>
           <Link to={'/franch-request' } className=' text-zinc-50 '>Franchise</Link>
-          <Link className=' text-zinc-50 '>Gallery</Link>
+          <Link  to={'/gallary'} className=' text-zinc-50 '>Gallery</Link>
           <Link to={'/user-certificate'} className=' text-zinc-50 '>Certificate</Link>
-          <Link className=' text-zinc-50 '>Placement</Link>
+          <Link to={'/user-placement'} className=' text-zinc-50 '>Placement</Link>
           {/* <Link className=' text-zinc-50 '>Workshop</Link> */}
           <Link  to={'/contact'} className=' text-zinc-50 '>Contact Us</Link>
         </div>

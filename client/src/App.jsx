@@ -41,6 +41,9 @@ import UserCertificate from './components/user/UserCertificate.jsx';
 import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
 import TermCondition from './components/pages/TermCondition.jsx';
 import RefundPolicy from './components/pages/RefundPolicy.jsx';
+import Placement from './components/user/Placement.jsx';
+import Gallary from './components/user/Gallary.jsx';
+import StudentFee from './components/franchise/StudentFee.jsx';
 
 
 
@@ -75,16 +78,12 @@ const App = () => {
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
           <Route path='/offer' element={<OfferZone />} />
-          <Route path='/courses' element={<Courses />} />
+          {/* <Route path='/courses' element={<Courses />} />
           <Route path='/courses/:id' element={<Courses />} />
-          <Route path='/entroll-course/:id' element={<Entroll />} />
+          <Route path='/entroll-course/:id' element={<Entroll />} /> */}
 
           <Route path='/create-commission' element={<CreateCommission/>} />
           <Route path='/Viewa-commission' element={<ViewAdCommission/>} />
-
-          {/* announcement  */}
-
-
 
           <Route path='/announcement' element={<StudentAnnounc />} />
           <Route path='/*' element={<PageNotFound />} />
@@ -114,13 +113,14 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Fdashboard />} />
           <Route path='/admission-form' element={<Admission />} />
-          <Route path='/courses' element={<Courses />} />
-          <Route path='/entroll-course/:id' element={<Entroll />} />
+          {/* <Route path='/courses' element={<Courses />} /> */}
+          {/* <Route path='/entroll-course/:id' element={<Entroll />} /> */}
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-          <Route path='/entroll-course/:id' element={<Entroll />} />
+          {/* <Route path='/entroll-course/:id' element={<Entroll />} /> */}
           <Route path='/course-commision' element={<CourseCommision />} />
           <Route path='/student-commision' element={<StudentCommision />} />
+          <Route path='/student-fee-statement' element={<StudentFee />} />
         </Routes>
       )
     default:
@@ -139,6 +139,8 @@ const App = () => {
           <Route path='/privacy&policy' element={<PrivacyPolicy/>} />
           <Route path='/term-condition' element={<TermCondition/>} />
           <Route path='/refund-policy' element={<RefundPolicy/>} />
+          <Route path='/user-placement' element={<Placement/>} />
+          <Route path='/gallary' element={<Gallary/>} />
 
         </Routes>
       );
