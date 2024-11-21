@@ -1,5 +1,10 @@
-import express, { Router } from "express"
-import { Admission, franStudentDetails, getDistrict, getPartCommission, getState, getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse } from "../../controllers/franchiseController/FranchiseController.js"
+import express from "express"
+
+import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentdataController,franStudentDetails,getFranchiseController,
+    filterStudentDataController,getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController } from "../../controllers/franchiseController/FranchiseController.js"
+
+
+
 
 const router=  express.Router()
 
@@ -14,5 +19,11 @@ router.post('/get-student',getTotalStudent)
 router.post('/admission-form',Admission)
 router.post('/get-totalcommission',getTotalcommission)
 router.post('/get-franstudentdetails',franStudentDetails)
+
+router.post('/get-student-unpaid-data',getUnpaidStudentdataController)
+router.post('/submit-student-payment',offlinePaymentController)
+router.get('/get-franchise',getFranchiseController)
+
+router.post('/filter-dataofstudent-byadmin',filterStudentDataController)
 
 export default router

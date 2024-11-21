@@ -24,13 +24,13 @@ export const SeletedCategory = async (req, res) => {
 
 export const SeletedCourse = async (req, res) => {
 
-    const { catname,coursename } = req.body;
+    const { catname, coursename } = req.body;
 
     const sql = `SELECT * 
         FROM course 
         WHERE categoryname = ? AND coursename=?
 `;
-    const values = [catname,coursename];
+    const values = [catname, coursename];
 
     const [result] = await db.query(sql, values)
 
@@ -72,7 +72,7 @@ export const getDistrict = async (req, res) => {
 
 export const getPartCommission = async (req, res) => {
     try {
-        console.log("dfas",req.body)
+        console.log("dfas", req.body)
         const { decryptedMobile } = req.body;
         const sql = `select * from franchadmission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
@@ -136,12 +136,12 @@ export const franStudentDetails = async (req, res) => {
 
 
 export const Admission = async (req, res) => {
-    const { category, Uid, categoryname,groupname,yearlyfee	, coursename, disabled, district, dob, town,
+    const { category, Uid, categoryname, groupname, yearlyfee, coursename, disabled, district, dob, town,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
         perstate, pertown, pincode, relaname, relation, session, whatsappno,
-        CommissionRs, educationEntries,commissionper,Admincommission,
-        totaladmincommission,totalfranchCommission, } = req.body;
+        CommissionRs, educationEntries, commissionper, Admincommission,
+        totaladmincommission, totalfranchCommission, } = req.body;
 
     console.log(educationEntries);
 
@@ -171,7 +171,7 @@ export const Admission = async (req, res) => {
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?,? ,?)`;
 
         const values = [
-            newSId, category, Uid,CommissionRs,Admincommission, categoryname,commissionper ,groupname,yearlyfee, coursename, disabled, district, dob, email,
+            newSId, category, Uid, CommissionRs, Admincommission, categoryname, commissionper, groupname, yearlyfee, coursename, disabled, district, dob, email,
             gender, line1, line2, minority, mobno, mothername, name,
             nationality, perdistrict, perline1, perline2, perpincode, perstate,
             pertown, pincode, relaname, relation, session, state, town, whatsappno
@@ -196,18 +196,18 @@ export const Admission = async (req, res) => {
         console.log("Education entries inserted");
 
 
-        const sql4=`Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
+        const sql4 = `Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
         ON DUPLICATE KEY UPDATE
         AdminCommission=VALUES (AdminCommission) ,
         franchCommission =VALUES(franchcommission)
         `
-        const values4=[totaladmincommission,Uid,totalfranchCommission]
+        const values4 = [totaladmincommission, Uid, totalfranchCommission]
 
-        await connection.query(sql4,values4,(err,result )=>{
-            if(err){
-                return res.status(500).send({success:true,message:"Error in updating TotalCommisson",err:err.message})   
+        await connection.query(sql4, values4, (err, result) => {
+            if (err) {
+                return res.status(500).send({ success: true, message: "Error in updating TotalCommisson", err: err.message })
             }
-           
+
         })
 
         // Commit transaction
@@ -223,3 +223,100 @@ export const Admission = async (req, res) => {
     }
 };
 
+// getUnpaidStudentdataController
+export const getUnpaidStudentdataController = async (req, res) => {
+    try {
+        const { decryptedMobile } = req.body
+        const sql = `SELECT franchadmission.mobno,franchadmission.name,franchadmission.coursename as cr,coursetrans.* FROM franchadmission left join coursetrans on franchadmission.mobno=coursetrans.mobile WHERE franchMobile=?`
+        const [result] = await db.query(sql, [decryptedMobile])
+        if (result) {
+            return res.status(201).send({ success: true, message: "data access Successfully", result });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in getUnpaidStudentdataController" });
+    }
+}
+
+// getUnpaidStudentdataController
+export const offlinePaymentController = async (req, res) => {
+    try {
+        const { mobile, status, payment, courseId, courseName } = req.body;
+
+        const sql = `
+            INSERT INTO coursetrans (mobile, coursename, status, payment, courseId)
+            VALUES (?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+                coursename = VALUES(coursename),
+                status = VALUES(status),
+                payment = VALUES(payment),
+                courseId = VALUES(courseId);
+        `;
+
+        const [result] = await db.query(sql, [mobile, courseName, status, payment, courseId]);
+
+        if (result) {
+            return res.status(201).send({ success: true, message: "Successfully updated ", result });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in offlinePaymentController" });
+    }
+};
+
+// get getFranchiseController
+export const getFranchiseController = async (req, res) => {
+    try {
+        const sql = `
+            select * from franchiseactive
+        `;
+        const [result] = await db.query(sql);
+
+        if (result) {
+            return res.status(200).send({ success: true, message: "Successfully Access ", result });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in getFranchiseController" });
+    }
+};
+
+
+// filter filterStudentDataController according to student with including franchise
+export const filterStudentDataController = async (req, res) => {
+    try {
+        const { startDate, endDate, branchName, status } = req.body;
+
+        if (!startDate || !endDate || !branchName || !status) {
+            return res.status(400).send({ error: 'All fields are required' });
+        }
+
+        const sql = `
+            SELECT 
+                franchadmission.*, 
+                coursetrans.*
+            FROM 
+                franchadmission 
+            LEFT JOIN 
+                coursetrans 
+            ON 
+                franchadmission.mobno = coursetrans.mobile 
+            WHERE 
+                franchadmission.franchMobile = ?
+                AND franchadmission.E_Date BETWEEN ? AND ?
+                ${status === 'Paid' ? 'AND coursetrans.status = ?' : 'OR coursetrans.status = ?'}
+            GROUP BY 
+                franchadmission.mobno
+        `;
+        const [result] = await db.query(sql, [branchName, startDate, endDate, status]);
+
+        if (result.length > 0) {
+            return res.status(200).send({ success: true, message: "Successfully Accessed", result });
+        } else {
+            return res.status(404).send({ success: false, message: "No data found" });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in filterStudentDataController" });
+    }
+};
