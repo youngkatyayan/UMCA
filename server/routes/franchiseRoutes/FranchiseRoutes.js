@@ -1,7 +1,8 @@
 import express from "express"
 
 import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentdataController,franStudentDetails,getFranchiseController,
-    filterStudentDataController,getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController } from "../../controllers/franchiseController/FranchiseController.js"
+    filterStudentDataController,getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController, 
+    getFranSudent} from "../../controllers/franchiseController/FranchiseController.js"
 
 
 
@@ -23,6 +24,7 @@ router.post('/get-franstudentdetails',franStudentDetails)
 router.post('/get-student-unpaid-data',getUnpaidStudentdataController)
 router.post('/submit-student-payment',offlinePaymentController)
 router.get('/get-franchise',getFranchiseController)
+router.post('/get-studentfranch',getFranSudent)
 
 router.post('/filter-dataofstudent-byadmin',filterStudentDataController)
 

@@ -9,12 +9,123 @@ import moment from 'moment'
 
 
 
-const Admission = (student) => {
+const Admission = ({student}) => {
+
+    const [newData,setNewtData]=useState([])
+    const [category, setCategory] = useState([])
+    const [course, setCourse] = useState([])
+    const [district, setDistrict] = useState([])
+    const [session, setSession] = useState([])
+    const [filteredDistrict, setFilteredDistrict] = useState([])
+    const [state, setState] = useState([])
+    const [commission, setCommission] = useState([])
+    const [educationEntries, setEducationEntries] = useState([
+        {
+            examinationPassed: '',
+            schoolCollege: '',
+            boardUniversity: '',
+            yearOfPassing: '',
+            marksPercentage: '',
+            classDivision: '',
+            subjects: '',
+        },
+    ]);
+    const [TotalCommission, setTotalCommission] = useState([])
+    const UId = localStorage.getItem('uid')
+    const [formdata, setData] = useState({
+        Uid: '',
+        categoryname: '',
+        session: '',
+        minority: "",
+        name: "",
+        dob: "",
+        gender: "",
+        category: "",
+        relation: "",
+        relaname: "",
+        mothername: "",
+        nationality: "",
+        disabled: '',
+        coursename: "",
+        line1: '',
+        line2: '',
+        town: '',
+        state: '',
+        district: '',
+        pincode: '',
+        perline1: '',
+        perline2: '',
+        pertown: '',
+        perstate: '',
+        perdistrict: '',
+        perpincode: '',
+        CommissionRs: '',
+        commissionper: '',
+        yearlyfee: '',
+        Admincommission: '',
+        totalfranchCommission: '',
+        totaladmincommission: ''
+    });
 
 
+    const handleEdit = async (value) => {
+        console.log(value);
+    
+        const dateofbirth = value.dob ? moment(student.dob).format('YYYY-MM-DD') : '';
+    
+      
+         setData(prev => ({
+            ...prev,
+            SId: value?.SId || '',
+            categoryname: value?.categoryname || '',
+            session: value?.session || '',
+            minority: value?.minority || 'sdrfe',
+            name: value?.name || '',
+            dob: dateofbirth || '',
+            gender: value?.gender || '',
+            category: value?.category || '',
+            relation: value?.relation || '',
+            relaname: value?.relaname || '',
+            mothername: value?.mothername || '',
+            nationality: value?.nationality || '',
+            disabled: value?.disabled || '',
+            coursename: value?.coursename || '',
+            line1: value?.line1 || '',
+            line2: value?.line2 || '',
+            town: value?.town || '',
+            state: value?.state || '',
+            district: value?.district || '',
+            pincode: value?.pincode || '',
+            perline1: value?.perline1 || '',
+            perline2: value?.perline2 || '',
+            pertown: value?.pertown || '',
+            perstate: value?.perstate || '',
+            perdistrict: value?.perdistrict || '',
+            perpincode: value?.perpincode || '',
+            CommissionRs: value?.CommissionRs || '',
+            commissionper: value?.commissionper || '',
+            yearlyfee: value?.yearlyfee || '',
+            Admincommission: value?.Admincommission || '',
+            totalfranchCommission: value?.totalfranchCommission || '',
+            totaladmincommission: value?.totaladmincommission || '',
+        }));
+    
+                // Log the updated form data
+
+        console.log('Updated Form Data:', formdata);
+    
+        setTimeout(() => {
+            handlePrint();
+        }, 200);
+    };      
+    
+    
     const handlePrint = async() => {
-        console.log(formdata)
-        const content = document.getElementById('student-details'); // Ensure the div you want to print has this ID
+        setTimeout(() => {
+            console.log(formdata)
+
+        }, 200);
+        const content =await document.getElementById('student-details');
         if (content) {
             const newWindow = window.open('', '', 'height=600, width=800');
             newWindow.document.write('<html><head><title>Print Student Details</title>');
@@ -129,119 +240,33 @@ const Admission = (student) => {
             alert('Content not found!');
         }
     };
-    
-     
-    const handleEdit = async (data) => {
-        const Student = data.student;
-        const dateofbirth = Student.dob ? moment(Student.dob).format('YYYY-MM-DD') : '';
-      
-        const updatedState = {
-          SId: Student.SId || '',
-          categoryname: Student.categoryname || '',
-          session: Student.session || '',
-          minority: Student.minority || "",
-          name: Student.name || "",
-          dob: dateofbirth || "",
-          gender: Student.gender || "",
-          category: Student.category || "",
-          relation: Student.relation || "",
-          relaname: Student.relaname || "",
-          mothername: Student.mothername || "",
-          nationality: Student.nationality || "",
-          disabled: Student.disabled || '',
-          coursename: Student.coursename || "",
-          line1: Student.line1 || '',
-          line2: Student.line2 || '',
-          town: Student.town || '',
-          state: Student.state || '',
-          district: Student.district || '',
-          pincode: Student.pincode || '',
-          perline1: Student.perline1 || '',
-          perline2: Student.perline2 || '',
-          pertown: Student.pertown || '',
-          perstate: Student.perstate || '',
-          perdistrict: Student.perdistrict || '',
-          perpincode: Student.perpincode || '',
-          CommissionRs: Student.CommissionRs || '',
-          commissionper: Student.commissionper || '',
-          yearlyfee: Student.yearlyfee || '',
-          Admincommission: Student.Admincommission || '',
-          totalfranchCommission: Student.totalfranchCommission || '',
-          totaladmincommission: Student.totaladmincommission || ''
-        };
-      
-        setData(updatedState); // Update state
-        console.log("State updated:", updatedState);
-      
-        handlePrint(); // Call after state update
-      };
-      
-      
 
     useEffect(() => {
+        
         if (student && typeof student === "object" && Object.keys(student).length > 0) {
-          console.log("Student details set:", student);
-         
-          handleEdit(student)
+            const SIds = student.SId;
+            console.log(SIds)
+            const accessstudent = async () => {
+                try {
+                    if (SIds) {
+                        const { data } = await axios.post('api/v1/get-studentfranch', { SIds });
+                       if(data.success){
+                        console.log(data.result)
+                        if(data.result){
+                            setNewtData(data.result[0])
+                            handleEdit(data.result[0]);
+                        }}
+                        
+                    }
+                } catch (error) {
+                    console.error("Error fetching student data:", error);
+                }
+            };
+    
+            accessstudent(); 
+           
         }
-      }, [student]); 
-
-    const [category, setCategory] = useState([])
-    const [course, setCourse] = useState([])
-    const [district, setDistrict] = useState([])
-    const [session, setSession] = useState([])
-    const [filteredDistrict, setFilteredDistrict] = useState([])
-    const [state, setState] = useState([])
-    const [commission, setCommission] = useState([])
-    const [formdata, setData] = useState({
-        Uid: '',
-        categoryname: '',
-        session: '',
-        minority: "",
-        name: "",
-        dob: "",
-        gender: "",
-        category: "",
-        relation: "",
-        relaname: "",
-        mothername: "",
-        nationality: "",
-        disabled: '',
-        coursename: "",
-        line1: '',
-        line2: '',
-        town: '',
-        state: '',
-        district: '',
-        pincode: '',
-        perline1: '',
-        perline2: '',
-        pertown: '',
-        perstate: '',
-        perdistrict: '',
-        perpincode: '',
-        CommissionRs: '',
-        commissionper: '',
-        yearlyfee: '',
-        Admincommission: '',
-        totalfranchCommission: '',
-        totaladmincommission: ''
-    });
-
-    const [educationEntries, setEducationEntries] = useState([
-        {
-            examinationPassed: '',
-            schoolCollege: '',
-            boardUniversity: '',
-            yearOfPassing: '',
-            marksPercentage: '',
-            classDivision: '',
-            subjects: '',
-        },
-    ]);
-    const [TotalCommission, setTotalCommission] = useState([])
-    const UId = localStorage.getItem('uid')
-
+    }, [student])
     const accesscommission = async () => {
         const { data } = await axios.get('/api/v1/get-commission')
         if (data.success) {

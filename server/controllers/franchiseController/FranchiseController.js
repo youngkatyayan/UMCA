@@ -4,7 +4,6 @@ import { db } from "../../utils/db.js";
 export const SeletedCategory = async (req, res) => {
 
     const { cname } = req.body;
-    console.log('Category name:', cname);
 
     const sql = `SELECT * 
         FROM course 
@@ -16,7 +15,6 @@ export const SeletedCategory = async (req, res) => {
     const [result] = await db.query(sql, values)
 
     if (result.length) {
-        console.log('Query successful:', result);
         return res.status(200).json({ success: true, result, message: 'Courses successfully retrieved' });
     }
 
@@ -35,7 +33,6 @@ export const SeletedCourse = async (req, res) => {
     const [result] = await db.query(sql, values)
 
     if (result.length) {
-        console.log('Query successful:', result);
         return res.status(200).json({ success: true, result, message: 'Courses successfully retrieved' });
     }
 
@@ -72,7 +69,6 @@ export const getDistrict = async (req, res) => {
 
 export const getPartCommission = async (req, res) => {
     try {
-        console.log("dfas", req.body)
         const { decryptedMobile } = req.body;
         const sql = `select * from franchadmission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
@@ -87,7 +83,6 @@ export const getPartCommission = async (req, res) => {
 
 export const getTotalStudent = async (req, res) => {
     try {
-        console.log(req.body)
         const { decryptedMobile } = req.body;
         const sql = `select count(SId) AS count from franchadmission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
@@ -102,11 +97,9 @@ export const getTotalStudent = async (req, res) => {
 
 export const getTotalcommission = async (req, res) => {
     try {
-        console.log(req.body)
         const { decryptedMobile } = req.body;
         const sql = `select *  from totalcommission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
-        console.log(result)
         if (result) {
             return res.status(201).send({ success: true, message: "fetched totalcommission Successfully", result });
         }
@@ -118,11 +111,9 @@ export const getTotalcommission = async (req, res) => {
 
 export const franStudentDetails = async (req, res) => {
     try {
-        console.log(req.body)
         const { decryptedMobile } = req.body;
         const sql = `select *  from franchadmission  where franchMobile=? `
         const [result] = await db.query(sql, [decryptedMobile])
-        console.log(result)
         if (result) {
             return res.status(201).send({ success: true, message: "fetched totalcommission Successfully", result });
         }
@@ -132,6 +123,21 @@ export const franStudentDetails = async (req, res) => {
     }
 }
 
+export const getFranSudent = async (req, res) => {
+    console.log(req.body)
+    const { SIds } = req.body;
+    const sql = 'select * from franchadmission where SId =?';
+    const values = [SIds]
+
+    const [result] = await db.query(sql, values)
+    if (result) {
+        console.log(result)
+        return res.status(201).send({ success: true, result, message: "Successfully accessed student data" })
+    }
+
+    return res.status(500).send({ success: false, message: "server error", err: err.message })
+
+}
 
 
 
@@ -143,7 +149,6 @@ export const Admission = async (req, res) => {
         CommissionRs, educationEntries, commissionper, Admincommission,
         totaladmincommission, totalfranchCommission, } = req.body;
 
-    console.log(educationEntries);
 
     // Get the database connection
     const connection = await db.getConnection();
@@ -160,7 +165,6 @@ export const Admission = async (req, res) => {
             const lastSId = parseInt(result[0].SId, 10);
             newSId = lastSId + 1;
         }
-        console.log("New SId:", newSId);
 
         // Insert into franchadmission table
         const sql = `INSERT INTO franchadmission 
@@ -178,7 +182,6 @@ export const Admission = async (req, res) => {
         ];
 
         await connection.query(sql, values);
-        console.log("Main admission data inserted");
 
         // Insert education entries
         const sql3 = `INSERT INTO frachadedu 
@@ -193,7 +196,6 @@ export const Admission = async (req, res) => {
             ];
             await connection.query(sql3, values3);
         }
-        console.log("Education entries inserted");
 
 
         const sql4 = `Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
