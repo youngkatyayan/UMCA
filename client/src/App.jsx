@@ -42,6 +42,8 @@ import Placement from './components/user/Placement.jsx';
 import Gallary from './components/user/Gallary.jsx';
 import StudentFee from './components/franchise/StudentFee.jsx';
 import StudentDetails from './components/franchise/StudentDetails.jsx';
+import PaidStudent from './components/franchise/PaidStudent.jsx';
+import PaidUnpaidList from './components/admin/franchise/PaidUnpaidList.jsx';
 
 
 
@@ -76,11 +78,8 @@ const App = () => {
           <Route path='/received-applicant' element={<NewApplicant />} />
           <Route path='/franchise' element={<FranchiseList />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
+          <Route path='/admin/paid-unpaid' element={<PaidUnpaidList />} />
           <Route path='/offer' element={<OfferZone />} />
-          {/* <Route path='/courses' element={<Courses />} />
-          <Route path='/courses/:id' element={<Courses />} />
-          <Route path='/entroll-course/:id' element={<Entroll />} /> */}
-
           <Route path='/create-commission' element={<CreateCommission/>} />
           <Route path='/Viewa-commission' element={<ViewAdCommission/>} />
           <Route path='/announcement' element={<StudentAnnounc />} />
@@ -94,8 +93,6 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<StudentDashboard />} />
-          {/* <Route path='/enrolled-courses' element={<EnrolledCourses />} /> */}
-          {/* <Route path='/degreecourses' element={<DegreeProgram />} /> */}
           <Route path='/certificate' element={<Certificate />} />
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/update-profile' element={<UserProfile />} />
@@ -111,18 +108,13 @@ const App = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Fdashboard />} />
           <Route path='/admission-form' element={<Admission />} />
-          {/* <Route path='/courses' element={<Courses />} /> */}
-          {/* <Route path='/entroll-course/:id' element={<Entroll />} /> */}
           <Route path='/*' element={<PageNotFound />} />
           <Route path='/franch-request' element={<FranchiseRequest />} />
-          {/* <Route path='/entroll-course/:id' element={<Entroll />} /> */}
           <Route path='/course-commision' element={<CourseCommision />} />
           <Route path='/student-commision' element={<StudentCommision />} />
-
           <Route path='/student-fee-statement' element={<StudentFee />} />
-
+          <Route path='/student-paid-statement' element={<PaidStudent />} />
           <Route path='/student-list' element={<StudentDetails/>} />
-
         </Routes>
       )
     default:

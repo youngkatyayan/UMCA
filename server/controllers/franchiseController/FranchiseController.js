@@ -140,8 +140,8 @@ export const Admission = async (req, res) => {
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
         perstate, pertown, pincode, relaname, relation, session, whatsappno,
-        CommissionRs, educationEntries,commissionper,Admincommission,
-        totaladmincommission,totalfranchCommission, } = req.body;
+        CommissionRs, educationEntries, commissionper, Admincommission,
+        totaladmincommission, totalfranchCommission, } = req.body;
 
     console.log(educationEntries);
 
@@ -196,18 +196,18 @@ export const Admission = async (req, res) => {
         console.log("Education entries inserted");
 
 
-        const sql4=`Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
+        const sql4 = `Insert into totalcommission (AdminCommission,franchMobile,franchcommission) VALUES (?, ?, ?)
         ON DUPLICATE KEY UPDATE
         AdminCommission=VALUES (AdminCommission) ,
         franchCommission =VALUES(franchcommission)
         `
-        const values4=[totaladmincommission,Uid,totalfranchCommission]
+        const values4 = [totaladmincommission, Uid, totalfranchCommission]
 
-        await connection.query(sql4,values4,(err,result )=>{
-            if(err){
-                return res.status(500).send({success:true,message:"Error in updating TotalCommisson",err:err.message})   
+        await connection.query(sql4, values4, (err, result) => {
+            if (err) {
+                return res.status(500).send({ success: true, message: "Error in updating TotalCommisson", err: err.message })
             }
-           
+
         })
 
         // Commit transaction
@@ -261,5 +261,62 @@ export const offlinePaymentController = async (req, res) => {
     } catch (error) {
         console.error("Transaction error:", error);
         return res.status(500).send({ success: false, message: "Error in offlinePaymentController" });
+    }
+};
+
+// get getFranchiseController
+export const getFranchiseController = async (req, res) => {
+    try {
+        const sql = `
+            select * from franchiseactive
+        `;
+        const [result] = await db.query(sql);
+
+        if (result) {
+            return res.status(200).send({ success: true, message: "Successfully Access ", result });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in getFranchiseController" });
+    }
+};
+
+
+// filter filterStudentDataController according to student with including franchise
+export const filterStudentDataController = async (req, res) => {
+    try {
+        const { startDate, endDate, branchName, status } = req.body;
+
+        if (!startDate || !endDate || !branchName || !status) {
+            return res.status(400).send({ error: 'All fields are required' });
+        }
+
+        const sql = `
+            SELECT 
+                franchadmission.*, 
+                coursetrans.*
+            FROM 
+                franchadmission 
+            LEFT JOIN 
+                coursetrans 
+            ON 
+                franchadmission.mobno = coursetrans.mobile 
+            WHERE 
+                franchadmission.franchMobile = ?
+                AND franchadmission.E_Date BETWEEN ? AND ?
+                ${status === 'Paid' ? 'AND coursetrans.status = ?' : 'OR coursetrans.status = ?'}
+            GROUP BY 
+                franchadmission.mobno
+        `;
+        const [result] = await db.query(sql, [branchName, startDate, endDate, status]);
+
+        if (result.length > 0) {
+            return res.status(200).send({ success: true, message: "Successfully Accessed", result });
+        } else {
+            return res.status(404).send({ success: false, message: "No data found" });
+        }
+    } catch (error) {
+        console.error("Transaction error:", error);
+        return res.status(500).send({ success: false, message: "Error in filterStudentDataController" });
     }
 };

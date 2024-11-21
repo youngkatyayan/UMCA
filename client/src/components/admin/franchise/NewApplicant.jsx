@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 const NewApplicant = () => {
 
 
-    const [searchco, SetSearchco] = useState({ franchisename: '' })
+    // const [searchco, SetSearchco] = useState({ franchisename: '' })
     const [incomfranchise, setIncomfranchise] = useState([])
 
 

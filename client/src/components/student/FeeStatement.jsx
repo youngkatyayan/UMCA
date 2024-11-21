@@ -4,7 +4,7 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import jsPDF from "jspdf";
 import logo from '../../assets/logo2.png'
-import {convertToWords} from 'react-number-to-words';
+import { convertToWords } from 'react-number-to-words';
 const FeeStatement = () => {
   const [allResult, setAllResult] = useState(null);
   const uid = localStorage.getItem('uid');
@@ -30,105 +30,72 @@ const FeeStatement = () => {
         const receiptData = response.data.result[0] || {};
   
         const pdf = new jsPDF({
-          unit: "mm", 
-          format: [150, 200], 
+          unit: "mm",
+          format: [120, 120], 
         });
   
-        pdf.setDrawColor(0);
-        pdf.setLineWidth(0.5);
-        pdf.rect(10, 10, 130, 180); 
-  
-        // Logo
-        const imgWidth = 30;
-        const imgHeight = 15;
-        pdf.addImage(logo, "PNG", 50, 10, imgWidth, imgHeight);
-  
-        // Title
-        pdf.setFontSize(16);
-        pdf.setTextColor(0, 51, 102);
-        pdf.text("FEE RECEIPT", 75, 30, { align: "center" });
-        pdf.setDrawColor(150);
-        pdf.line(20, 35, 130, 35);
-  
-        // Transaction Details Title
         pdf.setFontSize(12);
-        pdf.text("Transaction Details", 75, 45, { align: "center" });
+        const headerFont = "helvetica";
+        const bodyFont = "times";
   
-        // Content
-        pdf.setFontSize(9);
-        const defaultText = "N/A"; 
+        pdf.setFont('Roboto', "bold");
+        pdf.setTextColor(0, 51, 102); 
+        pdf.text("UMCA EDUCATION", 58, 13, { align: "center" }); 
+        pdf.setLineWidth(0.5);
+        pdf.line(10, 25, 110, 25); 
+
+        pdf.setFont(headerFont, "bold");
+        pdf.setTextColor(0, 51, 102); 
+        pdf.addImage(logo, "PNG", 10, 5, 15, 15); 
+        pdf.text("FEE RECEIPT", 60, 20, { align: "center" }); 
+        pdf.setLineWidth(0.5);
+        pdf.line(10, 25, 110, 25); 
   
-        const safeText = (value) => (value ? value.toString() : defaultText);
+        // --- Body ---
+        pdf.setFont(bodyFont);
+        pdf.setFontSize(10);
+        pdf.setTextColor(0); // Black text
   
-        pdf.setTextColor(0);
-        pdf.text("Receipt No:", 20, 55);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(receiptData.Id), 80, 55);
+        const drawRow = (label, value, y) => {
+          const defaultText = "N/A";
+          const safeText = (value) => (value ? value.toString() : defaultText);
+          const truncatedText = (text, maxLength) =>
+            text.length > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
   
-        pdf.setTextColor(0);
-        pdf.text("Name (Mr./Mrs.):", 20, 65);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(receiptData.name), 80, 65);
+          pdf.setTextColor(0); // Label color
+          pdf.text(`${label}:`, 15, y);
+          pdf.setTextColor(0, 102, 204); // Blue for values
+          pdf.text(truncatedText(safeText(value), 50), 50, y);
+        };
   
-        pdf.setTextColor(0);
-        pdf.text("Course Name:", 20, 75);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(receiptData.coursename), 80, 75);
+        let startY = 30;
+        const rowGap = 6;
   
-        pdf.setTextColor(0);
-        pdf.text("Mobile No:", 20, 85);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(receiptData.mobile), 80, 85);
-  
-        pdf.setTextColor(0);
-        pdf.text("Amount in Words:", 20, 95);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(convertToWords(receiptData.payment)), 80, 95);
-  
-        pdf.setFillColor(230, 240, 255); 
-        pdf.rect(15, 105, 120, 25, "F");
-  
-        pdf.setTextColor(0);
-        pdf.text("Payment Amount:", 20, 115);
-        pdf.setTextColor(50, 150, 50);
-        pdf.text(`₹${safeText(receiptData.payment)} /-`, 80, 115);
-  
-        pdf.setTextColor(0);
-        pdf.text("Transaction ID:", 20, 125);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(safeText(receiptData.payment_id), 80, 125);
-  
-        pdf.setTextColor(0);
-        pdf.text("Payment Mode:", 20, 135);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(receiptData.payment_id ? "Online" : "Cash", 80, 135);
-  
-        pdf.setTextColor(0);
-        pdf.text("Transaction Date:", 20, 145);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(
-          safeText(new Date(receiptData.Transaction_Date).toLocaleDateString()),
-          80,
-          145
+        drawRow("Receipt No", receiptData.Id, startY);
+        drawRow("Name", receiptData.name, (startY += rowGap));
+        drawRow("Course Name", receiptData.coursename, (startY += rowGap));
+        drawRow("Mobile No", receiptData.mobile, (startY += rowGap));
+        drawRow("Amount in Words", convertToWords(receiptData.payment), (startY += rowGap));
+        drawRow("Payment Amount", `₹${receiptData.payment} /-`, (startY += rowGap));
+        drawRow("Payment Mode", receiptData.payment_id ? "Online" : "Cash", (startY += rowGap));
+        drawRow("Transaction ID", receiptData.payment_id, (startY += rowGap));
+        drawRow(
+          "Transaction Date",
+          new Date(receiptData.Transaction_Date).toLocaleDateString(),
+          (startY += rowGap)
         );
+        drawRow("Receipt Date", new Date().toLocaleDateString(), (startY += rowGap));
   
-        pdf.setTextColor(0);
-        pdf.text("Receipt Date:", 20, 155);
-        pdf.setTextColor(50, 50, 150);
-        pdf.text(new Date().toLocaleDateString(), 80, 155);
-  
-        pdf.setDrawColor(150);
-        pdf.line(20, 160, 130, 160);
-  
-        // Footer
+        // --- Footer ---
+        startY += 10;
         pdf.setFontSize(8);
-        pdf.setTextColor(100);
-        pdf.text("Thank you for your payment!", 75, 170, { align: "center" });
-        pdf.text("For queries, contact: umcafoundation@gmail.com", 75, 175, {
+        pdf.setTextColor(100); // Grey text
+        pdf.text("Thank you for your payment!", 60, startY, { align: "center" });
+        pdf.text("For queries, contact: umcafoundation@gmail.com", 60, startY + 5, {
           align: "center",
         });
   
-        // Save PDF
+        // Save the receipt
         pdf.save(`Receipt_${transactionId}.pdf`);
       } else {
         console.error("Invalid data received for the receipt.");
@@ -138,11 +105,10 @@ const FeeStatement = () => {
     }
   };
   
-
   useEffect(() => {
     fetchFee();
   }, []);
-
+  console.log(allResult)
   return (
     <StudentLayout>
       <div className='w-full bg-slate-100 p-6'>

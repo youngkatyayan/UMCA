@@ -97,13 +97,13 @@ const Login = () => {
     return (
         <Userlayout>
             <div
-                className=" h-[60vh]  flex items-center justify-center bg-cover bg-center bg-no-repeat relative"
-                style={{ backgroundImage: `url(${BackgroundImage})` }}
+                className=" h-[60vh]  flex items-center py-5 justify-center bg-cover bg-center bg-no-repeat relative bg-gray-400"
+                // style={{ backgroundImage: `url(${BackgroundImage})` }}
             >
                 <ToastContainer />
                 {popUp ? (
 
-                    <div className="w-full max-w-md p-8 rounded-lg border border-white/50 bg-white/10 backdrop-blur-md">
+                    <div className="w-full max-w-md p-8 rounded-lg border border-white/80 bg-white/20 backdrop-blur-md">
                         <form onSubmit={handleLogin} className="flex flex-col">
                             <h2 className="text-2xl mb-6 text-white font-semibold text-center">Login</h2>
                             <div className="relative border-b-2 border-gray-300 mb-4">

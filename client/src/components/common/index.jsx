@@ -32,7 +32,8 @@ export const SuperAdminMenuList = [
     {
         name: 'Franchise', icon: <FaStoreAlt className="text-green-600 text-xl mr-2" />, value: 'Franchise', to: '', children: [
             { id: 1, name: 'New ', value: 'New', to: '/received-applicant' },
-            { id: 2, name: 'List', value: 'List', to: '/franchise' }
+            { id: 2, name: 'List', value: 'List', to: '/franchise' },
+            { id: 3, name: 'Paid/Unpaid List', value: 'Paid/Unpaid List', to: '/admin/paid-unpaid' }
         ]
     },
     { name: 'Offer Zone', icon: <BiSolidOffer className="text-blue-600 text-xl mr-2" />, value: 'offer', to: '/offer' },
@@ -43,6 +44,8 @@ export const SuperAdminMenuList = [
             { id: 2, name: " View commission ", value: " View commission ", to: '/Viewa-commission' },
         ]
     },
+   
+
 ]
 
 
@@ -55,7 +58,13 @@ export const FranchiseMenuList = [
             { id: 1, name: 'Course Wise', value: "Course Wise", to: '/course-commision' },
         ]
     },
-    { name: 'Student Fee', icon: <RiSecurePaymentLine className="text-blue-600 text-xl mr-2" />, value: 'Student Fee', to: '/student-fee-statement' },
+    { name: 'Student Fee', icon: <RiSecurePaymentLine className="text-blue-600 text-xl mr-2" />, value: 'Student Fee', to: '',
+        children: [
+            { id: 1, name: 'Unpaid Student', value: "Unpaid Student", to: '/student-fee-statement' },
+            { id: 1, name: 'Paid Student', value: "Paid Student", to: '/student-paid-statement' },
+        ]
+    
+     },
 
 // export const FranchiseMenuList=[
 //     {name: 'Dashboard', icon:<IoMdHome  className="text-red-600 text-xl mr-2"/>,value:'Dashboard',to:'/dashboard'},
