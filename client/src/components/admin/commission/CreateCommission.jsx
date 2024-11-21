@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SuperAdminLayout from '../../layout/SuperAdminLayout.jsx'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
+import moment from 'moment'
 import { toast, ToastContainer } from 'react-toastify';
 
 import { MdEdit } from 'react-icons/md';
@@ -38,15 +39,12 @@ const CreateCommission = () => {
         const { data } = await axios.get('/api/v1/get-commission')
         if (data.success) {
             setCommission(data.result)
-            console.log(data.result)
         }
     }
     const accesscategory = async () => {
         const { data } = await axios.get('/api/v1/get-category')
         if (data.success) {
             setCategory(data.result)
-            console.log(data.result)
-            console.log(category)
         }
     }
 
@@ -65,7 +63,6 @@ const CreateCommission = () => {
         if(name==='categoryname'){
             const totalcomm=category.find(item=>value===item.categoryname)
             const Totalcomm=totalcomm.totalcommission
-            console.log(Totalcomm)
             
             
             setData(prevData => ({ ...prevData, totalcommission: Totalcomm }))
@@ -75,10 +72,7 @@ const CreateCommission = () => {
             
             const {data}=await axios.post('/api/v1/get-grouponcatery',{value})
             setCategory(data.result)
-
-
         }
-
     }
 
     const handleSubmit = async (e) => {
@@ -104,8 +98,9 @@ const CreateCommission = () => {
 
     const handleEdit = async (item) => {
         setUpdateC(true)
-        const formattedstartDate = item.startdate ? new Date(item.startdate).toISOString().split('T')[0] : '';
-        const formattedendDate = item.enddate ? new Date(item.enddate).toISOString().split('T')[0] : '';
+        const formattedstartDate = item.startdate ? moment(item.startdate).format('YYYY-MM-DD') : '';
+        const formattedendDate = item.enddate ? moment(item.enddate).format('YYYY-MM-DD') : '';
+        
 
         setData({
             ...formdata,
@@ -122,7 +117,6 @@ const CreateCommission = () => {
     const handleUpdate = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/update-commission', formdata)
             if (data.success) {
                 toast.success(data.message);

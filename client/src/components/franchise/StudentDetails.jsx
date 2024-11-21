@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { FaRegFilePdf } from "react-icons/fa";
 import { FaAddressCard } from "react-icons/fa";
 import IdCard from "../student/IdCard.jsx"
-
+import Admission from "../franchise/Admission.jsx"
 
 import CryptoJS from 'crypto-js';
 
@@ -17,6 +17,7 @@ const StudentDetails = () => {
     
     const [studentDetails,setStudentDetails] =useState([])
     const [selectedStudent, setSelectedStudent] = useState(null);
+    const [selectedApplication, setselectedApplication] = useState(null);
     const UId = localStorage.getItem('uid')
 
     const accessstdetails = async () => {
@@ -35,7 +36,11 @@ const StudentDetails = () => {
 
 
     const handleApplication=async(item)=>{
+        setselectedApplication(item)
+        console.log('second')
     }
+
+
     const handleId=async(item)=>{
         setSelectedStudent(item);
         console.log('first')
@@ -53,8 +58,8 @@ const StudentDetails = () => {
                         <thead className='bg-slate-600 text-white' >
                             <tr className='font-serif whitespace-nowrap'>
                                 <th className='p-2 border-2'>S.No </th>
-                                <th className='p-2 border-2 '>Application Form </th>
-                                <th className='p-2 border-2 '>Student Id </th>
+                                <th className='p-2 border-2 '>Print Form </th>
+                                <th className='p-2 border-2 '>Print Id Card</th>
                                 <th className='p-2 border-2'> Student Name</th>
                                 <th className='p-2 border-2 '>Category </th>
                                 <th className='p-2 border-2 '>Course </th>
@@ -69,11 +74,11 @@ const StudentDetails = () => {
                             {studentDetails.map((item, index) => (
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{index+1}</td>
-                                    <td className='px-3  border-gray-400  flex justify-center  '>
-                                    <FaAddressCard className='text-blue-600 text-4xl  cursor-pointer' onClick={()=>handleApplication(item)} />
+                                    <td className='p-3  border-gray-400 flex justify-center  items-center '>
+                                    <FaRegFilePdf className='text-red-500 text-4xl  flex cursor-pointer' onClick={()=>handleApplication(item)} />
                                     </td>
                                     <td className='px-3 border-2 border-gray-400   ' onClick={()=>handleId(item)}>
-                                        {<FaRegFilePdf className='text-red-500 text-4xl  cursor-pointer'/>}</td>
+                                        {<FaAddressCard className='text-blue-600 flex text-4xl  cursor-pointer' />}</td>
                                     <td className='px-3 border-2 border-gray-400  '>{item.name}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.7rem]'>{item.categoryname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.coursename}</td>
@@ -89,9 +94,15 @@ const StudentDetails = () => {
                 </div>
 
                 {selectedStudent && (
-                <div className="mt-4">
+                <div hidden className="mt-4">
                     <h2 className="text-xl font-bold mb-2">Student ID Card</h2>
                     <IdCard student={selectedStudent} /> {/* Pass the student data as props */}
+                </div>
+            )}
+                {selectedApplication && (
+                <div hidden className="mt-4">
+                    <h2 className="text-xl font-bold mb-2">Student Application</h2>
+                    <Admission student={selectedApplication} /> {/* Pass the student data as props */}
                 </div>
             )}
        </div>
