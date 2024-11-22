@@ -190,7 +190,7 @@ const IdCard = ({ student }) => {
                   <div><span class="font-bold text-[0.8rem]">Name: </span><span style="font-size: 0.7rem;">${student && student.name ? student.name : "Name not available"}</span></div>
                   <div><span class="font-bold text-[0.8rem]">Phone: </span><span style="font-size: 0.7rem;">${student && student.mobno}</span></div>
                   <div><span class="font-bold text-[0.8rem]">Email: </span><span style="font-size: 0.7rem;">${student && student.email}</span></div>
-                  <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${student && student.course}</span></div>
+                  <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${student && student.coursename}</span></div>
                   <div class="h-10 relative">
                     <span class="font-bold absolute registrar text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
                   </div>

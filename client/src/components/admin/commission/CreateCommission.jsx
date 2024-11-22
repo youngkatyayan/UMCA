@@ -183,7 +183,7 @@ const CreateCommission = () => {
 
                             </div>
                             <div>
-                                <label htmlFor="totalcommission" className=' mb-2  font-serif'> Total Commission :  </label>
+                                <label htmlFor="totalcommission" className=' mb-2  font-serif'> Total Commission ( % ) :  </label>
                                 <input
                                     type="text"
                                     name='totalcommission'

@@ -142,7 +142,7 @@ export const getFranSudent = async (req, res) => {
 
 
 export const Admission = async (req, res) => {
-    const { category, Uid, categoryname, groupname, yearlyfee, coursename, disabled, district, dob, town,
+    const { category, Uid, categoryname, groupname, yearlyfee, coursename, disabled, district, dob, town,CoId,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
         perstate, pertown, pincode, relaname, relation, session, whatsappno,
@@ -168,14 +168,14 @@ export const Admission = async (req, res) => {
 
         // Insert into franchadmission table
         const sql = `INSERT INTO franchadmission 
-                     (SId, category,franchMobile,commissionern,Admincommission, categoryname,commissionper,groupname,yearlyfee, coursename, disabled, district, dob, email,  
+                     (SId,CoId, category,franchMobile,commissionern,Admincommission, categoryname,commissionper,groupname,yearlyfee, coursename, disabled, district, dob, email,  
                      gender, line1, line2, minority, mobno, mothername, name, 
                      nationality, perdistrict, perline1, perline2, perpincode, perstate,
                      pertown, pincode, relaname, relation, session, state, town, whatsappno) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?,?,? ,?)`;
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?,?,?,? ,?)`;
 
         const values = [
-            newSId, category, Uid, CommissionRs, Admincommission, categoryname, commissionper, groupname, yearlyfee, coursename, disabled, district, dob, email,
+            newSId,CoId, category, Uid, CommissionRs, Admincommission, categoryname, commissionper, groupname, yearlyfee, coursename, disabled, district, dob, email,
             gender, line1, line2, minority, mobno, mothername, name,
             nationality, perdistrict, perline1, perline2, perpincode, perstate,
             pertown, pincode, relaname, relation, session, state, town, whatsappno

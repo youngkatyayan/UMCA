@@ -64,7 +64,8 @@ const Admission = ({student}) => {
         yearlyfee: '',
         Admincommission: '',
         totalfranchCommission: '',
-        totaladmincommission: ''
+        totaladmincommission: '',
+        CoId:''
     });
 
 
@@ -386,7 +387,8 @@ const Admission = ({student}) => {
 
             const seyealyfee = session.find(((item) => categoryname === item.categoryname && optedsession == item.session))
             const Yearlyfee = seyealyfee ? seyealyfee.yearlyfee : null
-            // console.log("yearlyfee",Yearlyfee)
+            const Courseid = seyealyfee ? seyealyfee.CoId : null
+            console.log("yearlyfee",Yearlyfee,Courseid)
 
             const selectedgroup = category.find(((item) => categoryname === item.categoryname))
             const Categoryname = selectedgroup ? selectedgroup.categoryname : null
@@ -417,7 +419,7 @@ const Admission = ({student}) => {
             console.log("newtotalcentcom",uptofranchcommission);
 
 
-            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission }));
+            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission , CoId:Courseid}));
 
         }
     };
