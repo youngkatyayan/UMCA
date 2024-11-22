@@ -4,267 +4,282 @@ import logo from "../../assets/logo2.png";
 import Id from "../../assets/Id2.png";
 import Photo from "../../assets/shank.jpg";
 import CryptoJS from "crypto-js";
+import jsPDF from "jspdf";
 import axios from "axios";
 import { FaRegFilePdf } from "react-icons/fa";
 import { VscFilePdf } from "react-icons/vsc";
 
-const IdCard = ({student}) => {
-  console.log(student)
-  const [stDetails, setStDetails] = useState(null); // Start with null or an empty object
+const IdCard = ({ student }) => {
+  const [stDetails, setStDetails] = useState({});
 
-  const mobile = localStorage.getItem("uid");
-
-  const decryptedMobile = mobile
-    ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8)
-    : null;
-
-  const fetchStudent = async () => {
-    try {
-      if (decryptedMobile) {
-        const { data } = await axios.post("/api/v1/getStudent-data", {
-          decryptedMobile,
-        });
-        console.log(data.result);
-
-        if (data.success && data.result.length > 0) {
-          const student = data.result[0];
-          setStDetails({
-            name: student.name,
-            mobno: student.phone,
-            email: student.email,
-            course: student.course,
-          });
-        }
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchStudent();
-  }, []); // Only fetch once when the component mounts
-
-  if (!stDetails) {
-    return <div>Loading...</div>; // Show loading state while fetching data
-  }
-
-  const handlePrint = () => {
+  const handlePrint = async(student) => {
     const content = document.getElementById('print-section');
     const newWindow = window.open('', '', 'height=600, width=800');
 
     newWindow.document.write('<html><head><title>Print</title>');
     newWindow.document.write('<style>');
     newWindow.document.write(`
-      .print-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-left: 48px;
-        margin-right: 48px;
-      }
-      .flex-center {
-        display: flex;
-        justify-content: center;
-        height: 380px;
-      }
-      .front-view, .back-view {
-        position: relative;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 380px;
-        aspect-ratio: 591 / 1004;
-      }
-      .absolute-header {
-        position: absolute;
-        width: 100%;
-        height: 380px;
-      }
-      .relative-header {
-        position: relative;
-        text-align: center;
-         display: grid; 
-         margin: 8px;
-        grid-template-columns: repeat(4, 1fr);
-        // background-color: rgba(0, 0, 255, 0.75);
-       padding-top: 20px  !important;
-      }
-      // .relative-header header-text{
-      // display: grid;
-      //   grid-template-columns: repeat(4, 3fr);
-      //   }
-      .header-logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .student-details {
-        padding-left: 24px;
-        margin-top: 8px;
-        margin-bottom: 48px;
-      }
-      .student-details span {
-        font-size: 0.7rem;
-      }
-      .student-details .photo {
+    .print-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-left: 48px;
+      margin-right: 48px;
+    }
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      height: 380px;
+    }
+    .front-view, .back-view {
+      position: relative;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 380px;
+      aspect-ratio: 591 / 1004;
+    }
+    .absolute-header {
+      position: absolute;
+      width: 100%;
+      height: 380px;
+    }
+    .relative-header {
+      position: relative;
+      text-align: center;
+       display: grid; 
+       margin: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      // background-color: rgba(0, 0, 255, 0.75);
+     padding-top: 20px  !important;
+    }
+    // .relative-header header-text{
+    // display: grid;
+    //   grid-template-columns: repeat(4, 3fr);
+    //   }
+    .header-logo {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .student-details {
+      padding-left: 24px;
       margin-top: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 48px;
     }
-    .student-details .photo img {
-      height: 70px;
-      width: auto;
-      // border-radius: 8px;
+    .student-details span {
+      font-size: 0.7rem;
     }
-      .blue-bg {
-        background-color: #1e3a8a;
-        color: white;
-        padding: 8px;
-        text-align: center;
-        width: 128px;
-        margin: auto;
-        border-radius: 8px;
+    .student-details .photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+  .student-details .photo img {
+    height: 70px;
+    width: auto;
+    // border-radius: 8px;
+  }
+    .blue-bg {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 8px;
+      text-align: center;
+      width: 128px;
+      margin: auto;
+      border-radius: 8px;
+    }
+    .address {
+      margin-top: 80px;
+      padding: 8px;
+    }
+    .instruction-list {
+      font-size: 0.5rem;
+      margin-top: 4px;
+      list-style-type: decimal;
+      padding-left: 16px;
+    }
+    .reative-header mt-16 {
+      marin-top:4rem;
+    }
+    
+      .font-bold{
+      font-weight:700;
       }
-      .address {
-        margin-top: 80px;
-        padding: 8px;
-      }
-      .instruction-list {
-        font-size: 0.5rem;
-        margin-top: 4px;
-        list-style-type: decimal;
-        padding-left: 16px;
-      }
-      .reative-header mt-16 {
-        marin-top:4rem;
-      }
+    .text-[0.8rem]{
+    font-size:0.8rem;
+    }
+    .border-blue-700{
+     border-color: #1d4ed8;
+     margin: 0px;
+    }
+    .rounded-b-md{
+      border-radius:0px 0px 12px 12px;
+      overflow: hidden;
       
-        .font-bold{
-        font-weight:700;
-        }
-      .text-[0.8rem]{
-      font-size:0.8rem;
+    }
+      .relative{
+      position:relative;
+      height: 60px;
+      
       }
-      .border-blue-700{
-       border-color: #1d4ed8;
-       margin: 0px;
+      .absolute{
+      position:absolute;
       }
-      .rounded-b-md{
-        border-radius:0px 0px 12px 12px;
-        overflow: hidden;
-        
+      .registrar {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding-right: 1rem; 
       }
-        .relative{
-        position:relative;
-        height: 60px;
-        
+      .umca-heading {
+        color: #1e3a8a;  
+        grid-column: span 3; 
+        font-size: 1rem;
+        display: flex;
+        align-items: center; 
+        font-weight: 600;  
+        justify-content: flex-start; 
+      }
+        .back-details{
+          position:absolute;
+          margin:24px 0px;
+          padding:2px;
         }
-        .absolute{
-        position:absolute;
+        .back-details h3{
+          color: #1d4ed8;
+          font-weight: bold;
+          margin-bottom: 0.25rem;
+          margin-top: 4rem;
         }
-        .registrar {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        font-size: 0.7rem;
-        font-weight: bold;
-        padding-right: 1rem; 
-        }
-        .umca-heading {
-          color: #1e3a8a;  
-          grid-column: span 3; 
-          font-size: 1rem;
-          display: flex;
-          align-items: center; 
-          font-weight: 600;  
-          justify-content: flex-start; 
-        }
-          .back-details{
-            position:absolute;
-            margin:24px 0px;
-            padding:2px;
-          }
-          .back-details h3{
-            color: #1d4ed8;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
-            margin-top: 4rem;
-          }
-          .inst-head{
-          padding:4px;
-            color: #1d4ed8;
-            font-weight: bold;
-            margin-bottom: 0.1rem;
-            margin-top: 1rem;
-           }
+        .inst-head{
+        padding:4px;
+          color: #1d4ed8;
+          font-weight: bold;
+          margin-bottom: 0.1rem;
+          margin-top: 1rem;
+         }
 
-    `);
+  `);
     newWindow.document.write('</style>');
     newWindow.document.write('</head><body>');
 
     newWindow.document.write(`
-      <div class="print-container">
-        <div class="flex-center">
-          <div class="front-view" style="background-image: url(${Id});">
-            <div class="absolute-header" style="margin-top:24px;">
-              <div class="relative-header" >
-                <div class="header-logo">
-                  <img src="${logo}" alt="UMCA Logo" width="52" />
-                </div>
-                <div class="umca-heading text-blue-900 font-semibold header-text">UMCA EDUCATION</div>
+    <div class="print-container">
+      <div class="flex-center">
+        <div class="front-view" style="background-image: url(${Id});">
+          <div class="absolute-header" style="margin-top:24px;">
+            <div class="relative-header" >
+              <div class="header-logo">
+                <img src="${logo}" alt="UMCA Logo" width="52" />
               </div>
-              <hr class="border-blue-700"  />
-              <div class="blue-bg rounded-b-md">Student Id</div>
-              <div class="student-details">
-                <div class="grid grid-cols-1 mt-1 bg-opacity-75">
-                   <div class="photo">
-              <img src="${Photo}" alt="Student Photo" />
+              <div class="umca-heading text-blue-900 font-semibold header-text">UMCA EDUCATION</div>
             </div>
-                  <div class="relative pl-6 justify-center text-start content-center mt-2 mb-12">
-                    <div><span class="font-bold text-[0.8rem]">Name: </span><span style="font-size: 0.7rem;">${stDetails.name}</span></div>
-                    <div><span class="font-bold text-[0.8rem]">Phone: </span><span style="font-size: 0.7rem;">${stDetails.mobno}</span></div>
-                    <div><span class="font-bold text-[0.8rem]">Email: </span><span style="font-size: 0.7rem;">${stDetails.email}</span></div>
-                    <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${stDetails.course}</span></div>
-                    <div class="h-10 relative">
-                      <span class="font-bold absolute registrar text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
-                    </div>
+            <hr class="border-blue-700"  />
+            <div class="blue-bg rounded-b-md">Student Id</div>
+            <div class="student-details">
+              <div class="grid grid-cols-1 mt-1 bg-opacity-75">
+                 <div class="photo">
+            <img src="${Photo}" alt="Student Photo" />
+          </div>
+                <div class="relative pl-6 justify-center text-start content-center mt-2 mb-12">
+                  <div><span class="font-bold text-[0.8rem]">Name: </span><span style="font-size: 0.7rem;">${student && student.name ? student.name : "Name not available"}</span></div>
+                  <div><span class="font-bold text-[0.8rem]">Phone: </span><span style="font-size: 0.7rem;">${student && student.mobno}</span></div>
+                  <div><span class="font-bold text-[0.8rem]">Email: </span><span style="font-size: 0.7rem;">${student && student.email}</span></div>
+                  <div><span class="font-bold text-[0.8rem]">Course: </span><span style="font-size: 0.7rem;">${student && student.course}</span></div>
+                  <div class="h-10 relative">
+                    <span class="font-bold absolute registrar text-[0.7rem] bottom-0 right-0 pr-2">Registrar</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="gap-4 flex-center">
-          <div class="back-view" style="background-image: url(${Id});">
-            <div class="absolute mt-20 px-2 back-details">
-              <div>
-                <h3 class="text-blue-700 font-bold mb-1">Campus Address</h3>
-                <div class="font-semibold" style="font-size: 0.5rem; padding:4px">
-                  H.N. 37, 2nd Floor, <br /> Near Alwatiya Hospital Chhama Enclave, Maruti Estate, <br /> Shahganj Agra, UP 282010
-                  <br /> +91-9149261291 <br /> umcafoundation@gmail.com
-                </div>
+      </div>
+      <div class="gap-4 flex-center">
+        <div class="back-view" style="background-image: url(${Id});">
+          <div class="absolute mt-20 px-2 back-details">
+            <div>
+              <h3 class="text-blue-700 font-bold mb-1">Campus Address</h3>
+              <div class="font-semibold" style="font-size: 0.5rem; padding:4px">
+                H.N. 37, 2nd Floor, <br /> Near Alwatiya Hospital Chhama Enclave, Maruti Estate, <br /> Shahganj Agra, UP 282010
+                <br /> +91-9149261291 <br /> umcafoundation@gmail.com
               </div>
-              <div>
-                <div class="text-blue-700 font-bold mt-4 inst-head">Instructions</div>
-                <ul class="instruction-list">
-                  <li>Carry this ID card at all times while on the premises. It must be shown upon request for identification.</li>
-                  <li>Report a lost or stolen card immediately to administration or security for a replacement.</li>
-                  <li>Do not lend or share this ID card; it is strictly for personal use only.</li>
-                  <li>Keep this ID card in good condition.</li>
-                </ul>
-              </div>
+            </div>
+            <div>
+              <div class="text-blue-700 font-bold mt-4 inst-head">Instructions</div>
+              <ul class="instruction-list">
+                <li>Carry this ID card at all times while on the premises. It must be shown upon request for identification.</li>
+                <li>Report a lost or stolen card immediately to administration or security for a replacement.</li>
+                <li>Do not lend or share this ID card; it is strictly for personal use only.</li>
+                <li>Keep this ID card in good condition.</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    `);
+    </div>
+  `);
     newWindow.document.write('</body></html>');
     newWindow.document.close();
     newWindow.print();
   };
+
+  useEffect(() => {
+    if (student && typeof student === "object" && Object.keys(student).length > 0) {
+      setStDetails(student);
+      console.log("Student details set:", student);
+      handlePrint(student)
+    }
+    else{
+      fetchStudent();
+   
+
+    }
+  }, [student]); 
+
+    const mobile = localStorage.getItem("uid");
+
+    const decryptedMobile = mobile
+      ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8)
+      : null;
+
+    const fetchStudent = async () => {
+      try {
+        if (decryptedMobile) {
+          const { data } = await axios.post("/api/v1/getStudent-data", {
+            decryptedMobile,
+          });
+          console.log(data.result);
+
+          if (data.success && data.result.length > 0) {
+            const student = data.result[0];
+            setStDetails({
+              name: student.name,
+              mobno: student.phone,
+              email: student.email,
+              course: student.course,
+            });
+          }
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    
+    }
+    
+     
+    if (!stDetails) {
+      return <div>Loading...</div>; // Show loading state while fetching data
+    }
+
+
+
+
   return (
     <StudentLayout>
       <div className="w-full bg-blue-50 py-2 h-auto shadow-md">
@@ -284,7 +299,7 @@ const IdCard = ({student}) => {
                 style={{
                   backgroundImage: `url(${Id})`,
                   backgroundSize: 'contain',
-                  backgroundPosition: 'center', 
+                  backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                   aspectRatio: '591 / 1004',
                   height: '380px',
@@ -375,7 +390,7 @@ const IdCard = ({student}) => {
                 </div>
               </div>
             </div>
-            
+
           </div>
 
           <div className="flex items-center fixed top-24 right-6 scroll-hidden z-20  bg-red-700 m-4 p-2 rounded-md">

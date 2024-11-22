@@ -333,7 +333,7 @@ export const addCommission = async (req, res) => {
 
     const connection = await db.getConnection();
     try {
-        // console.log(req.body)
+        console.log(req.body)
         const { startdate, enddate, commissionper, groupname, totalcommission, categoryname } = req.body;
 
         await connection.beginTransaction();
@@ -821,10 +821,11 @@ export const updateAnouncement = async (req, res) => {
 }
 
 export const updateCommission = async (req, res) => {
+    console.log(req.body)
     try {
-        const { AId, brochure, category, date, description, title } = req.body;
-        const sql = `UPDATE announcement SET brochure=?, category=?, date=?, description=?, title=? WHERE AId=?`;
-        const values = [brochure, category, date, description, title, AId];
+        const { categoryname,commissionper,enddate,groupname,startdate, totalcommission,CMId } = req.body;
+        const sql = `UPDATE commission SET categoryname=?, commissionper=?, enddate=?, groupname=?, startdate=?,totalcommission=?  WHERE CMId=?`;
+        const values = [categoryname,commissionper,enddate,groupname,startdate, totalcommission,CMId ];
 
 
         const [result] = await db.query(sql, values)
@@ -833,7 +834,7 @@ export const updateCommission = async (req, res) => {
             return res.status(201).send({ success: true, result, message: 'Successfully Updated Announcement ' });
         }
     } catch (error) {
-        return res.status(500).send({ success: false, message: "Error in UpdateAnnouncement controller" });
+        return res.status(500).send({ success: false, message: "Error in UpdateCommission controller" });
 
     }
 }

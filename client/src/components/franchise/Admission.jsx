@@ -5,12 +5,13 @@ import { MdOutlineDelete } from "react-icons/md";
 import { MdOutlineAddBox } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
 import CryptoJS from 'crypto-js';
+import moment from 'moment'
 
 
 
-const Admission = () => {
+const Admission = ({student}) => {
 
-    
+    const [newData,setNewtData]=useState([])
     const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
     const [district, setDistrict] = useState([])
@@ -18,6 +19,19 @@ const Admission = () => {
     const [filteredDistrict, setFilteredDistrict] = useState([])
     const [state, setState] = useState([])
     const [commission, setCommission] = useState([])
+    const [educationEntries, setEducationEntries] = useState([
+        {
+            examinationPassed: '',
+            schoolCollege: '',
+            boardUniversity: '',
+            yearOfPassing: '',
+            marksPercentage: '',
+            classDivision: '',
+            subjects: '',
+        },
+    ]);
+    const [TotalCommission, setTotalCommission] = useState([])
+    const UId = localStorage.getItem('uid')
     const [formdata, setData] = useState({
         Uid: '',
         categoryname: '',
@@ -53,20 +67,206 @@ const Admission = () => {
         totaladmincommission: ''
     });
 
-    const [educationEntries, setEducationEntries] = useState([
-        {
-            examinationPassed: '',
-            schoolCollege: '',
-            boardUniversity: '',
-            yearOfPassing: '',
-            marksPercentage: '',
-            classDivision: '',
-            subjects: '',
-        },
-    ]);
-    const [TotalCommission, setTotalCommission] = useState([])
-    const UId = localStorage.getItem('uid')
 
+    const handleEdit = async (value) => {
+        console.log(value);
+    
+        const dateofbirth = value.dob ? moment(student.dob).format('YYYY-MM-DD') : '';
+    
+      
+         setData(prev => ({
+            ...prev,
+            SId: value?.SId || '',
+            categoryname: value?.categoryname || '',
+            session: value?.session || '',
+            minority: value?.minority || 'sdrfe',
+            name: value?.name || '',
+            dob: dateofbirth || '',
+            gender: value?.gender || '',
+            category: value?.category || '',
+            relation: value?.relation || '',
+            relaname: value?.relaname || '',
+            mothername: value?.mothername || '',
+            nationality: value?.nationality || '',
+            disabled: value?.disabled || '',
+            coursename: value?.coursename || '',
+            line1: value?.line1 || '',
+            line2: value?.line2 || '',
+            town: value?.town || '',
+            state: value?.state || '',
+            district: value?.district || '',
+            pincode: value?.pincode || '',
+            perline1: value?.perline1 || '',
+            perline2: value?.perline2 || '',
+            pertown: value?.pertown || '',
+            perstate: value?.perstate || '',
+            perdistrict: value?.perdistrict || '',
+            perpincode: value?.perpincode || '',
+            CommissionRs: value?.CommissionRs || '',
+            commissionper: value?.commissionper || '',
+            yearlyfee: value?.yearlyfee || '',
+            Admincommission: value?.Admincommission || '',
+            totalfranchCommission: value?.totalfranchCommission || '',
+            totaladmincommission: value?.totaladmincommission || '',
+        }));
+    
+                // Log the updated form data
+
+        console.log('Updated Form Data:', formdata);
+    
+        setTimeout(() => {
+            handlePrint();
+        }, 200);
+    };      
+    
+    
+    const handlePrint = async() => {
+        setTimeout(() => {
+            console.log(formdata)
+
+        }, 200);
+        const content =await document.getElementById('student-details');
+        if (content) {
+            const newWindow = window.open('', '', 'height=600, width=800');
+            newWindow.document.write('<html><head><title>Print Student Details</title>');
+            newWindow.document.write('<style>');
+            newWindow.document.write(`
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    background-color: #f9fafb;
+                }
+                .border {
+                    border: 1px solid #ddd;
+                }
+                .rounded-lg {
+                    border-radius: 8px;
+                }
+                .shadow-lg {
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+                .bg-gray-50 {
+                    background-color: #f9fafb;
+                }
+                .relative {
+                    position: relative;
+                }
+                .text-xl {
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                }
+                .text-white {
+                    color: white;
+                }
+                .text-lg {
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                }
+                .text-red-600 {
+                    color: #dc2626;
+                }
+                .text-red-800 {
+                    color: #b91c1c;
+                }
+                .p-4, .p-6 {
+                    padding: 1rem;
+                }
+                .m-1, .m-4 {
+                    margin: 0.25rem;
+                }
+                .grid {
+                    display: grid;
+                    gap: 1rem;
+                }
+                .grid-cols-3 {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .w-full {
+                    width: 100%;
+                }
+                input, select {
+                    width: 100%;
+                    padding: 0.5rem;
+                    border: 1px solid #60a5fa;
+                    border-radius: 4px;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    color: #1f2937;
+                }
+                h2 {
+                    color: #b91c1c;
+                    border-bottom: 2px solid #e11d48;
+                    margin-bottom: 1rem;
+                }
+                .hidden-print {
+                    display: none;
+                }
+                            
+                @media (min-width: 640px) {
+                    /* For sm (small screens, >= 640px) */
+                    .sm:grid-cols-2 {
+                        grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+                    }
+                }
+
+                @media (min-width: 768px) {
+                    /* For md (medium screens, >= 768px) */
+                    .md:grid-col-3 {
+                        grid-template-columns: repeat(3, 1fr); /* 3 columns on medium screens */
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    /* For lg (large screens, >= 1024px) */
+                    .lg:grid-cols-4 {
+                        grid-template-columns: repeat(4, 1fr); /* 4 columns on large screens */
+                    }
+                }
+                .personal{
+
+                }
+            `);
+        
+            newWindow.document.write('</style></head><body>');
+            newWindow.document.write(content.outerHTML);
+            newWindow.document.write('</body></html>');
+            newWindow.document.close();
+            newWindow.focus();
+            newWindow.print();
+            newWindow.close();
+        } else {
+            alert('Content not found!');
+        }
+    };
+
+    useEffect(() => {
+        
+        if (student && typeof student === "object" && Object.keys(student).length > 0) {
+            const SIds = student.SId;
+            console.log(SIds)
+            const accessstudent = async () => {
+                try {
+                    if (SIds) {
+                        const { data } = await axios.post('api/v1/get-studentfranch', { SIds });
+                       if(data.success){
+                        console.log(data.result)
+                        if(data.result){
+                            setNewtData(data.result[0])
+                            handleEdit(data.result[0]);
+                        }}
+                        
+                    }
+                } catch (error) {
+                    console.error("Error fetching student data:", error);
+                }
+            };
+    
+            accessstudent(); 
+           
+        }
+    }, [student])
     const accesscommission = async () => {
         const { data } = await axios.get('/api/v1/get-commission')
         if (data.success) {
@@ -104,7 +304,6 @@ const Admission = () => {
         const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
         const { data } = await axios.post('/api/v1/get-totalcommission', {decryptedMobile})
         if (data.success) {
-            console.log(data.result)
             setTotalCommission(data.result)
         }
     }
@@ -215,7 +414,7 @@ const Admission = () => {
             let uptofranchcommission =parseInt(TotalCommission[0]?.franchcommission || 0,10)
             // console.log("prevcentercomm",uptofranchcommission)
             uptofranchcommission += CommissionRs;
-            // console.log("newtotalcentcom",uptofranchcommission);
+            console.log("newtotalcentcom",uptofranchcommission);
 
 
             setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission }));
@@ -301,7 +500,7 @@ const Admission = () => {
 
 
                 <div className='mt-6 m-4' >
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} id='student-details'>
                         <div>
                             <h2 className='text-xl mb-5 text-red-800 border border-b-rose-700 '>Course Details</h2>
                         </div>
@@ -354,7 +553,7 @@ const Admission = () => {
 
                         <div className='m-4 border border-gray-300 p-6 rounded-lg shadow-lg bg-gray-50 relative'>
 
-                            <div className='grid lg:grid-cols-4 md:grid-col-3 sm:grid-cols-2   gap-4 px-2'>
+                            <div className='grid lg:grid-cols-4  md:grid-col-3 sm:grid-cols-2 personal  gap-4 px-2'>
                                 <div>
                                     <label htmlFor="name" className='text-lg mb-2'> Full Name</label>
                                     <input type='text' onChange={handleChange} value={formdata.name} name="name" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
