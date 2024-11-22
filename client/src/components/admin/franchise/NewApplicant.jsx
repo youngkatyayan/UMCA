@@ -15,7 +15,8 @@ const NewApplicant = () => {
         const { data } = await axios.get('/api/v1/get-incomfranchise')
         if (data.success) {
             setIncomfranchise(data.result)
-            console.log(data.result)
+            //
+            (data.result)
         }
     }
     useEffect(() => {

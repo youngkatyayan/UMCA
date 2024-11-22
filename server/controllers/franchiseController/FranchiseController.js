@@ -289,29 +289,42 @@ export const filterStudentDataController = async (req, res) => {
     try {
         const { startDate, endDate, branchName, status } = req.body;
 
+        // Validate required fields
         if (!startDate || !endDate || !branchName || !status) {
             return res.status(400).send({ error: 'All fields are required' });
         }
 
+        // Build SQL query with proper handling of the status filter
         const sql = `
             SELECT 
                 franchadmission.*, 
-                coursetrans.*
+                CASE 
+                    WHEN coursetrans.mobile IS NULL THEN 'Unpaid'
+                    ELSE coursetrans.status
+                END AS payment_status,
+                coursetrans.status,
+                coursetrans.payment
             FROM 
-                franchadmission 
+                franchadmission
             LEFT JOIN 
                 coursetrans 
             ON 
-                franchadmission.mobno = coursetrans.mobile 
+                franchadmission.mobno = coursetrans.mobile
             WHERE 
                 franchadmission.franchMobile = ?
                 AND franchadmission.E_Date BETWEEN ? AND ?
-                ${status === 'Paid' ? 'AND coursetrans.status = ?' : 'OR coursetrans.status = ?'}
+                AND (
+                    (coursetrans.status = 'Paid' AND ? = 'Paid') 
+                    OR (coursetrans.mobile IS NULL AND ? = 'Unpaid')
+                )
             GROUP BY 
-                franchadmission.mobno
+                franchadmission.mobno;
         `;
-        const [result] = await db.query(sql, [branchName, startDate, endDate, status]);
 
+        // Execute the query
+        const [result] = await db.query(sql, [branchName, startDate, endDate, status, status]);
+
+        // Return the result
         if (result.length > 0) {
             return res.status(200).send({ success: true, message: "Successfully Accessed", result });
         } else {
