@@ -2,36 +2,56 @@ import React, { useState } from 'react'
 import { CiSettings } from "react-icons/ci";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { AiOutlineMenu } from 'react-icons/ai';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import CryptoJS from 'crypto-js';
 
 const FranchiseHeader = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [openSideBar,setOpenSideBar] = useState(false)
+  const handleDelete = async (req, res) => {
+    try {
 
-  const uid= localStorage.getItem('uid')
+      const { data } = await axios.delete('/api/v1/logout')
+      if (data.success) {
+        toast.success(data.message)
+        localStorage.clear()
+        sessionStorage.clear()
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 500);
+      }
+      else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+
+  const uid = localStorage.getItem('uid')
   const decryptedType = uid ? CryptoJS.AES.decrypt(uid, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   return (
     <>
-
       <div className="flex items-start justify-center ">
-        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-3 relative">
+        <ToastContainer />
+        <div className="header text-black flex justify-between items-center w-full text-3xl font-serif p-6  relative">
           {/* <span >
             <AiOutlineMenu className="text-black text-3xl mx-3" onClick={()=>setOpenSideBar(prev=>!prev)} />
           </span> */}
-          <span className="absolute left-1/2 transform -translate-x-1/2">Branch:{decryptedType}</span>
+          <span className="absolute left-1/2 transform -translate-x-1/2 text-sm sm:text-2xl ">Branch:{decryptedType}</span>
 
           <div className="flex items-center ml-auto">
-            <span className='px-4'>
-              <FaRegMessage className='mx-2' />
+
+            <span className='sm:px-3'>
+              <IoIosNotificationsOutline className='mx-2 text-lg sm:text-2xl' />
             </span>
-            <span className='px-4'>
-              <IoIosNotificationsOutline />
+            <span className="sm:ml-3" onClick={() => setOpenMenu(prev => !prev)}>
+              <CiSettings className='mx-2 text-lg sm:text-2xl' />
             </span>
-            <span className="ml-4" onClick={() => setOpenMenu(prev => !prev)}>
-              <CiSettings  className='me-6' />
-            </span>
+
           </div>
         </div>
       </div>

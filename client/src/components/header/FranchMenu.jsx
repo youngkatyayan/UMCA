@@ -27,7 +27,7 @@ const FranchMenu = () => {
 
       {FranchiseMenuList.map((items, index) =>
         <div key={index} className='relative '>
-          <hr class="border-t-2 border-white" />
+          <hr className="border-t-2 border-white" />
 
           <Link to={items.to}
             onClick={() => handleSubMenu(items)}

@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import SuperAdminLayout from '../../layout/SuperAdminLayout'
+import SuperAdminLayout from '../../layout/SuperAdminLayout.jsx'
 import AddCollege from '../../../assets/addcollege.jpg';
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { MdEdit } from 'react-icons/md';
 
 const Category = () => {
     const [formdata, setData] = useState({
         category: '',
         groupname: '',
-        description: ''
+        description: '',
+        totcommison:''
     })
     const [category, setCategory] = useState([])
     const [group, setGroup] = useState([])
@@ -125,10 +126,9 @@ const Category = () => {
     }
     return (
         <SuperAdminLayout>
-            <ToastContainer />
             <div className='w-full  bg-gray-200 p-2 h-auto '>
                 <div className='flex flex-col m-4 border rounded-md bg-cover bg-center bg-no-repeat relative ' style={{ backgroundImage: `url(${AddCollege})` }}>
-                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC?'Update Category':'Add New Category'}</h1>
+                    <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>{updateC ? 'Update Category' : 'Add New Category'}</h1>
                 </div>
 
                 <form onSubmit={updateC ? handleUpdate : handleSubmit} className='  px-4 '>
@@ -151,7 +151,6 @@ const Category = () => {
                         <div>
                             <label htmlFor="groupname" className=' mb-2 text-lg font-serif'> Select Group : </label>
                             <select
-
                                 name='groupname'
                                 value={formdata.groupname}
                                 onChange={handleChange}
@@ -160,18 +159,28 @@ const Category = () => {
                             >
                                 <option value="">Select Group</option>
                                 {group.map((item, index) => (
-
                                     <option key={index} value={item.groupname}>{item.groupname}</option>
-
                                 )
                                 )}
                             </select>
 
                         </div>
 
+                        <div>
+                            <label htmlFor="totcommison" className=' mb-2 text-lg font-serif'>  Total Commission :  </label>
+                            <input
+                                type="text"
+                                name='totcommison'
+                                value={formdata.totcommison}
+                                onChange={handleChange}
+                                required
+                                placeholder='Enter Total Commission '
+                                className='w-full p-2 rounded-md my-2 shadow-md'
+                            />
 
-                    </div>
-                    <div >
+                        </div>
+
+                        <div >
                         <label htmlFor="description" className=' flex m-1 font-serif text-lg w-full'>  Description :</label>
                         <textarea
                             // type="text"
@@ -179,9 +188,12 @@ const Category = () => {
                             value={formdata.description}
                             onChange={handleChange}
                             placeholder=' Description'
-                            className=' p-2 rounded-md  shadow-md w-1/2 '
+                            className=' p-2 rounded-md  shadow-md w-full '
                         />
                     </div>
+
+                    </div>
+                    
                     <div className='flex flex-row-1 justify-center'>
 
                         <button type='submit' className='transition-shadow  bg-gray-700 hover:bg-gray-700 border-1 hover:font-serif hover:text-md hover:text-white text-white rounded-md px-4 py-2 m-4 items-center hover:shadow-md hover:shadow-amber-950 w-48'>{updateC ? "UPDATE CATEGORY" : "ADD CATEGORY"}</button>
@@ -194,6 +206,7 @@ const Category = () => {
                             <tr className='font-serif whitespace-nowrap'>
                                 <th className='p-2 border-2'>Group Name </th>
                                 <th className='p-2 border-2 '>Category </th>
+                                <th className='p-2 border-2 '>Total Commission </th>
                                 <th className='p-2 border-2 '>Description </th>
                                 <th className='p-2 border-2'>Status</th>
                                 <th className='p-2 border-2'>Action</th>
@@ -205,17 +218,18 @@ const Category = () => {
                                 <tr key={index} className=' border-2 border-gray-400'>
                                     <td className='px-3 border-2 border-gray-400  '>{item.groupname}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.categoryname}</td>
+                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.totalcommission}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.description}</td>
 
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>
 
                                         {item.status && item.status == '1' ? (
                                             <div className='flex  space-x-2 justify-center items-center'>
-                                                <button type='submit' className='transition-shadow  cursor-default     bg-green-700 border-1 text-white rounded-2xl px-4 py-2 items-center  w-24 flex justify-center '
+                                                <button type='submit' className='transition-shadow  cursor-default  bg-green-700 border-1 text-white rounded-2xl px-4 py-2 items-center  w-24 flex justify-center '
 
                                                 >Active
                                                 </button>
-                                                <button type='submit' className='transition-shadow hover:border-1     border border-red-500 hover:font-serif hover:text-md hover:text-red-500      text-red-500 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
+                                                <button type='submit' className='transition-shadow hover:border-1 border border-red-500 hover:font-serif hover:text-md hover:text-red-500  text-red-500 rounded-2xl px-4 py-2 items-center hover:shadow-md hover:shadow-amber-950 w-24 flex justify-center '
                                                     onClick={() => handleStatus(item, 0)}
                                                 >Deactiuve
                                                 </button>

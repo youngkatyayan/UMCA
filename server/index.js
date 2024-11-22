@@ -10,6 +10,8 @@ import LoginRouter from './routes/SignInRoutes/LoginRoute.js';
 import MasterRoutes from './routes/AdminRoutes/MastRoutes.js';
 import authRouter from './routes/authRoutes/AuthRoute.js';
 import userRouter from './routes/userRoutes/userRoute.js'
+import FranchiseRoutes from './routes/franchiseRoutes/FranchiseRoutes.js'
+import Studentroutes from './routes/studentRoutes/studentRoute.js'
 dotenv.config();
 
 (async () => { 
@@ -42,6 +44,8 @@ app.use('/api/v1', LoginRouter);
 app.use('/api/v1', MasterRoutes);
 app.use('/api/v1', authRouter);
 app.use('/api/v1', userRouter);
+app.use('/api/v1/',FranchiseRoutes)
+app.use('/api/v1/',Studentroutes)
 
 // Server
 const PORT = process.env.PORT || 3000;

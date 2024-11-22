@@ -136,4 +136,35 @@ body {
   transition: width 0.3s ease-out;
   z-index: 1000;
 }
+/* Add this in your CSS file */
+.gradient-shadow {
+  border-radius: 10px;
+  box-shadow: 3px 4px 2px 0px rgba(8,54,80,.4),
+              1px 1px 4px 2px rgba(51,51,223,.6),
+              1px 1px 6px 2px rgba(28,196,132,.7),
+              4px 2px 4px 2px rgba(0,212,255,.8);
+}
+.scrolling-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation:  color-change 5s linear infinite;
+}
+
+@keyframes color-change {
+  0% {
+    color: #ff6347; /* Tomato */
+  }
+  25% {
+    color: #4682b4; /* SteelBlue */
+  }
+  50% {
+    color: #32cd32; /* LimeGreen */
+  }
+  75% {
+    color: #ff1493; /* DeepPink */
+  }
+  100% {
+    color: #ff6347; /* Tomato */
+  }
+}
 

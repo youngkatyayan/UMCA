@@ -43,8 +43,8 @@ export const addCategory = async (req, res) => {
 
     const connection = await db.getConnection();
     try {
-        console.log(req.body)
-        const { category, groupname } = req.body;
+        // console.log(req.body)
+        const { category, groupname, description, totcommison } = req.body;
 
         await connection.beginTransaction();
 
@@ -56,11 +56,11 @@ export const addCategory = async (req, res) => {
         if (result.length > 0) {
             const Caid = result[0].Caid;
             const lastCeid = parseInt(Caid, 10);
-            newCaid = lastCeid + 1; // Increment Caid
+            newCaid = lastCeid + 1;
         }
 
-        const sql = `insert into category (Caid,categoryname,groupname) values(?,?,?)`
-        const values = [newCaid, category, groupname]
+        const sql = `insert into category (Caid,categoryname,groupname,description,totalcommission) values(?,?,?,?,?)`
+        const values = [newCaid, category, groupname, description, totcommison]
         const [insertResult] = await db.query(sql, values)
 
         if (insertResult.affectedRows > 0) {
@@ -165,7 +165,7 @@ export const addCourse = async (req, res) => {
 
     try {
 
-        const { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee } = req.body;
+        const { applicationfee, popular, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee } = req.body;
         const requiredFields = { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee }
         for (const [field, value] of Object.entries(requiredFields)) {
             if (!value) {
@@ -189,8 +189,8 @@ export const addCourse = async (req, res) => {
 
 
 
-        const sql = `insert into course (CoId,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [newCoId, applicationfee,image1,image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
+        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [newCoId, popular, applicationfee, image1, image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
         await connection.query(sql, values)
 
 
@@ -210,7 +210,7 @@ export const addCourse = async (req, res) => {
 
 export const franchiseRequest = async (req, res) => {
     console.log(req.body);
-    
+
     const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA';
     const image2 = req.files['image2'] ? req.files['image2'][0].filename : 'NA';
     const image3 = req.files['image3'] ? req.files['image3'][0].filename : 'NA';
@@ -224,22 +224,22 @@ export const franchiseRequest = async (req, res) => {
     try {
         const {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark,appfor,student,staff
+            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor, student, staff
         } = req.body;
 
         // Define required fields
         const requiredFields = {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor,student,staff,
+            city, state, pin, crrbusiness, appfor
         };
-        
+
         // Check for missing fields
         for (const [field, value] of Object.entries(requiredFields)) {
             if (!value) {
                 return res.status(400).send({ success: false, error: `${field} is required` });
             }
         }
-        
+
         await connection.beginTransaction();
 
         // Retrieve the latest FId
@@ -252,17 +252,17 @@ export const franchiseRequest = async (req, res) => {
             newFId = lastFId + 1; // Increment FId
         }
 
-       
+
         const sql = `INSERT INTO franchiseactive (FId, cmname, cmmob, cmemail, owname, ownmob, ownemail, cenname, address,
-            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo,addproff, applicantfor,noofstudent,noofstaff) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)`;
+            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?,?,?,?,?)`;
 
         const values = [
             newFId, cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, image2, image3,image1, appfor,student,staff
+            city, state, pin, crrbusiness, setupar, nocomp, remark, image2, image3, image1, appfor, student, staff
         ];
 
-        await connection.query(sql, values);
+       await connection.query(sql, values);
 
         await connection.commit();
 
@@ -275,6 +275,100 @@ export const franchiseRequest = async (req, res) => {
         if (connection) connection.release();
     }
 };
+export const addStudannoument = async (req, res) => {
+
+    console.log(req.body);
+
+    const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA';
+    console.log(`image1: ${image1}`);
+
+    const connection = await db.getConnection();
+
+    try {
+        const { title, description, date, category } = req.body;
+        const requiredFields = { title, description, date, category };
+
+        // Check for missing fields
+        for (const [field, value] of Object.entries(requiredFields)) {
+            if (!value) {
+                return res.status(400).send({ success: false, error: `${field} is required` });
+            }
+        }
+
+        // Start transaction
+        await connection.beginTransaction();
+
+        // Get the last AId from the announcement table
+        const ssql = `SELECT AId FROM announcement ORDER BY AId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newAId = 2001;
+        if (result.length > 0) {
+            const AId = result[0].AId;
+            const lastAId = parseInt(AId, 10);
+            newAId = lastAId + 1; // Increment AId
+        }
+
+        // Insert into the announcement table
+        const sql = `INSERT INTO announcement (AId, title, description, date, category, brochure) 
+                   VALUES (?, ?, ?, ?, ?, ?)`;
+        const values = [newAId, title, description, date, category, image1]; // Include image1 in the insert
+        await connection.query(sql, values);
+
+        // Commit transaction
+        await connection.commit();
+
+        return res.status(201).send({ success: true, message: "Announcement Inserted Successfully", result });
+
+    } catch (error) {
+        // Rollback on error
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Error in addStudannouncement", error: error.message });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+export const addCommission = async (req, res) => {
+
+    const connection = await db.getConnection();
+    try {
+        console.log(req.body)
+        const { startdate, enddate, commissionper, groupname, totalcommission, categoryname } = req.body;
+
+        await connection.beginTransaction();
+
+
+        const ssql = `SELECT CMId FROM commission ORDER BY CMId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newCMId = 4001;
+        if (result.length > 0) {
+            const CMId = result[0].CMId;
+            const lastCMId = parseInt(CMId, 10);
+            newCMId = lastCMId + 1;
+        }
+
+        const sql = `insert into commission (CMId,startdate,enddate,commissionper,groupname,totalcommission,categoryname) values(?,?,?,?,?,?,?)`
+        const values = [newCMId, startdate, enddate, commissionper, groupname, totalcommission, categoryname]
+        const [insertResult] = await db.query(sql, values)
+
+        if (insertResult.affectedRows > 0) {
+
+            await connection.commit();
+            return res.status(201).send({ success: true, message: "Commission Inserted Successfully" });
+        }
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Failed to insert Commission" });
+    } catch (error) {
+
+        await connection.rollback();
+        return res.status(500).send({ success: false, message: "Error in addCategoryController", error: error.message });
+
+    } finally {
+        connection.release();
+    }
+}
 
 
 
@@ -400,6 +494,82 @@ export const getCourseDetails = async (req, res) => {
     }
 }
 
+export const getOffer = async (req, res) => {
+    try {
+        const sql = `select * from offer `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getoffer controller" });
+
+    }
+}
+
+export const getAnnouncement = async (req, res) => {
+    try {
+        const sql = `select * from announcement `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getoffer controller" });
+
+    }
+}
+export const getGrouponCatery = async (req, res) => {
+    const { value } = req.body;
+    try {
+        const sql = `select * from category where groupname=? `
+        const values = [value]
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getcommission controller" });
+
+    }
+}
+
+export const getFranchernCommsion = async (req, res) => {
+    try {
+        const sql = `SELECT * FROM franchadmission `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getFranchernCommsion controller" });
+
+    }
+}
+
+export const getCommission = async (req, res) => {
+    try {
+        const sql = `select * from commission `
+
+        const [result] = await db.query(sql)
+
+        if (result) {
+            return res.status(201).send({ success: true, result });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in getcommission controller" });
+
+    }
+}
+
+
 
 
 
@@ -455,7 +625,6 @@ export const updateSessionStatus = async (req, res) => {
 
 export const updateGroupStatus = async (req, res) => {
 
-
     try {
         const { GId, gstatus } = req.body
         const sql = `update groups set  gstatus=? where GId=? `
@@ -470,7 +639,6 @@ export const updateGroupStatus = async (req, res) => {
 
     }
 }
-
 
 
 
@@ -533,7 +701,7 @@ export const updateFranchiseStatus = async (req, res) => {
         const sql = `update franchiseactive set  status=? where FId=? `
         const values = [status, FId]
         const [result] = await db.query(sql, values)
-        console.log(result)
+        // console.log(result)
         if (result) {
             return res.status(201).send({ success: true, result, message: 'Successfully Updated Franchise Status ' });
         }
@@ -589,7 +757,7 @@ export const updateIncomFranchiseStatus = async (req, res) => {
                 html: `<p>Hello,</p><p>Your UMCA franchise request has been approved. Please log in using the following credentials:<br/></p><p><strong>User ID:</strong> ${cmmob}</p><p><strong>Password:</strong> ${password}</p>`, // html body
             });
 
-            console.log('Email sent:', info.messageId);
+            // console.log('Email sent:', info.messageId);
 
             return res.status(200).send({
                 success: true,
@@ -617,3 +785,106 @@ export const updateIncomFranchiseStatus = async (req, res) => {
 };
 
 
+export const updateOffer = async (req, res) => {
+    try {
+        const { discount, description, endDate, startDate, offercode, coursename, courseCode } = req.body;
+        const sql = `UPDATE offer SET discount=?, description=?, endDate=?, startDate=?, offercode=?, coursename=? WHERE courseCode=?`;
+        const values = [discount, description, endDate, startDate, offercode, coursename, courseCode];
+
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Offer ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateOffer controller" });
+
+    }
+}
+
+export const updateAnouncement = async (req, res) => {
+    try {
+        const { AId, brochure, category, date, description, title } = req.body;
+        const sql = `UPDATE announcement SET brochure=?, category=?, date=?, description=?, title=? WHERE AId=?`;
+        const values = [brochure, category, date, description, title, AId];
+
+
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Announcement ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateAnnouncement controller" });
+
+    }
+}
+
+export const updateCommission = async (req, res) => {
+    console.log(req.body)
+    try {
+        const { categoryname,commissionper,enddate,groupname,startdate, totalcommission,CMId } = req.body;
+        const sql = `UPDATE commission SET categoryname=?, commissionper=?, enddate=?, groupname=?, startdate=?,totalcommission=?  WHERE CMId=?`;
+        const values = [categoryname,commissionper,enddate,groupname,startdate, totalcommission,CMId ];
+
+
+        const [result] = await db.query(sql, values)
+
+        if (result) {
+            return res.status(201).send({ success: true, result, message: 'Successfully Updated Announcement ' });
+        }
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in UpdateCommission controller" });
+
+    }
+}
+
+{/* Course Offer*/ }
+
+export const addOffer = async (req, res) => {
+    const connection = await db.getConnection();
+    try {
+        const { categoryname, discount, description, courseCode, endDate, startDate, offercode, coursename } = req.body;
+
+
+        await connection.beginTransaction();
+        const ssql = `SELECT OfferId FROM offer ORDER BY OfferId DESC LIMIT 1`;
+        const [result] = await connection.query(ssql);
+
+        let newOfferId = 1222;
+        if (result.length > 0) {
+            const Cmid = result[0].OfferId;
+            const lastCmid = parseInt(Cmid, 10);
+            newOfferId = lastCmid + 1; // Increment OfferId
+        }
+
+        const sql = `insert into offer (OfferId, offerCode, StartDate, EndDate, courseCode, description,coursename, discount) values(?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [newOfferId, offercode, startDate, endDate, courseCode, description, coursename, discount];
+
+        await connection.query(sql, values)
+
+        await connection.commit();
+
+        return res.status(201).send({ success: true, message: "Offer Inserted Successfully" });
+
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in addOfferyController", error: error.message });
+
+    }
+}
+
+
+export const deleteAnouncement = async (req, res) => {
+    const { Aid } = req.body;
+    console.log(req.body)
+    try {
+        const sql = `DELETE FROM announcement where AId=?`;
+        const value = [Aid]
+        const [result] = await db.query(sql, value)
+
+        return res.status(201).send({ success: true, message: "announcement Deleted Successfully", result });
+    } catch (error) {
+        return res.status(500).send({ success: false, message: "Error in DeleteAnouncement controller" });
+
+    }
+}

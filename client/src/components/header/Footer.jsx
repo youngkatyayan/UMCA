@@ -8,25 +8,29 @@ import { FaPhone } from "react-icons/fa6";
 import { AiOutlineMail } from "react-icons/ai";
 const Footer = () => {
     return (
-        <div className='bg-slate-200'>
+        <div className='bg-slate-200 '>
             <div className='w-full sm:px-20 md:min-h-44 bg-slate-200 pb-5 shadow-current flex flex-col md:flex md:flex-row gap-5'>
 
                 <div className='md:w-1/5'>
-                    <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>Quick Links</p>
-                    <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0'>
-                        <Link className='font-semibold' to={''}>Rule & Guidlines</Link>
-                        <Link className='font-semibold' to={''}>Download Prospectus  </Link>
-                        <Link className='font-semibold' to={''}>Certificate Verification</Link>
+                    <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>Hotlinks</p>
+                    <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0 '>
+                        <Link className='font-semibold hover:text-blue-600' to={''}>Rule & Guidlines</Link>
+                        <Link className='font-semibold hover:text-blue-600' to={''}>Download Prospectus  </Link>
+                        <Link className='font-semibold hover:text-blue-600' to={''}>Certificate Verification</Link>
+                        <Link className='font-semibold hover:text-blue-600' to={'/privacy&policy'}>Privacy Policy</Link>
+                        <Link className='font-semibold hover:text-blue-600' to={'/term-condition'}>Terms & Conditions</Link>
+                        <Link className='font-semibold hover:text-blue-600' to={'/refund-policy'}>Refund Policy</Link>
                     </div>
                 </div>
 
                 <div className='md:w-1/5'>
                     <div className='w-4/5'>
-                        <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>PNKVY</p>
+                        <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>Quick Links</p>
                         <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0'>
-                            <Link className='font-semibold' to={''}>Franchise Proposal</Link>
-                            <Link className='font-semibold' to={'/login'}>Admin Login</Link>
-                            {/* <Link className='font-semibold' to={''}>Certificate Verification</Link> */}
+                            <Link className='font-semibold hover:text-blue-600' to={''}>Franchise Proposal</Link>
+                            <Link className='font-semibold hover:text-blue-600' to={'https://nsdcindia.org/'}>NSDC</Link>
+                            <Link className='font-semibold hover:text-blue-600' to={'https://www.ugc.gov.in/'}>UGC</Link>
+                            <Link className='font-semibold hover:text-blue-600' to={'/login'}>Login</Link>
                         </div>
                     </div>
                 </div>
@@ -35,18 +39,18 @@ const Footer = () => {
                     <div className='w-4/5'>
                         <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0 '>Pay Fee</p>
                         <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0'>
-                            <Link className='font-semibold' to={''}>Payment Details</Link>
+                            <Link className='font-semibold hover:text-blue-600' to={''}>Payment Details</Link>
                         </div>
                     </div>
                 </div>
 
                 <div className='md:w-1/5'>
                     <div className='w-4/5'>
-                        <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>Socail</p>
+                        <p className='text-2xl font-semibold border-b-2 border-black md:py-2 px-2 md:px-0'>Social</p>
                         <div className='flex flex-col pt-1 text-[#494646] md:space-y-2 px-2 md:px-0'>
-                            <Link className='font-semibold  flex items-center gap-1' to={''}><FaFacebook className='animate-pulse' />Facebook</Link>
-                            <Link className='font-semibold flex items-center gap-1' to={''}><FaGooglePlusG className='animate-pulse' />Google Plus</Link>
-                            <Link className='font-semibold flex items-center gap-1' to={''}><RiTwitterXLine className='animate-pulse' />Twitter</Link>
+                            <Link className='font-semibold hover:text-blue-600  flex items-center gap-1' to={''}><FaFacebook className='animate-pulse' />Facebook</Link>
+                            <Link className='font-semibold hover:text-blue-600 flex items-center gap-1' to={''}><FaGooglePlusG className='animate-pulse' />Google Plus</Link>
+                            <Link className='font-semibold hover:text-blue-600 flex items-center gap-1' to={''}><RiTwitterXLine className='animate-pulse' />Twitter</Link>
                         </div>
                     </div>
                 </div>

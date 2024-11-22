@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 const NewApplicant = () => {
 
 
-    const [searchco, SetSearchco] = useState({ franchisename: '' })
+    // const [searchco, SetSearchco] = useState({ franchisename: '' })
     const [incomfranchise, setIncomfranchise] = useState([])
 
 
@@ -15,7 +15,8 @@ const NewApplicant = () => {
         const { data } = await axios.get('/api/v1/get-incomfranchise')
         if (data.success) {
             setIncomfranchise(data.result)
-            console.log(data.result)
+            //
+            (data.result)
         }
     }
     useEffect(() => {

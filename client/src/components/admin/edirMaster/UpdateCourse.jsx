@@ -139,7 +139,7 @@ const UpdateCourse = () => {
                                 <th className='p-2 border-2'>Application Fee</th>
                                 <th className='p-2 border-2'>Exam Fee</th>
                                 <th className='p-2 border-2'>Yearly Fee</th>
-                                <th className='p-2 border-2'>Description</th>
+                                <th className='p-2 border-2 '>Description</th>
                                 <th className='p-2 border-2'>Eligibility</th>
                                 <th className='p-2 border-2'>Popular</th>
                                 <th className='p-2 border-2'>Status</th>
@@ -158,7 +158,7 @@ const UpdateCourse = () => {
                                     <td className='px-3 border-2 border-gray-400'>{item.applicationfee}</td>
                                     <td className='px-3 border-2 border-gray-400'>{item.examfee}</td>
                                     <td className='px-3 border-2 border-gray-400'>{item.yearlyfee}</td>
-                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>{item.description}</td>
+                                    <td className='px-3 border-2 border-gray-400 text-[0.8rem] col-span-2 '>{item.description}</td>
                                     <td className='px-3 border-2 border-gray-400'>{item.eligibility}</td>
                                     <td className='px-3 border-2 border-gray-400'>{item.popular}</td>
                                     <td className='px-3 border-2 border-gray-400 text-[0.8rem]'>
