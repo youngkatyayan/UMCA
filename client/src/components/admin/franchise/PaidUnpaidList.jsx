@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const PaidUnpaidList = () => {
     const [branchOptions, setbranchOptions] = useState([])
+    const [allResult, setAllResult] = useState([])
     const [formData, setFormData] = useState({
         startDate: "",
         endDate: "",
@@ -24,7 +25,9 @@ const PaidUnpaidList = () => {
         e.preventDefault();
         try {
             const { data } = await axios.post('/api/v1/filter-dataofstudent-byadmin', formData)
-            console.log(data)
+            if (data.success) {
+                setAllResult(data.result)
+            }
 
         } catch (error) {
             console.log(error.message)
@@ -97,7 +100,7 @@ const PaidUnpaidList = () => {
                                 <option value="">Select Franchise</option>
                                 {branchOptions.map((branch, index) => (
                                     <option key={index} value={branch.cmmob}>
-                                        {branch.cmname}
+                                        {branch.cmmob}
                                     </option>
                                 ))}
                             </select>
@@ -128,6 +131,51 @@ const PaidUnpaidList = () => {
                         </button>
                     </form>
                 </div>
+
+                {
+    allResult && (
+        <div className="overflow-x-auto p-4">
+            <table className="table-auto w-full border-collapse border border-gray-200 rounded-lg shadow-md">
+                <thead className="bg-teal-600 text-white">
+                    <tr>
+                        <th className="px-4 py-2 text-left">Name</th>
+                        <th className="px-4 py-2 text-left">Email</th>
+                        <th className="px-4 py-2 text-left">Course</th>
+                        <th className="px-4 py-2 text-left">Mobile No</th>
+                        <th className="px-4 py-2 text-left">Course Fee</th>
+                        <th className="px-4 py-2 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {allResult.map((el, index) => (
+                        <tr
+                            key={index}
+                            className={`${
+                                index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                            } hover:bg-gray-100`}
+                        >
+                            <td className="px-4 py-2">{el.name}</td>
+                            <td className="px-4 py-2">{el.email}</td>
+                            <td className="px-4 py-2">{el.coursename}</td>
+                            <td className="px-4 py-2">{el.mobno}</td>
+                            <td className="px-4 py-2">{el.yearlyfee ?? 'NA'}</td>
+                            <td
+                                className={`px-4 py-2 font-semibold ${
+                                    el.status === 'Paid'
+                                        ? 'text-green-600'
+                                        : 'text-red-600'
+                                }`}
+                            >
+                                {el.status === 'Paid' ? 'Paid' : 'Unpaid'}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
 
 
             </div>

@@ -9,7 +9,6 @@ const StudentDashboard = () => {
   const [EntrollCourse, setEntrollCourse] = useState([]);
 
   let uid = localStorage.getItem('uid');
-  // console.log(Entroll)
   const mobile = uid ? CryptoJS.AES.decrypt(uid, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
   const accessanouncement = async () => {
     const { data } = await axios.get('/api/v1/get-studannouncement');
@@ -151,13 +150,13 @@ const StudentDashboard = () => {
                       <span className="ml-2"></span>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  {/* <div className="grid grid-cols-2 gap-2">
                     <span className="text-gray-600">Roll No.</span>
                     <div>
                       <span className="text-gray-600">:</span>
                       <span className="ml-2"></span>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="grid grid-cols-2 gap-2">
                     <span className="text-gray-600">Session</span>
                     <div>

@@ -1,17 +1,5 @@
 import React, { useState } from 'react'
 import UserLayout from '../layout/Userlayout'
-// import dove from '../../assets/gif/dove.gif'
-// import phone from '../../assets/gif/phone.gif'
-// import { FaInstagramSquare } from "react-icons/fa";
-// import { FaXTwitter } from "react-icons/fa6";
-// import { IoLogoYoutube } from "react-icons/io";
-// import { FaFacebook } from "react-icons/fa";
-// import { Link } from 'react-router-dom';
-// import UserHeader from '../header/UserHeader';
-// import Footer from '../header/Footer';
-// import Slider from './Slider';
-// import Courses from '../pages/Courses';
-// import GroupCategory from '../pages/GroupCategory';
 import axios from 'axios';
 
 const FranchiseRequest = () => {
@@ -46,7 +34,7 @@ const FranchiseRequest = () => {
     if (file) {
 
       if (file.type.startsWith('image/')) {
-        console.log(file.type)
+        // console.log(file.type)
         const imageURL = URL.createObjectURL(file);
         setImg((prev) => {
           const Images = [...prev];
@@ -56,12 +44,12 @@ const FranchiseRequest = () => {
 
 
       } else if (file.type === 'application/pdf') {
-        console.log(file.type)
+        // console.log(file.type)
         const pdfURL = URL.createObjectURL(file);
         setImg(prev => {
           const Files = [...prev];
           Files[index] = { file, type: 'pdf', url: pdfURL };
-          console.log('Updated Files:', Files);
+          // console.log('Updated Files:', Files);
           return Files;
         })
 
@@ -91,16 +79,15 @@ const FranchiseRequest = () => {
         formdataToSend.append(`image${index}`, fileObj.file);
       }
     })
-    console.log(formData)
-    console.log(formdataToSend)
+    // console.log(formData)
+    // console.log(formdataToSend)
     try {
       const response = await axios.post('/api/v1/franchise-request', formdataToSend);
-
-      if (response.ok) {
-        // Handle success (e.g., show a success message)
-        console.log('Form submitted successfully');
+// console.log(response)
+      if (response.data.success) {
+        alert('Form submitted successfully');
+        setFormData({})
       } else {
-        // Handle error
         console.error('Form submission failed');
       }
     } catch (error) {
@@ -110,7 +97,7 @@ const FranchiseRequest = () => {
 
   return (
     <UserLayout>
-    
+
       <div className="w-full p-4">
         <h2 className="text-2xl font-bold text-black bg-gray-300 p-3 shadow-md mx-auto max-w-4xl">
           Center Detail For Skill Development & Training Partner

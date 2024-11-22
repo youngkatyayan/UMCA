@@ -50,15 +50,12 @@ const Certificate = () => {
       Status: ${searchResult.status}
     `;
 
-    // Create a Blob from the certificate data
     const blob = new Blob([certificateData], { type: 'text/plain' });
 
-    // Create an anchor element to simulate the download link
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `${searchResult.studentName}_certificate.txt`; // Set the file name
+    link.download = `${searchResult.studentName}_certificate.txt`; 
 
-    // Trigger the click event on the anchor link to start the download
     link.click();
   };
 
@@ -159,12 +156,14 @@ const Certificate = () => {
                   <p className="text-sm text-gray-600">Grade</p>
                   <p className="font-medium">{searchResult.grade}</p>
                 </div>
+
                 <div>
                   <p className="text-sm text-gray-600">Status</p>
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     ✓ {searchResult.status}
                   </span>
                 </div>
+
               </div>
              
 

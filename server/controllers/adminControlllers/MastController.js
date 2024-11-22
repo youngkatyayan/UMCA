@@ -230,7 +230,7 @@ export const franchiseRequest = async (req, res) => {
         // Define required fields
         const requiredFields = {
             cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
-            city, state, pin, crrbusiness, setupar, nocomp, remark, appfor, student, staff,
+            city, state, pin, crrbusiness, appfor
         };
 
         // Check for missing fields
@@ -254,15 +254,15 @@ export const franchiseRequest = async (req, res) => {
 
 
         const sql = `INSERT INTO franchiseactive (FId, cmname, cmmob, cmemail, owname, ownmob, ownemail, cenname, address,
-            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo,addproff, applicantfor,noofstudent,noofstaff) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)`;
+            city, state, pincode, currbusiness, setuparea, noofcomp, remark, signature, photo, applicantfor,noofstudent,noofstaff) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?,?,?,?,?)`;
 
         const values = [
             newFId, cmname, cmmobile, cmemail, oname, omobile, oemail, centername, address,
             city, state, pin, crrbusiness, setupar, nocomp, remark, image2, image3, image1, appfor, student, staff
         ];
 
-        await connection.query(sql, values);
+       await connection.query(sql, values);
 
         await connection.commit();
 
