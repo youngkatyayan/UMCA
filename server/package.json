@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd.. && npm run dev --prefix ./client",
     "dev": "concurrently \"npm run client\" \"nodemon index.js\"",
