@@ -51,7 +51,7 @@ export const updateUserProfileController = async (req, res) => {
         connection = await db.getConnection();
         const files = req.file ? req.file.filename : null;
         const {
-            minority, name, dob, gender, category, relation, relaname, mothername, nationality, disabled, line1, line2, town, state, district, pincode, perline1,
+            minority, CoId, name, dob, gender, category, relation, relaname, mothername, nationality, disabled, line1, line2, town, state, district, pincode, perline1,
             perline2, pertown, perstate, perdistrict, perpincode, Uid, mobno, email, sameAsAbove, whatsappno, educationEntries
         } = req.body;
 
@@ -93,9 +93,9 @@ export const updateUserProfileController = async (req, res) => {
             }
 
         } else {
-            const insSql = `INSERT INTO franchadmission (SId, franchMobile, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation,
-             state, town, whatsappno,profileImg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            const insResult = [newSId, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno, files];
+            const insSql = `INSERT INTO franchadmission (SId,CoId, franchMobile, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation,
+             state, town, whatsappno,profileImg) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+            const insResult = [newSId, CoId || null, Uid, category, disabled, district, dob, email, gender, line1, minority, mobno, mothername, name, nationality, perdistrict, perline1, perline2, perpincode, perstate, pertown, pincode, relaname, relation, state, town, whatsappno, files];
 
             const [insertResult] = await connection.query(insSql, insResult);
             if (insertResult.affectedRows === 0) {
@@ -194,22 +194,71 @@ export const getFeeRecieptController = async (req, res) => {
         const [result] = await db.query(sql, [`%${transactionId}%`]);
 
         if (result.length > 0) {
-            return res.status(200).send({ 
-                success: true, 
-                message: "Data accessed successfully", 
-                result 
+            return res.status(200).send({
+                success: true,
+                message: "Data accessed successfully",
+                result
             });
         } else {
-            return res.status(404).send({ 
-                success: false, 
-                message: "No data found for the provided transactionId" 
+            return res.status(404).send({
+                success: false,
+                message: "No data found for the provided transactionId"
             });
         }
     } catch (error) {
         console.error(error.message);
-        return res.status(500).send({ 
-            success: false, 
-            message: "Error in getFeeRecieptController" 
+        return res.status(500).send({
+            success: false,
+            message: "Error in getFeeRecieptController"
+        });
+    }
+};
+
+// get getFeeRecieptController
+export const getDataForCerDownController = async (req, res) => {
+    try {
+        const { decryptedMobile } = req.body;
+
+        if (!decryptedMobile) {
+            return res.status(400).send({ error: 'decryptedMobile is required' });
+        }
+        const sql = `SELECT 
+    franchadmission.name,
+     franchadmission.mobno,
+       franchadmission.E_Date as Fentry,
+    ordertable.E_Date AS t,
+    course.*
+FROM 
+    franchadmission
+LEFT JOIN 
+    ordertable ON franchadmission.CoId IS NULL 
+                AND franchadmission.mobno = ordertable.phone
+LEFT JOIN 
+    course ON (franchadmission.CoId IS NOT NULL 
+              AND franchadmission.CoId = course.CoId)
+           OR (franchadmission.CoId IS NULL 
+              AND ordertable.courseId = course.CoId)
+WHERE 
+    franchadmission.mobno = ?`;
+        const [result] = await db.query(sql, [decryptedMobile]);
+
+        if (result.length > 0) {
+            return res.status(200).send({
+                success: true,
+                message: "Data accessed successfully",
+                result
+            });
+        } else {
+            return res.status(404).send({
+                success: false,
+                message: "No data found for the provided decryptedMobile"
+            });
+        }
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).send({
+            success: false,
+            message: "Error in getDataForCerDownController"
         });
     }
 };
