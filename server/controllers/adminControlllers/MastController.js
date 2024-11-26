@@ -152,7 +152,7 @@ export const addSession = async (req, res) => {
 }
 
 export const addCourse = async (req, res) => {
-
+    console.log(req.body)
 
     const image1 = req.files['image1'] ? req.files['image1'][0].filename : 'NA';
     const image2 = req.files['image2'] ? req.files['image2'][0].filename : 'NA';
@@ -165,7 +165,7 @@ export const addCourse = async (req, res) => {
 
     try {
 
-        const { applicationfee, popular, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee } = req.body;
+        const { applicationfee, popular, categoryname, coursemode, coursename, session, description, duration,durationyears, eligibility, examfee, yearlyfee } = req.body;
         const requiredFields = { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee }
         for (const [field, value] of Object.entries(requiredFields)) {
             if (!value) {
@@ -189,8 +189,8 @@ export const addCourse = async (req, res) => {
 
 
 
-        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration,eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [newCoId, popular, applicationfee, image1, image2, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee]
+        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration, durationyears, eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [newCoId, popular, applicationfee, image1, image2, categoryname, coursemode, coursename, session, description, duration,durationyears, eligibility, examfee, yearlyfee]
         await connection.query(sql, values)
 
 
@@ -647,9 +647,9 @@ export const updateGroupStatus = async (req, res) => {
 
 export const updateCourse = async (req, res) => {
     try {
-        const { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee, CoId } = req.body
-        const sql = `update course set  applicationfee=?, categoryname=?, coursemode=?, coursename=?, session=?, description=?, duration=?, eligibility=?, examfee=?, yearlyfee=? where CoId=? `
-        const values = [applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee, CoId]
+        const { applicationfee, categoryname, coursemode, coursename, session, description, duration,durationyears, eligibility, examfee, yearlyfee, CoId } = req.body
+        const sql = `update course set  applicationfee=?, categoryname=?, coursemode=?, coursename=?, session=?, description=?, duration=?,durationyears=?, eligibility=?, examfee=?, yearlyfee=? where CoId=? `
+        const values = [applicationfee, categoryname, coursemode, coursename, session, description, duration, durationyears, eligibility, examfee, yearlyfee, CoId]
         const [result] = await db.query(sql, values)
         console.log(result)
         if (result) {

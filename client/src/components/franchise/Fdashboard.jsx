@@ -49,7 +49,7 @@ const Fdashboard = () => {
                         </div>
                     </div>
 
-                    <div className='h-18 sm:h-24 lg:w-[20vw] w-full bg-red-500 flex my-1 box hover:bg-red-600 hover:transition-transform hover:transform-gpu'>
+                    {/* <div className='h-18 sm:h-24 lg:w-[20vw] w-full bg-red-500 flex my-1 box hover:bg-red-600 hover:transition-transform hover:transform-gpu'>
                         <div className='h-full w-24 bg-red-700 flex items-center justify-center'>
                             <MdOutlinePlaylistAddCheck className='text-5xl  sm:text-6xl text-white' />
                         </div>
@@ -57,12 +57,12 @@ const Fdashboard = () => {
                             <p>TOTAL FEES DEPOSITED</p>
                             <span className='text-2xl'>{FAInfo.totalearnedcommission}</span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className='h-18 sm:h-24 lg:w-[20vw] w-full bg-green-500 flex my-1 box hover:bg-green-600 hover:transition-transform hover:transform-gpu'>
                         <div className='h-full w-24 bg-green-700 flex items-center justify-center'>
                             <MdOutlinePlaylistAddCheck className='text-5xl  sm:text-6xl text-white' />
                         </div>
-                        <div className='h-18 sm:h-24 w-full flex items-start justify-center text-white flex-col px-3'>
+                        <div className='h-18 sm:h-24 w-full flex items-start justify-center text-white flex-col p-3'>
                             <p>EARNED COMMESSION</p>
                             <span className='text-2xl'>{TotalCommission}</span>
                         </div>

@@ -15,7 +15,9 @@ const PaidStudent = () => {
             if (decryptedMobile) {
                 const { data } = await axios.post('/api/v1/get-student-unpaid-data', { decryptedMobile });
                 if (data.success) {
-                    setAllResult(data.result);
+                    const paidResults = data.result.filter(item => item.status == "paid");
+                    console.log(paidResults)
+                    setAllResult(paidResults);
                 }
             }
         } catch (error) {
@@ -44,15 +46,16 @@ const PaidStudent = () => {
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Name</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Mobile</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Course Name</th>
-                                <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Status</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Fee Paid (Year)</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Payment</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Status</th>
                                 {/* <th className="border border-gray-300 px-4 py-2 text-center font-semibold">Action</th> */}
                             </tr>
                         </thead>
                         <tbody className="bg-white">
                             {allResult &&
                                 allResult.map((el, index) => (
-                                    el.status === 'Paid' && (
+                                     (
                                         <tr
                                             key={index}
                                             className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
@@ -61,16 +64,17 @@ const PaidStudent = () => {
                                             <td className="border border-gray-300 px-4 py-2">{el.name}</td>
                                             <td className="border border-gray-300 px-4 py-2">{el.mobno}</td>
                                             <td className="border border-gray-300 px-4 py-2">{el.cr}</td>
-                                            <td className="border border-gray-300 text-green-900 font-semibold px-4 py-2 text-center">
-                                                {el.status}
-                                            </td>
+                                            <td className="border border-gray-300 px-4 py-2">{el.currentyear}st Year</td>
+                                           
                                             <td className="border border-gray-300 px-4 py-2 text-center">
                                                 {el.payment}
                                             </td>
-                                           
+                                            <td className="border border-gray-300 text-green-900 font-semibold px-4 py-2 text-center">
+                                                {el.status}
+                                            </td>
                                         </tr>
                                     )
-                                  
+
                                 ))}
                         </tbody>
                     </table>

@@ -26,7 +26,8 @@ const Course = () => {
         examfee: '',
         brochure: '',
         coursename: '',
-        courseimage:""
+        courseimage:"",
+        durationyears:""
     })
 
     const { CoId } = useParams()
@@ -211,7 +212,7 @@ const Course = () => {
                 toast.success(data.message)
             }
             else {
-                console.log('error')
+              toast.error(data.message)
             }
         } catch (error) {
             console.log("error")
@@ -226,7 +227,7 @@ const Course = () => {
             const { data } = await axios.post('/api/v1/update-course', formdata)
             if (data.success) {
                 toast.success(data.message)
-                window.location.href = '/course-details'
+                // window.location.href = '/course-details'
             }
             else {
                 console.log('error')
@@ -353,6 +354,17 @@ const Course = () => {
                                 value={formdata.duration}
                                 onChange={handleChange}
                                 placeholder='Enter Duration'
+                                className=' p-2 rounded-md my-4 shadow-md w-full'
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="durationyears" className=' m-2 font-serif text-lg'> Total Duration in (Years) :</label>
+                            <input
+                                type="number"
+                                name='durationyears'
+                                value={formdata.durationyears}
+                                onChange={handleChange}
+                                placeholder='Enter Duration Year'
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             />
                         </div>

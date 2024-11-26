@@ -2,7 +2,8 @@ import express from "express"
 
 import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentdataController,franStudentDetails,getFranchiseController,
     filterStudentDataController,getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController, 
-    getFranSudent} from "../../controllers/franchiseController/FranchiseController.js"
+    getFranSudent,
+    Selctedatcourse} from "../../controllers/franchiseController/FranchiseController.js"
 
 
 
@@ -11,6 +12,7 @@ const router=  express.Router()
 
 
 router.post('/get-selctedcategory',SeletedCategory)
+router.post('/get-selctedcatcourse',Selctedatcourse)
 router.post('/get-selctedcourse',SeletedCourse)
 router.get('/get-state',getState)
 router.get('/get-district',getDistrict)

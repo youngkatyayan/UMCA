@@ -9,11 +9,12 @@ import moment from 'moment'
 
 
 
-const Admission = ({student}) => {
+const Admission = ({ student }) => {
 
-    const [newData,setNewtData]=useState([])
+    const [newData, setNewtData] = useState([])
     const [category, setCategory] = useState([])
     const [course, setCourse] = useState([])
+    const [group, setGroup] = useState([])
     const [district, setDistrict] = useState([])
     const [session, setSession] = useState([])
     const [filteredDistrict, setFilteredDistrict] = useState([])
@@ -65,17 +66,18 @@ const Admission = ({student}) => {
         Admincommission: '',
         totalfranchCommission: '',
         totaladmincommission: '',
-        CoId:''
+        CoId: '',
+        currentyear:''
     });
 
 
     const handleEdit = async (value) => {
         console.log(value);
-    
+
         const dateofbirth = value.dob ? moment(student.dob).format('YYYY-MM-DD') : '';
-    
-      
-         setData(prev => ({
+
+
+        setData(prev => ({
             ...prev,
             SId: value?.SId || '',
             categoryname: value?.categoryname || '',
@@ -110,23 +112,23 @@ const Admission = ({student}) => {
             totalfranchCommission: value?.totalfranchCommission || '',
             totaladmincommission: value?.totaladmincommission || '',
         }));
-    
-                // Log the updated form data
+
+        // Log the updated form data
 
         console.log('Updated Form Data:', formdata);
-    
+
         setTimeout(() => {
             handlePrint();
         }, 200);
-    };      
-    
-    
-    const handlePrint = async() => {
+    };
+
+
+    const handlePrint = async () => {
         setTimeout(() => {
             console.log(formdata)
 
         }, 200);
-        const content =await document.getElementById('student-details');
+        const content = await document.getElementById('student-details');
         if (content) {
             const newWindow = window.open('', '', 'height=600, width=800');
             newWindow.document.write('<html><head><title>Print Student Details</title>');
@@ -229,7 +231,7 @@ const Admission = ({student}) => {
 
                 }
             `);
-        
+
             newWindow.document.write('</style></head><body>');
             newWindow.document.write(content.outerHTML);
             newWindow.document.write('</body></html>');
@@ -243,7 +245,7 @@ const Admission = ({student}) => {
     };
 
     useEffect(() => {
-        
+
         if (student && typeof student === "object" && Object.keys(student).length > 0) {
             const SIds = student.SId;
             console.log(SIds)
@@ -251,27 +253,34 @@ const Admission = ({student}) => {
                 try {
                     if (SIds) {
                         const { data } = await axios.post('api/v1/get-studentfranch', { SIds });
-                       if(data.success){
-                        console.log(data.result)
-                        if(data.result){
-                            setNewtData(data.result[0])
-                            handleEdit(data.result[0]);
-                        }}
-                        
+                        if (data.success) {
+                            console.log(data.result)
+                            if (data.result) {
+                                setNewtData(data.result[0])
+                                handleEdit(data.result[0]);
+                            }
+                        }
+
                     }
                 } catch (error) {
                     console.error("Error fetching student data:", error);
                 }
             };
-    
-            accessstudent(); 
-           
+
+            accessstudent();
+
         }
     }, [student])
     const accesscommission = async () => {
         const { data } = await axios.get('/api/v1/get-commission')
         if (data.success) {
             setCommission(data.result)
+        }
+    }
+    const accessgroup = async () => {
+        const { data } = await axios.get('/api/v1/get-group')
+        if (data.success) {
+            setGroup(data.result)
         }
     }
     const accesscategory = async () => {
@@ -287,7 +296,7 @@ const Admission = ({student}) => {
         }
 
     }
-    
+
     const accessDistrict = async () => {
         const { data } = await axios.get('/api/v1/get-district')
         if (data.success) {
@@ -303,35 +312,56 @@ const Admission = ({student}) => {
         }
 
         const decryptedMobile = CryptoJS.AES.decrypt(UId, "LOGIN UID").toString(CryptoJS.enc.Utf8);
-        const { data } = await axios.post('/api/v1/get-totalcommission', {decryptedMobile})
+        const { data } = await axios.post('/api/v1/get-totalcommission', { decryptedMobile })
         if (data.success) {
             setTotalCommission(data.result)
         }
     }
 
-    useEffect(() => { accesscategory(); accessDistrict(); accessState(); accesscommission(); accesstotalcommission(); }, [])
+    useEffect(() => { accessDistrict(); accessState(); accesscommission(); accesstotalcommission(); accessgroup() }, [])
 
     const handleChange = async (e) => {
         const { name, value } = e.target;
         setData((prevData) => ({ ...prevData, [name]: value }));
 
-        if (name === 'categoryname') {
+        if (name === 'groupname') {
             try {
+                console.log(value)
 
                 const response = await axios.post('/api/v1/get-selctedcategory', { cname: value });
                 const data = response.data;
 
                 if (data.success) {
                     if (data.result.length > 0) {
-                        setCourse(data.result);
+                        setCategory(data.result);
                         console.log(data.result);
+                    }
+                }
+                if(value==='University'){
+                    const currentYear='1'
+                    setData((prevData) => ({ ...prevData, [name]: value,currentyear:currentYear }));
+                }
+            } catch (error) {
+                console.error("Error fetching selected course:", error);
+            }
+
+
+        }
+
+        if (name === 'categoryname') {
+            console.log(value)
+            try {
+
+                const response = await axios.post('/api/v1/get-selctedcatcourse', { cname: value });
+                const data = response.data;
+
+                if (data.success) {
+                    if (data.result.length > 0) {
+                        setCourse(data.result);
                     } else {
                         setCourse([]);
                         toast.error("No Coures Found")
-                        console.log("no course available", data.result);
                     }
-                } else {
-                    setCourse("")
                 }
             } catch (error) {
                 console.error("Error fetching selected course:", error);
@@ -388,7 +418,7 @@ const Admission = ({student}) => {
             const seyealyfee = session.find(((item) => categoryname === item.categoryname && optedsession == item.session))
             const Yearlyfee = seyealyfee ? seyealyfee.yearlyfee : null
             const Courseid = seyealyfee ? seyealyfee.CoId : null
-            console.log("yearlyfee",Yearlyfee,Courseid)
+            console.log("yearlyfee", Yearlyfee, Courseid)
 
             const selectedgroup = category.find(((item) => categoryname === item.categoryname))
             const Categoryname = selectedgroup ? selectedgroup.categoryname : null
@@ -404,23 +434,23 @@ const Admission = ({student}) => {
             // console.log("adminper , yearlyfee",admincommission,Yearlyfee)
             const netadmincommission = (admincommission / 100) * Yearlyfee
             // console.log(" presentadmincommission",netadmincommission)
-            let uptoAdmincommission =parseInt(TotalCommission[0]?.AdminCommission || 0,10)
+            let uptoAdmincommission = parseInt(TotalCommission[0]?.AdminCommission || 0, 10)
 
             // console.log("prevadmincomm",uptoAdmincommission)
-            uptoAdmincommission += netadmincommission;  
+            uptoAdmincommission += netadmincommission;
             // console.log("newtotaladmincomm",uptoAdmincommission)
 
             const CommissionRs = (Commissionper / 100) * Yearlyfee
             // console.log(" centercommission",CommissionRs)
 
-            let uptofranchcommission =parseInt(TotalCommission[0]?.franchcommission || 0,10)
+            let uptofranchcommission = parseInt(TotalCommission[0]?.franchcommission || 0, 10)
             // console.log("prevcentercomm",uptofranchcommission)
             uptofranchcommission += CommissionRs;
-            console.log("newtotalcentcom",uptofranchcommission);
+            console.log("newtotalcentcom", uptofranchcommission);
 
 
-            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission , CoId:Courseid}));
-
+            setData((prevData) => ({ ...prevData, CommissionRs: CommissionRs, categoryname: categoryname, yearlyfee: Yearlyfee, commissionper: Commissionper, Admincommission: netadmincommission, totalfranchCommission: uptofranchcommission, totaladmincommission: uptoAdmincommission, CoId: Courseid }));
+            console.log(formdata)
         }
     };
 
@@ -508,6 +538,19 @@ const Admission = ({student}) => {
                         </div>
                         <div className='m-4 border border-gray-300 p-6 rounded-lg shadow-lg bg-gray-50 relative'>
                             <div className='grid lg:grid-cols-4 md:grid-col-3 sm:grid-cols-2 gap-4  px-2'>
+
+                                <div>
+                                    <label htmlFor="groupname" className='text-lg mb-2'> Select Group</label>
+                                    <select type='text'
+                                        id="groupname"
+                                        onChange={handleChange} value={formdata.groupname} name="groupname" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
+                                        <option value="">Select an option</option>
+                                        {group.map((item, index) => (
+                                            <option key={index} value={item.groupname}>{item.groupname}</option>
+                                        ))}
+
+                                    </select>
+                                </div>
                                 <div>
                                     <label htmlFor="categoryname" className='text-lg mb-2'> Select Category</label>
                                     <select type='text'
@@ -540,7 +583,7 @@ const Admission = ({student}) => {
                                             <select type='text' onChange={handleChange} value={formdata.session} name="session" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
                                                 <option value="">Select an option</option>
                                                 {session.map((item, index) => (
-                                                    <option key={index} value={item.session}>{item.session}</option>
+                                                    <option key={index} required value={item.session}>{item.session}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -558,14 +601,14 @@ const Admission = ({student}) => {
                             <div className='grid lg:grid-cols-4  md:grid-col-3 sm:grid-cols-2 personal  gap-4 px-2'>
                                 <div>
                                     <label htmlFor="name" className='text-lg mb-2'> Full Name</label>
-                                    <input type='text' onChange={handleChange} value={formdata.name} name="name" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                    <input type='text' onChange={handleChange}  required value={formdata.name} name="name" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                 </div>
 
                                 <div className=''>
                                     <select htmlFor="name" className='font-bold shadow-md rounded-md p-1 text-md mb-2 w-full'
                                         value={formdata.relation} onChange={handleChange} name='relation'
                                     >
-                                        <option className='text-[0.9rem]' >---Select Father's /Husband's Name---</option>
+                                        <option  required className='text-[0.9rem]' >---Select Father's /Husband's Name---</option>
                                         <option value="father">Father  Name </option>
                                         <option value="husband">Husband  Name </option>
                                     </select>
@@ -665,7 +708,7 @@ const Admission = ({student}) => {
 
                                     <div>
                                         <label htmlFor="state" className='text-lg mb-2'> State</label>
-                                        <select type='text' onChange={handleChange} value={formdata.state} name="state" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' >
+                                        <select type='text' onChange={handleChange} required value={formdata.state} name="state" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' >
                                             <option value="">Select State</option>
                                             {
                                                 state.map((item, index) => (
@@ -676,7 +719,7 @@ const Admission = ({student}) => {
                                     </div>
                                     <div>
                                         <label htmlFor="district" className='text-lg mb-2'> District</label>
-                                        <select type='text' onChange={handleChange} value={formdata.district} name="district" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
+                                        <select type='text' onChange={handleChange} required value={formdata.district} name="district" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1'>
                                             <option value="">Select District</option>
                                             {filteredDistrict.map((item, index) => (
                                                 <option key={index} value={item.name}>{item.name}</option>
@@ -747,7 +790,7 @@ const Admission = ({student}) => {
                                     </div>
                                     <div>
                                         <label htmlFor="mobno" className='text-lg mb-2'> Mobile No. </label>
-                                        <input type='text' onChange={handleChange} value={formdata.mobno} name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
+                                        <input type='text' onChange={handleChange} required value={formdata.mobno} name="mobno" className='w-full border  p-1 rounded-sm border-blue-300 shadow-md m-1' />
                                     </div>
                                     <div>
                                         <label htmlFor="whatsappno" className='text-lg mb-2'> Whatsapp No. </label>
