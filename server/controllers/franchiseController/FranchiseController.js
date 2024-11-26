@@ -320,12 +320,10 @@ export const filterStudentDataController = async (req, res) => {
     try {
         const { startDate, endDate, branchName, status } = req.body;
 
-        // Validate required fields
         if (!startDate || !endDate || !branchName || !status) {
             return res.status(400).send({ error: 'All fields are required' });
         }
 
-        // Build SQL query with proper handling of the status filter
         const sql = `
             SELECT 
                 franchadmission.*, 

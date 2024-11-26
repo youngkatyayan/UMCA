@@ -1,183 +1,109 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StudentLayout from '../layout/StudentLayout'
-import ReCAPTCHA from 'react-google-recaptcha';
-
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
 const Certificate = () => {
-  const [searchData, setSearchData] = useState({
-    enrollmentNo: '',
-    // name: '',
-    // course: '',
-  });
+  const [allResult, setAllResult] = useState([])
+  let mobile = localStorage.getItem('uid');
+  const decryptedMobile = mobile ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8) : null;
 
-  const [searchResult, setSearchResult] = useState(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [captchaValue, setCaptchaValue] = useState(null);
-  // Sample certificate data
-  const sampleCertificate = {
-    studentName: "John Doe",
-    enrollmentNo: "2024001",
-    course: "Web Development",
-    completionDate: "2024-03-15",
-    grade: "A",
-    status: "Verified"
-  };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setIsSearching(true);
+  const fetchDetails = async () => {
+    try {
+      const { data } = await axios.post('/api/v1/get-data-for-certificate-download', { decryptedMobile })
+      if (data.success) {
+        setAllResult(data.result)
+      }
 
-    setTimeout(() => {
-      setSearchResult(sampleCertificate);
-      setIsSearching(false);
-    }, 1000);
-  };
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+  useEffect(() => {
+    fetchDetails()
+  }, [])
 
-  const handleInputChange = (e) => {
-    setSearchData({
-      ...searchData,
-      [e.target.name]: e.target.value
-    });
-  };
-  const handleDownload = () => {
-    const certificateData = `
-      Certificate of Completion
-  
-      Student Name: ${searchResult.studentName}
-      Enrollment Number: ${searchResult.enrollmentNo}
-      Course: ${searchResult.course}
-      Completion Date: ${searchResult.completionDate}
-      Grade: ${searchResult.grade}
-      Status: ${searchResult.status}
-    `;
 
-    const blob = new Blob([certificateData], { type: 'text/plain' });
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${searchResult.studentName}_certificate.txt`; 
-
-    link.click();
-  };
-
-  const handleCaptchaChange = (value) => {
-    setCaptchaValue(value);
-    // console.log(value)
-  };
   return (
     <StudentLayout>
       <div className="bg-gray-50 py-8 w-full">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="text-5xl mb-4">🎓</div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Certificate Download Portal</h1>
-            <p className="text-gray-600">Enter your details below to download your certificate</p>
+
+          <div className='flex flex-col m-4 border rounded-md bg-transparent-300  bg-slate-400 shadow-md' >
+            <h1 className='text-white text-2xl m-4 p-1 font-serif font-bold'>Download Certificate</h1>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <form onSubmit={handleSearch} className="space-y-6">
-              <div className="grid grid-cols-1  gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Enrollment Number</label>
-                  <input
-                    type="text"
-                    name="enrollmentNo"
-                    value={searchData.enrollmentNo}
-                    onChange={handleInputChange}
-                    placeholder="Enter enrollment no."
-                    className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={searchData.name}
-                    onChange={handleInputChange}
-                    placeholder="Enter your full name"
-                    className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div> */}
-                {/* <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
-                  <input
-                    type="text"
-                    name="course"
-                    value={searchData.course}
-                    onChange={handleInputChange}
-                    placeholder="Enter course name"
-                    className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div> */}
-              </div>
-              <div className="flex justify-center mt-4">
-                <ReCAPTCHA
-                  sitekey='6Lf5TH4qAAAAAEBV4Ctf3HScguqB5-MpNv5UdbZl'
-                  onChange={handleCaptchaChange}
-                />
-              </div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 transition-colors"
-                  disabled={isSearching}
-                >
-                  🔍 {isSearching ? 'Searching...' : 'Search Certificate'}
-                </button>
-              </div>
-            </form>
-          </div>
+          <div className="p-6 bg-gradient-to-r from-gray-50 to-gray-100 ">
+            <div className="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">
+              <table className="table-auto w-full text-sm text-gray-700">
+                <thead>
+                  <tr className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white uppercase text-xs font-semibold tracking-wider">
+                    <th className="px-6 py-4 text-left">S.No.</th>
+                    <th className="px-6 py-4 text-left">Course Name</th>
+                    <th className="px-6 py-4 text-left">Start Date</th>
+                    <th className="px-6 py-4 text-left">Complete Date</th>
+                    <th className="px-6 py-4 text-left">Fees Status</th>
+                    <th className="px-6 py-4 text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {allResult &&
+                    allResult.map((el, index) => (
+                      <tr
+                        key={index}
+                        className="transition hover:bg-gray-100 hover:shadow-sm"
+                      >
+                        <td className="px-6 py-4 font-medium text-gray-900">{index + 1}</td>
+                        <td className="px-6 py-4">{el?.coursename}</td>
+                        <td className="px-6 py-4">{( el.Fentry).split('T')[0]}</td>
+                        <td className="px-6 py-4">
+                          {/* {(() => {
+                            const date = new Date((el.Fentry).split('T')[0])
+                            return date
+                          })()} */}
+                        </td>
 
-          {searchResult && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">📜 Certificate Details</h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                <div>
-                  <p className="text-sm text-gray-600">Student Name</p>
-                  <p className="font-medium">{searchResult.studentName}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Enrollment Number</p>
-                  <p className="font-medium">{searchResult.enrollmentNo}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Course</p>
-                  <p className="font-medium">{searchResult.course}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Completion Date</p>
-                  <p className="font-medium">{searchResult.completionDate}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Grade</p>
-                  <p className="font-medium">{searchResult.grade}</p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-600">Status</p>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    ✓ {searchResult.status}
-                  </span>
-                </div>
-
-              </div>
-             
-
-              <div className="flex justify-center">
-                <button
-                  onClick={handleDownload}
-                  className="flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition-colors"
-                >
-                  ⬇️ Download Certificate
-                </button>
-              </div>
-
+                        <td className="px-6 py-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-semibold ${el.yearlyfee === 'Paid'
+                              ? 'bg-green-100 text-green-600'
+                              : 'bg-red-100 text-red-600'
+                              }`}
+                          >
+                            {el.yearlyfee || 'Pending'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 active:scale-95 transition duration-200 group"
+                            title="Download"
+                          >
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M4 16l4 4m0 0l4-4m-4 4V4m0 12H4m12-2h4"
+                              ></path>
+                            </svg>
+                            <span className="hidden sm:block group-hover:underline">
+                              Download
+                            </span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
-          )}
+          </div>
 
           <div className="mt-8">
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">

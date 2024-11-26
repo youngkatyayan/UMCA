@@ -35,7 +35,8 @@ const UserProfile = () => {
         perstate: '',
         perdistrict: '',
         perpincode: '',
-        Uid: 'Direct'
+        Uid: 'Direct',
+        CoId:null
     });
 
     const [educationEntries, setEducationEntries] = useState([
