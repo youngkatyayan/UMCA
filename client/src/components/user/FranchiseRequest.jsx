@@ -103,12 +103,13 @@ const FranchiseRequest = () => {
           Center Detail For Skill Development & Training Partner
         </h2>
         <br />
+
         <form
           onSubmit={handleSubmit}
           className="border border-red-300 border-dashed p-4 mx-auto max-w-4xl"
           encType="multipart/form-data"
         >
-          {/* General Details Section */}
+    
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Left Column */}
@@ -279,7 +280,7 @@ const FranchiseRequest = () => {
             </div>
           </div>
 
-          {/* Business Details */}
+     
           <h4 className="text-blue-500 text-xl border-b-2 border-blue-500 pb-2 mt-6">
             Business Details
           </h4>
@@ -316,7 +317,7 @@ const FranchiseRequest = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
+     
           <div className="text-center mt-6">
             <button
               type="submit"
@@ -326,6 +327,7 @@ const FranchiseRequest = () => {
             </button>
           </div>
         </form>
+
       </div>
 
     </UserLayout>
