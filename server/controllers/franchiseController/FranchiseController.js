@@ -4,16 +4,36 @@ import { db } from "../../utils/db.js";
 export const SeletedCategory = async (req, res) => {
 
     const { cname } = req.body;
-
+    console.log(req.body)
     const sql = `SELECT * 
-        FROM course 
-        WHERE categoryname = ? 
-        GROUP BY coursename;
+        FROM category 
+        WHERE groupname = ? 
+        
 `;
     const values = [cname];
 
     const [result] = await db.query(sql, values)
+        console.log(result)
+    if (result.length) {
+        return res.status(200).json({ success: true, result, message: 'Courses successfully retrieved' });
+    }
 
+};
+
+
+
+export const Selctedatcourse = async (req, res) => {
+
+    const { cname } = req.body;
+    console.log(req.body)
+    const sql = `SELECT * 
+        FROM course 
+        WHERE categoryname = ? 
+        GROUP BY coursename `
+    const values = [cname];
+
+    const [result] = await db.query(sql, values)
+        console.log(result)
     if (result.length) {
         return res.status(200).json({ success: true, result, message: 'Courses successfully retrieved' });
     }
@@ -142,7 +162,7 @@ export const getFranSudent = async (req, res) => {
 
 
 export const Admission = async (req, res) => {
-    const { category, Uid, categoryname, groupname, yearlyfee, coursename, disabled, district, dob, town,CoId,
+    const { category, Uid, categoryname, groupname, yearlyfee,currentyear, coursename, disabled, district, dob, town,CoId,
         email, gender, line1, line2, minority, mobno, state,
         mothername, name, nationality, perdistrict, perline1, perline2, perpincode,
         perstate, pertown, pincode, relaname, relation, session, whatsappno,
@@ -168,14 +188,14 @@ export const Admission = async (req, res) => {
 
         // Insert into franchadmission table
         const sql = `INSERT INTO franchadmission 
-                     (SId,CoId, category,franchMobile,commissionern,Admincommission, categoryname,commissionper,groupname,yearlyfee, coursename, disabled, district, dob, email,  
+                     (SId,CoId, category,franchMobile,commissionern,Admincommission, categoryname,commissionper,groupname,yearlyfee,currentyear, coursename, disabled, district, dob, email,  
                      gender, line1, line2, minority, mobno, mothername, name, 
                      nationality, perdistrict, perline1, perline2, perpincode, perstate,
                      pertown, pincode, relaname, relation, session, state, town, whatsappno) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?,?,?,? ,?)`;
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?,  ?, ?, ?, ?, ? ,? ,?)`;
 
         const values = [
-            newSId,CoId, category, Uid, CommissionRs, Admincommission, categoryname, commissionper, groupname, yearlyfee, coursename, disabled, district, dob, email,
+            newSId,CoId, category, Uid, CommissionRs, Admincommission, categoryname, commissionper, groupname, yearlyfee,currentyear, coursename, disabled, district, dob, email,
             gender, line1, line2, minority, mobno, mothername, name,
             nationality, perdistrict, perline1, perline2, perpincode, perstate,
             pertown, pincode, relaname, relation, session, state, town, whatsappno
@@ -229,7 +249,21 @@ export const Admission = async (req, res) => {
 export const getUnpaidStudentdataController = async (req, res) => {
     try {
         const { decryptedMobile } = req.body
-        const sql = `SELECT franchadmission.mobno,franchadmission.name,franchadmission.coursename as cr,coursetrans.* FROM franchadmission left join coursetrans on franchadmission.mobno=coursetrans.mobile WHERE franchMobile=?`
+        const sql = `SELECT fa.*, ct.*, 
+       fa.coursename AS cr, 
+       fa.CoId AS Cd
+FROM franchadmission fa
+LEFT JOIN coursetrans ct
+ON fa.mobno = ct.mobile 
+   AND fa.coursename = ct.coursename
+   AND ct.E_Date = (
+       SELECT MAX(sub_ct.E_Date)
+       FROM coursetrans sub_ct
+       WHERE sub_ct.mobile = ct.mobile
+   )
+WHERE fa.franchMobile = ?;
+
+`
         const [result] = await db.query(sql, [decryptedMobile])
         if (result) {
             return res.status(201).send({ success: true, message: "data access Successfully", result });
@@ -243,19 +277,16 @@ export const getUnpaidStudentdataController = async (req, res) => {
 // getUnpaidStudentdataController
 export const offlinePaymentController = async (req, res) => {
     try {
-        const { mobile, status, payment, courseId, courseName } = req.body;
+        console.log(req.body)
+        const { mobile , courseId, cr,payment, amountpaid,yearlyfee,status} = req.body;
 
         const sql = `
-            INSERT INTO coursetrans (mobile, coursename, status, payment, courseId)
-            VALUES (?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE
-                coursename = VALUES(coursename),
-                status = VALUES(status),
-                payment = VALUES(payment),
-                courseId = VALUES(courseId);
+            INSERT INTO coursetrans (mobile, coursename, payment, courseId,amountpaid,status)
+            VALUES (?, ?, ?, ?, ?, ?)
+          
         `;
 
-        const [result] = await db.query(sql, [mobile, courseName, status, payment, courseId]);
+        const [result] = await db.query(sql, [mobile, cr, payment, courseId,amountpaid,status]);
 
         if (result) {
             return res.status(201).send({ success: true, message: "Successfully updated ", result });
