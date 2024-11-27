@@ -56,12 +56,15 @@ const Certificate = () => {
                       >
                         <td className="px-6 py-4 font-medium text-gray-900">{index + 1}</td>
                         <td className="px-6 py-4">{el?.coursename}</td>
-                        <td className="px-6 py-4">{( el.Fentry).split('T')[0]}</td>
+                        <td className="px-6 py-4">{(( el.Fentry).split('T')[0]).split('-').reverse().join('/')}</td>
                         <td className="px-6 py-4">
-                          {/* {(() => {
-                            const date = new Date((el.Fentry).split('T')[0])
-                            return date
-                          })()} */}
+                          {(() => {
+                           const date = new Date(el.Fentry);
+                           date.setFullYear(date.getFullYear() + parseInt(el.durationyears,10));
+                           const year = date.toISOString().split('T')[0];
+                           console.log(el)
+                           return year.split('-').reverse().join('/')
+                          })()}
                         </td>
 
                         <td className="px-6 py-4">
@@ -74,8 +77,12 @@ const Certificate = () => {
                             {el.yearlyfee || 'Pending'}
                           </span>
                         </td>
+
                         <td className="px-6 py-4">
-                          <button
+                          {
+                            ('') ?
+                            ' ':(
+                              <button
                             className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 active:scale-95 transition duration-200 group"
                             title="Download"
                           >
@@ -97,7 +104,10 @@ const Certificate = () => {
                               Download
                             </span>
                           </button>
+                            )
+                          }
                         </td>
+
                       </tr>
                     ))}
                 </tbody>
