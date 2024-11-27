@@ -225,9 +225,10 @@ export const getDataForCerDownController = async (req, res) => {
         const sql = `SELECT 
     franchadmission.name,
      franchadmission.mobno,
-     franchadmission.groupname,
+     franchadmission.groupname as agroup,
        franchadmission.E_Date as Fentry,
     ordertable.E_Date AS t,
+     ordertable.groupname,
     course.*
 FROM 
     franchadmission

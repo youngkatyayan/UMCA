@@ -191,7 +191,7 @@ const Courses = () => {
                         </div>
                     </div>
 
-                    {/* key features starts  */}
+           
                     <div className="lg:mx-8 p-6 my-5 bg-white rounded-md shadow-md">
                         <h2 className="text-2xl font-bold text-gray-800 mb-8">Key Features</h2>
 
@@ -207,7 +207,7 @@ const Courses = () => {
                                         {feature.text.split('IBM').map((part, i, arr) => (
                                             <React.Fragment key={i}>
                                                 {part}
-                                                {i < arr.length - 1 && <span className="text-blue-700 font-medium">IBM</span>}
+                                                {i < arr.length - 1 && <span className="text-blue-700 font-medium">UMCA</span>}
                                             </React.Fragment>
                                         ))}
                                     </span>
@@ -216,7 +216,7 @@ const Courses = () => {
                         </div>
                     </div>
 
-                    {/* Certificate advantage */}
+                 
                     <div className=" lg:mx-8 p-6 mb-5">
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
@@ -296,7 +296,7 @@ const Courses = () => {
                         </div>
                     </div>
 
-                    {/* career support */}
+             
                     <div className="lg:mx-8 p-6 mb-5 shadow-inner shadow-white">
                         <h1 className="text-3xl font-bold text-gray-800 mb-8">Career Support</h1>
 

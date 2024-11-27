@@ -105,7 +105,7 @@ export const orderCourseController = async (req, res) => {
     const connection = await db.getConnection();
     try {
         await connection.beginTransaction();
-        const { name, phone, email, state, promoCode, district, course, CoId, Caid } = req.body;
+        const { name, phone, email, state, promoCode, district, course, CoId, Caid, groupname } = req.body;
         // console.log(req.body)
         const fields = { name, phone, email, state, district, course };
         for (let [key, value] of Object.entries(fields)) {
@@ -124,33 +124,37 @@ export const orderCourseController = async (req, res) => {
                 result: existingRecords,
             });
         } else {
-            const insertOrderSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district, course,categoryId,courseId) VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
-            const [insertOrderResult] = await connection.query(insertOrderSql, [name, phone, email, state, promoCode, district, course, Caid, CoId]);
+            const insertOrderSql = `INSERT INTO ordertable (name, phone, email, state, promoCode, district, course,groupname,categoryId,courseId) VALUES (?, ?, ?,?, ?, ?, ?, ?,?,?)`;
+            const [insertOrderResult] = await connection.query(insertOrderSql, [name, phone, email, state, promoCode, district, course, groupname, Caid, CoId]);
 
             if (insertOrderResult.affectedRows > 0) {
                 const Type = "Student";
                 const Status = "2";
                 const password = Math.floor(parseInt(phone.slice(6), 10) + Math.random() * 900000);
 
-                const insertUserSql = `INSERT INTO users (name, email, mobile, Type, Status, password) VALUES (?, ?, ?, ?, ?, ?)`;
-                const [insertUserResult] = await connection.query(insertUserSql, [name, email, phone, Type, Status, password]);
+                const inssql = 'select * from users where mobile=?'
+                const [insResult] = await db.query(inssql, [phone])
+                if (!insResult) {
+                    const insertUserSql = `INSERT INTO users (name, email, mobile, Type, Status, password) VALUES (?, ?, ?, ?, ?, ?)`;
+                    const [insertUserResult] = await connection.query(insertUserSql, [name, email, phone, Type, Status, password]);
 
-                if (insertUserResult.affectedRows > 0) {
-                    await connection.commit();
-                    return res.status(201).json({
-                        success: true,
-                        message: 'Record successfully inserted in both tables',
-                        result: {
-                            order: insertOrderResult,
-                            user: insertUserResult,
-                        },
-                    });
-                } else {
-                    await connection.rollback();
-                    return res.status(500).json({
-                        success: false,
-                        message: 'Failed to insert the record in the users table',
-                    });
+                    if (insertUserResult.affectedRows > 0) {
+                        await connection.commit();
+                        return res.status(201).json({
+                            success: true,
+                            message: 'Record successfully inserted in both tables',
+                            result: {
+                                order: insertOrderResult,
+                                user: insertUserResult,
+                            },
+                        });
+                    } else {
+                        await connection.rollback();
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Failed to insert the record in the users table',
+                        });
+                    }
                 }
             } else {
                 await connection.rollback();
@@ -209,4 +213,3 @@ export const createContactController = async (req, res) => {
         if (connection) connection.release();
     }
 };
- 

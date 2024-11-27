@@ -4,15 +4,16 @@ import logo from "../../assets/logo2.png";
 import Id from "../../assets/Id2.png";
 import Photo from "../../assets/shank.jpg";
 import CryptoJS from "crypto-js";
-import jsPDF from "jspdf";
+// import jsPDF from "jspdf";
 import axios from "axios";
-import { FaRegFilePdf } from "react-icons/fa";
+// import { FaRegFilePdf } from "react-icons/fa";
 import { VscFilePdf } from "react-icons/vsc";
 
 const IdCard = ({ student }) => {
   const [stDetails, setStDetails] = useState({});
+  const [img, setImg] = useState('');
 
-  const handlePrint = async(student) => {
+  const handlePrint = async (student) => {
     const content = document.getElementById('print-section');
     const newWindow = window.open('', '', 'height=600, width=800');
 
@@ -232,50 +233,56 @@ const IdCard = ({ student }) => {
   useEffect(() => {
     if (student && typeof student === "object" && Object.keys(student).length > 0) {
       setStDetails(student);
-      console.log("Student details set:", student);
+      // console.log("Student details set:", student);
       handlePrint(student)
     }
-    else{
+    else {
       fetchStudent();
-   
+
 
     }
-  }, [student]); 
+  }, [student]);
 
-    const mobile = localStorage.getItem("uid");
+  const decryptedMobile = localStorage.getItem("uid");
 
-    const decryptedMobile = mobile
-      ? CryptoJS.AES.decrypt(mobile, "LOGIN UID").toString(CryptoJS.enc.Utf8)
-      : null;
+  const mobile = decryptedMobile
+    ? CryptoJS.AES.decrypt(decryptedMobile, "LOGIN UID").toString(CryptoJS.enc.Utf8)
+    : null;
 
-    const fetchStudent = async () => {
-      try {
-        if (decryptedMobile) {
-          const { data } = await axios.post("/api/v1/getStudent-data", {
-            decryptedMobile,
-          });
-          console.log(data.result);
+  const fetchStudent = async () => {
+    try {
+      if (mobile) {
+        const { data } = await axios.post("/api/v1/get-entroll-course", {
+          mobile,
+        });
 
-          if (data.success && data.result.length > 0) {
-            const student = data.result[0];
-            setStDetails({
-              name: student.name,
-              mobno: student.phone,
-              email: student.email,
-              course: student.course,
-            });
-          }
+        if (data.success) {
+          (data.result).map((el) => {
+            if ((el.groupname).toLowerCase() === 'university') {
+              const student = el
+              setImg(el.profileImg)
+              setStDetails({
+                name: student.name,
+                mobno: student.phone,
+                email: student.email,
+                course: student.course,
+              });
+            }
+          })
+
+          
         }
-      } catch (error) {
-        alert(error.message);
       }
-    
+    } catch (error) {
+      alert(error.message);
     }
-    
-     
-    if (!stDetails) {
-      return <div>Loading...</div>; // Show loading state while fetching data
-    }
+
+  }
+
+
+  if (!stDetails) {
+    return <div>Loading...</div>; // Show loading state while fetching data
+  }
 
 
 
@@ -324,7 +331,7 @@ const IdCard = ({ student }) => {
                   {/* Details section */}
                   <div className="grid grid-cols-1 mt-1 bg-opacity-75">
                     <div className="flex items-center justify-center">
-                      <img src={Photo} style={{ height: '70px', width: "auto" }} alt="Description" />
+                      <img src={`/api/v1/get-entroll-course/${img}`} style={{ height: '70px', width: "auto" }} alt="Description" />
 
                     </div>
                     <div className="relative pl-6   justify-center text-start content-center mt-2 mb-12 ">

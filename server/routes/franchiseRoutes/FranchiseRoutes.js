@@ -4,6 +4,7 @@ import { Admission, getDistrict, getPartCommission, getState, getUnpaidStudentda
     filterStudentDataController,getTotalcommission, getTotalStudent, SeletedCategory, SeletedCourse,offlinePaymentController, 
     getFranSudent,
     Selctedatcourse} from "../../controllers/franchiseController/FranchiseController.js"
+import path from "path"
 
 
 
@@ -22,6 +23,7 @@ router.post('/get-student',getTotalStudent)
 router.post('/admission-form',Admission)
 router.post('/get-totalcommission',getTotalcommission)
 router.post('/get-franstudentdetails',franStudentDetails)
+router.use('/get-franstudentdetails',express.static(path.join('Profile')))
 
 router.post('/get-student-unpaid-data',getUnpaidStudentdataController)
 router.post('/submit-student-payment',offlinePaymentController)

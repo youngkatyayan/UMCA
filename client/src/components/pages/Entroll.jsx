@@ -21,9 +21,10 @@ const Entroll = () => {
         district: '',
         course: '',
         payment:(promo) ? promo : course?.yearlyfee,
+       
     });
 
-    // console.log(course)
+    console.log(course)
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
@@ -82,7 +83,7 @@ const Entroll = () => {
         e.preventDefault();
         try {
             if (course) {
-                const { data } = await axios.post('/api/v1/order-course', { ...formData, CoId: course?.CoId, Caid: course?.Caid });
+                const { data } = await axios.post('/api/v1/order-course', { ...formData, CoId: course?.CoId, Caid: course?.Caid,groupname:course?.groupname });
                 if (data.success) {
                     setIsLoading(true);
                     setTimeout(() => {
