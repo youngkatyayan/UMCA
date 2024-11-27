@@ -26,8 +26,9 @@ const Course = () => {
         examfee: '',
         brochure: '',
         coursename: '',
-        courseimage:"",
-        durationyears:""
+        courseimage: "",
+        durationyears: "",
+        durationUnit: " "
     })
 
     const { CoId } = useParams()
@@ -46,7 +47,7 @@ const Course = () => {
             brochure: '',
             coursename: '',
             popular: '',
-            courseimage:''
+            courseimage: ''
         });
     };
 
@@ -88,7 +89,6 @@ const Course = () => {
                         courseimage: courseDetails[0].courseimage || '',
                     });
 
-                    console.log(formdata)
                 }
             }
 
@@ -120,7 +120,6 @@ const Course = () => {
 
     // useEffect(() => {
     //     if (Object.keys(courseDetails).length > 0) {
-    //         console.log(courseDetails)
     //         setData({
     //             session: courseDetails.session || '',
     //             coursemode: courseDetails.coursemode || '',
@@ -134,7 +133,7 @@ const Course = () => {
     //             brochure: courseDetails.brochure || '',
     //             coursename: courseDetails.coursename || ''
     //         });
-    //         console.log(formdata)
+    //         .log(formdata)
     //     }
     // }, [courseDetails]);
 
@@ -144,10 +143,8 @@ const Course = () => {
 
         if (name === 'categoryname') {
             const grpname = category.find(element => element.categoryname === value)
-            console.log(grpname)
             const setgrp = grpname.groupname
             setData(prevData => ({ ...prevData, [name]: value, groupname: setgrp }))
-            console.log(formdata)
 
         }
         if (name === 'session') {
@@ -168,72 +165,65 @@ const Course = () => {
         if (file) {
 
             if (file.type.startsWith('image/')) {
-                console.log(file.type)
                 const imageURL = URL.createObjectURL(file); // Create a URL from the file
                 setImg((prev) => {
                     const Images = [...prev];
-                    Images[index] = {file,url:imageURL} // Store the URL in the img state instead of the file
+                    Images[index] = { file, url: imageURL } // Store the URL in the img state instead of the file
                     return Images;
                 });
 
-      
+
             } else if (file.type === 'application/pdf') {
-                console.log(file.type)
                 const pdfURL = URL.createObjectURL(file);
                 setImg(prev => {
                     const Files = [...prev];
-                    Files[index] = { file,type: 'pdf', url: pdfURL };
-                    console.log('Updated Files:', Files);
+                    Files[index] = { file, type: 'pdf', url: pdfURL };
                     return Files;
                 })
-                
+
             }
         }
-       
+
     };
 
     const handleSubmit = async (e) => {
-        console.log(img)
         e.preventDefault()
-        const formdataToSend=new FormData();
-        for (const [key,value] of Object.entries(formdata)){
-            formdataToSend.append(key,value)
+        const formdataToSend = new FormData();
+        for (const [key, value] of Object.entries(formdata)) {
+            formdataToSend.append(key, value)
 
         }
-        img.forEach((fileObj,index)=>{
-            if(fileObj){
-                formdataToSend.append(`image${index}`,fileObj.file);
+        img.forEach((fileObj, index) => {
+            if (fileObj) {
+                formdataToSend.append(`image${index}`, fileObj.file);
             }
         })
         try {
-            console.log(formdata)
             const { data } = await axios.post('api/v1/add-course', formdataToSend)
             if (data.success) {
                 toast.success(data.message)
             }
             else {
-              toast.error(data.message)
+                toast.error(data.message)
             }
         } catch (error) {
-            console.log("error")
+            toast.error("Internal Server Error")
         }
     }
 
     const handleUpdate = async (e) => {
         e.preventDefault()
-        console.log(formdata)
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/update-course', formdata)
             if (data.success) {
                 toast.success(data.message)
                 // window.location.href = '/course-details'
             }
             else {
-                console.log('error')
+                toast.error('Error in fetching data')
             }
         } catch (error) {
-            console.log("error")
+           toast.error("Error in Updating Course")
         }
     }
 
@@ -249,7 +239,7 @@ const Course = () => {
                     <div className='border-2 rounded-sm grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 items-center'>
 
                         <div>
-                            
+
                             <label htmlFor="coursename" className=' m-2 font-serif text-lg'> Course Name :</label>
                             <input
                                 type="text"
@@ -347,27 +337,29 @@ const Course = () => {
 
 
                         <div>
-                            <label htmlFor="duration" className=' m-2 font-serif text-lg'> Duration :</label>
-                            <input
-                                type="text"
-                                name='duration'
-                                value={formdata.duration}
-                                onChange={handleChange}
-                                placeholder='Enter Duration'
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            />
+                            <label htmlFor="duration" className='m-2 font-serif text-lg'>Course Duration:</label>
+                            <div className="flex">
+                                <input
+                                    type="number"
+                                    name="duration"
+                                    value={formdata.duration}
+                                    onChange={handleChange}
+                                    placeholder="Enter Number"
+                                    className="p-2 rounded-l-md my-4 shadow-md border-r-0 w-full"
+                                />
+                                <select
+                                    name="durationUnit"
+                                    value={formdata.durationUnit}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-r-md my-4 shadow-md border-l-2"
+                                >
+                                    <option value="year">Years</option>
+                                    <option value="month">Months</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="durationyears" className=' m-2 font-serif text-lg'> Total Duration in (Years) :</label>
-                            <input
-                                type="number"
-                                name='durationyears'
-                                value={formdata.durationyears}
-                                onChange={handleChange}
-                                placeholder='Enter Duration Year'
-                                className=' p-2 rounded-md my-4 shadow-md w-full'
-                            />
-                        </div>
+
+
 
                         <div>
                             <label htmlFor="description" className=' m-2 font-serif text-lg'> Description :</label>
@@ -450,7 +442,6 @@ const Course = () => {
                     </div>
                 </form>
             </div>
-            <ToastContainer />
         </SuperAdminLayout>
     )
 }

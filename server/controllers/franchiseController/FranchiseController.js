@@ -251,17 +251,19 @@ export const getUnpaidStudentdataController = async (req, res) => {
         const { decryptedMobile } = req.body
         const sql = `SELECT fa.*, ct.*, 
        fa.coursename AS cr, 
-       fa.CoId AS Cd
-FROM franchadmission fa
-LEFT JOIN coursetrans ct
-ON fa.mobno = ct.mobile 
-   AND fa.coursename = ct.coursename
-   AND ct.E_Date = (
-       SELECT MAX(sub_ct.E_Date)
-       FROM coursetrans sub_ct
-       WHERE sub_ct.mobile = ct.mobile
-   )
-WHERE fa.franchMobile = ?;
+       fa.CoId AS Cd,
+       fa.currentyear AS cy
+        FROM franchadmission fa
+        
+        LEFT JOIN coursetrans ct
+        ON fa.mobno = ct.mobile 
+        AND fa.coursename = ct.coursename
+        AND ct.E_Date = (
+        SELECT MAX(sub_ct.E_Date)
+        FROM coursetrans sub_ct
+        WHERE sub_ct.mobile = ct.mobile
+        )
+        WHERE fa.franchMobile = ?;
 
 `
         const [result] = await db.query(sql, [decryptedMobile])

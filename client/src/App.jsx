@@ -44,6 +44,7 @@ import StudentFee from './components/franchise/StudentFee.jsx';
 import StudentDetails from './components/franchise/StudentDetails.jsx';
 import PaidStudent from './components/franchise/PaidStudent.jsx';
 import PaidUnpaidList from './components/admin/franchise/PaidUnpaidList.jsx';
+import PayFee from './components/franchise/PayFee.jsx';
 
 
 
@@ -115,6 +116,7 @@ const App = () => {
           <Route path='/student-fee-statement' element={<StudentFee />} />
           <Route path='/student-paid-statement' element={<PaidStudent />} />
           <Route path='/student-list' element={<StudentDetails/>} />
+          <Route path='/pay-fee' element={<PayFee/>} />
         </Routes>
       )
     default:

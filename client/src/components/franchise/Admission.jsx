@@ -37,7 +37,7 @@ const Admission = ({ student }) => {
         Uid: '',
         categoryname: '',
         session: '',
-        minority: "",
+        minority: " ",
         name: "",
         dob: "",
         gender: "",
