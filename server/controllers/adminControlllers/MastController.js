@@ -165,8 +165,10 @@ export const addCourse = async (req, res) => {
 
     try {
 
-        const { applicationfee, popular, categoryname, coursemode, coursename, session, description, duration,durationyears, eligibility, examfee, yearlyfee } = req.body;
-        const requiredFields = { applicationfee, categoryname, coursemode, coursename, session, description, duration, eligibility, examfee, yearlyfee }
+        const { applicationfee, popular, categoryname, coursemode, coursename, session, description, duration,durationUnit, eligibility, examfee, yearlyfee } = req.body;
+        const DurationUnit = `${duration} ${durationUnit}`;
+        console.log(DurationUnit)
+        const requiredFields = { applicationfee, categoryname, coursemode, coursename, session, description, DurationUnit, eligibility, examfee, yearlyfee }
         for (const [field, value] of Object.entries(requiredFields)) {
             if (!value) {
                 return res.status(400).send({ success: false, error: `${field} is required` })
@@ -189,8 +191,8 @@ export const addCourse = async (req, res) => {
 
 
 
-        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration, durationyears, eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-        const values = [newCoId, popular, applicationfee, image1, image2, categoryname, coursemode, coursename, session, description, duration,durationyears, eligibility, examfee, yearlyfee]
+        const sql = `insert into course (CoId,popular,applicationfee,brochure,courseimage, categoryname,coursemode,coursename, session, description,duration, eligibility, examfee, yearlyfee) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        const values = [newCoId, popular, applicationfee, image1, image2, categoryname, coursemode, coursename, session, description, DurationUnit, eligibility, examfee, yearlyfee]
         await connection.query(sql, values)
 
 
@@ -663,9 +665,10 @@ export const updateCourse = async (req, res) => {
 
 export const updateCategory = async (req, res) => {
     try {
-        const { description, Caid, groupname, category } = req.body
-        const sql = `update category set  description=?, groupname=?, categoryname=? where  Caid=? `
-        const values = [description, groupname, category, Caid]
+        const { description, Caid, groupname, category,totcommison } = req.body
+        console.log(req.body)
+        const sql = `update category set  description=?, groupname=?, categoryname=?, totalcommission=? where  Caid=? `
+        const values = [description, groupname, category,totcommison, Caid]
         const [result] = await db.query(sql, values)
         console.log(result)
         if (result) {

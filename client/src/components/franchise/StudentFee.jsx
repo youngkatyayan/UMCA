@@ -107,6 +107,7 @@ const StudentFee = () => {
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Name</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Mobile</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Course Name</th>
+                                <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Course Duration</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Current Year</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">yearly Payment</th>
                                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Total Paid</th>
@@ -126,7 +127,8 @@ const StudentFee = () => {
                                         <td className="border border-gray-300 px-4 py-2">{el.name}</td>
                                         <td className="border border-gray-300 px-4 py-2">{el.mobno}</td>
                                         <td className="border border-gray-300 px-4 py-2">{el.cr}</td>
-                                        <td className="border border-gray-300 px-4 py-2"> {parseInt(el.currentyear )=== 1 ? '1st Year' :
+                                        <td className="border border-gray-300 px-4 py-2">{el.duration}</td>
+                                        <td className="border border-gray-300 px-4 py-2"> {parseInt(el.cy )== 1 ? '1st Year' :
                                             el.currentyear === 2 ? '2nd Year' :
                                                 el.currentyear === 3 ? '3rd Year' :
                                                     el.currentyear === 4 ? '4th Year' :

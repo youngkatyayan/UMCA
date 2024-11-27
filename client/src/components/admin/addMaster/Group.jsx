@@ -33,7 +33,6 @@ const Group = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/add-group', formdata)
             if (data.success) {
                 toast.success(data.message)
@@ -41,10 +40,9 @@ const Group = () => {
             }
             else {
                 toast.error(data.message)
-                console.log('error')
             }
         } catch (error) {
-            console.log("error")
+            toast.error("Error in Submitting Data")
         }
     }
 

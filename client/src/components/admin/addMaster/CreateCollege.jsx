@@ -16,7 +16,6 @@ const CreateCollege = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(data)
         try {
             const { data } = await axios.post('api/v1/add-universty')
             if (data.success) {

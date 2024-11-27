@@ -53,10 +53,7 @@ const Session = () => {
         if (name === "categoryname") {
             const catgroup = category.find(user => user.categoryname ===value)
             const setgrp = catgroup.groupname
-            console.log(setgrp)
-            console.log(catgroup)
             setData(prevData => ({ ...prevData, [name]: value, groupname: setgrp }))
-            console.log(formdata)
 
 
         }
@@ -64,10 +61,8 @@ const Session = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formdata)
         try {
             const { data } = await axios.post('api/v1/add-session', formdata)
-            console.log(data)
             if (data.success) {
                 toast(data.message)
                 accesssession()
@@ -83,7 +78,6 @@ const Session = () => {
             }
         } catch (error) {
             toast.error("An error occurred while adding the session. Please try again.");
-            console.log("error")
         }
     }
 
@@ -121,7 +115,6 @@ const Session = () => {
     const handleUpdate = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/update-sesson', formdata)
             if (data.success) {
                 toast.success(data.message);
@@ -137,10 +130,11 @@ const Session = () => {
                 setUpdateC(false)
             }
             else {
-                console.log('error')
+                toast.error("error")
+             
             }
         } catch (error) {
-            console.log("error catch")
+            toast.error("Error in Updating Session")
         }
     }
     return (
@@ -209,7 +203,7 @@ const Session = () => {
                                 name='additionalfee'
                                 value={formdata.additionalfee}
                                 onChange={handleChange}
-                                placeholder='Enter Session'
+                                placeholder='Additional Fee '
                                 className=' p-2 rounded-md my-4 shadow-md w-full'
                             />
                         </div>

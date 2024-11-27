@@ -13,8 +13,9 @@ const CreateCommission = () => {
         startdate: '',
         groupname: '',
         commissionper: "",
-        enddate: '',
-        totalcommission:''
+        enddate: '' || null,
+        totalcommission: '',
+        categoryname:''
     })
     const [commission, setCommission] = useState([])
     const [category, setCategory] = useState([])
@@ -41,17 +42,17 @@ const CreateCommission = () => {
             setCommission(data.result)
         }
     }
-    const accesscategory = async () => {
-        const { data } = await axios.get('/api/v1/get-category')
-        if (data.success) {
-            setCategory(data.result)
-        }
-    }
+    // const accesscategory = async () => {
+    //     const { data } = await axios.get('/api/v1/get-category')
+    //     if (data.success) {
+    //         setCategory(data.result)
+    //     }
+    // }
 
     useEffect(() => {
         accessdata();
         accesscommission();
-        accesscategory();
+        // accesscategory();
     }, [])
 
 
@@ -60,17 +61,17 @@ const CreateCommission = () => {
         const { name, value } = e.target;
         setData(prevData => ({ ...prevData, [name]: value }))
 
-        if(name==='categoryname'){
-            const totalcomm=category.find(item=>value===item.categoryname)
-            const Totalcomm=totalcomm.totalcommission
-            
-            
+        if (name === 'categoryname') {
+            const totalcomm = category.find(item => value === item.categoryname)
+            const Totalcomm = totalcomm.totalcommission
+
+
             setData(prevData => ({ ...prevData, totalcommission: Totalcomm }))
         }
 
-        if(name==='groupname'){
-            
-            const {data}=await axios.post('/api/v1/get-grouponcatery',{value})
+        if (name === 'groupname') {
+
+            const { data } = await axios.post('/api/v1/get-grouponcatery', { value })
             setCategory(data.result)
         }
     }
@@ -85,6 +86,9 @@ const CreateCommission = () => {
                     category: '',
                     groupname: '',
                     description: '',
+                    enddate: '' || null,
+                    totalcommission: '',
+                    commissionper: "",
                 });
                 accesscategory();
                 accesscommission();
@@ -100,15 +104,16 @@ const CreateCommission = () => {
         setUpdateC(true)
         const formattedstartDate = item.startdate ? moment(item.startdate).format('YYYY-MM-DD') : '';
         const formattedendDate = item.enddate ? moment(item.enddate).format('YYYY-MM-DD') : '';
-        
+        const catefname=item.categoryname;
+        console.log(catefname)
 
         setData({
             ...formdata,
             commissionper: item.commissionper || '',
             groupname: item.groupname || '',
             CMId: item.CMId || '',
-            categoryname:item.categoryname || '',
-            totalcommission:item.totalcommission ||'',
+            categoryname: item.categoryname || '',
+            totalcommission: item.totalcommission || '',
             startdate: formattedstartDate,
             enddate: formattedendDate
         })
@@ -123,10 +128,14 @@ const CreateCommission = () => {
                 setData({
                     category: '',
                     groupname: '',
-                    description: ''
+                    description: '',
+                    enddate: '' || null,
+                    totalcommission: '',
+                    commissionper: "",
                 })
-                accesscategory()
+                accesscommission();
                 setUpdateC(false)
+                // accesscategory()
             }
             else {
                 console.log('error')
@@ -208,7 +217,7 @@ const CreateCommission = () => {
                                     style={{
                                         WebkitAppearance: 'none',
                                         MozAppearance: 'textfield',
-                                      }}
+                                    }}
                                 />
 
                             </div>
@@ -244,7 +253,7 @@ const CreateCommission = () => {
                         </div>
                     </form>
                 </div>
-                                    
+
                 <div className='bg-gray-100  p-4 m-4   rounded-md   overflow-x-scroll '>
                     <table className='min-w-full border-collapse border border-gray-300 '>
                         <thead className='bg-slate-600  text-white ' >

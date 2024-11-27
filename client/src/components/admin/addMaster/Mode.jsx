@@ -29,7 +29,6 @@ const Mode = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/add-mode', formdata)
             if (data.success) {
                 toast.success(data.message)
@@ -37,16 +36,15 @@ const Mode = () => {
                 accessmode()
             }
             else {
-                console.log('error')
+                toast.error('error')
             }
         } catch (error) {
-            console.log("error")
+            toast.error("Error in Submitting Mode")
         }
     }
 
     const handleStatus = async (item, stat) => {
         const UpdateCmStatus = { ...item, cmstatus: stat };
-        console.log(UpdateCmStatus)
         try {
             const { data } = await axios.post('api/v1/updatecmstatus', UpdateCmStatus)
             if (data.success) {

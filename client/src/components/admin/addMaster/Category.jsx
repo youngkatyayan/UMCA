@@ -34,8 +34,6 @@ const Category = () => {
         const { data } = await axios.get('/api/v1/get-category')
         if (data.success) {
             setCategory(data.result)
-            console.log(data.result)
-            console.log(category)
         }
     }
 
@@ -55,10 +53,8 @@ const Category = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/add-category', formdata)
             if (data.success) {
-                console.log(data)
                 toast.success(data.message);
                 setData({
                     category: '',
@@ -68,10 +64,8 @@ const Category = () => {
                 accesscategory()
             }
             else {
-                console.log('error')
             }
         } catch (error) {
-            console.log("error catch")
         }
     }
 
@@ -98,30 +92,30 @@ const Category = () => {
             category: item.categoryname || '',
             groupname: item.groupname || '',
             Caid: item.Caid || '',
-            description: item.description || ""
+            description: item.description || "",
+            totcommison: item.totalcommission || ""
         })
     }
 
     const handleUpdate = async (e) => {
         e.preventDefault()
         try {
-            console.log(formdata)
             const { data } = await axios.post('/api/v1/update-category', formdata)
             if (data.success) {
                 toast.success(data.message);
                 setData({
                     category: '',
                     groupname: '',
-                    description: ''
+                    description: '',
+                    totcommison:''
+
                 })
                 accesscategory()
                 setUpdateC(false)
             }
             else {
-                console.log('error')
             }
         } catch (error) {
-            console.log("error catch")
         }
     }
     return (
@@ -183,7 +177,7 @@ const Category = () => {
                         <div >
                         <label htmlFor="description" className=' flex m-1 font-serif text-lg w-full'>  Description :</label>
                         <textarea
-                            // type="text"
+                            required
                             name='description'
                             value={formdata.description}
                             onChange={handleChange}

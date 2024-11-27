@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import FranchiseLayout from '.././layout/FranchiseLayout';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 const PaidStudent = () => {
     const [allResult, setAllResult] = useState(null);
@@ -28,7 +29,10 @@ const PaidStudent = () => {
     useEffect(() => {
         fetchData();
     }, []);
-
+    const Navigate=useNavigate()
+    const handleNameclick=(data)=>{
+        Navigate('/pay-fee',{state:{data}});
+    }
 
     return (
         <FranchiseLayout>
@@ -61,10 +65,12 @@ const PaidStudent = () => {
                                             className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
                                                 } hover:bg-gray-100 transition-all duration-200`}
                                         >
-                                            <td className="border border-gray-300 px-4 py-2">{el.name}</td>
+                                            <td className="border border-gray-300 px-4 py-2 hover:text-blue-600 hover:underline hover:cursor-pointer"
+                                            onClick={()=>handleNameclick(el)}
+                                            >{el.name}</td>
                                             <td className="border border-gray-300 px-4 py-2">{el.mobno}</td>
                                             <td className="border border-gray-300 px-4 py-2">{el.cr}</td>
-                                            <td className="border border-gray-300 px-4 py-2">{el.currentyear}st Year</td>
+                                            <td className="border border-gray-300 px-4 py-2">{el.cy}st Year</td>
                                            
                                             <td className="border border-gray-300 px-4 py-2 text-center">
                                                 {el.payment}
